@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusAI — by Zelvior</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c-bg: #07080d;
+            --c-surface: #0e1018;
+            --c-surface2: #141720;
+            --c-border: #1f2333;
+            --c-border2: #2a2f45;
+            --c-accent: #6c63ff;
+            --c-accent2: #a78bfa;
+            --c-text: #e2e4f0;
+            --c-muted: #6b7280;
+            --c-green: #22c55e;
+            --c-red: #ef4444;
+            --c-orange: #f97316;
+            --c-blue: #3b82f6;
+            --c-cyan: #06b6d4;
+            --c-pink: #ec4899;
+            --c-yellow: #eab308;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--c-bg); color: var(--c-text); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+        h1, .brand { font-family: 'Syne', sans-serif; }
+        code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--c-border2); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--c-accent); }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        /* Cursor blink */
+        .typing-cursor::after { content: '▋'; animation: blink 1s step-start infinite; color: var(--c-accent); margin-left: 2px; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Thinking dots */
+        .thinking-dots span {
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--c-accent);
+            margin: 0 2px;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+        .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-6px);opacity:1} }
+
+        /* Message animations */
+        @keyframes slideUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+        .msg-enter { animation: slideUp 0.25s ease-out forwards; }
+
+        /* Glow accent line on AI messages */
+        .ai-msg { border-left: 2px solid var(--c-accent); }
+
+        /* Canvas panel slide */
+        #canvas-panel { transition: width 0.32s cubic-bezier(.4,0,.2,1), opacity 0.32s ease; }
+
+        /* Prose styles */
+        .prose p { margin: 0.4em 0; line-height: 1.75; }
+        .prose h1,.prose h2,.prose h3 { font-family:'Syne',sans-serif; font-weight:700; margin:1em 0 0.4em; }
+        .prose h1{font-size:1.3em;color:#fff} .prose h2{font-size:1.15em;color:#e2e4f0} .prose h3{font-size:1.05em;color:#c4c8e0}
+        .prose ul,.prose ol { padding-left:1.4em; margin:0.4em 0; }
+        .prose li { margin:0.25em 0; }
+        .prose a { color:var(--c-accent2); text-decoration:underline; text-underline-offset:3px; }
+        .prose strong { color:#fff; font-weight:600; }
+        .prose em { color:#c4c8e0; }
+        .prose blockquote { border-left:3px solid var(--c-accent); padding-left:0.9em; color:var(--c-muted); margin:0.5em 0; font-style:italic; }
+        .prose table { border-collapse:collapse; width:100%; margin:0.75em 0; font-size:0.85em; }
+        .prose th { background:var(--c-surface2); padding:0.5em 0.75em; border:1px solid var(--c-border2); font-weight:600; text-align:left; }
+        .prose td { padding:0.4em 0.75em; border:1px solid var(--c-border); }
+        .prose tr:nth-child(even) { background:var(--c-surface); }
+        .prose code:not(pre code) { background:var(--c-surface2); border:1px solid var(--c-border2); border-radius:4px; padding:1px 5px; font-size:0.82em; color:#a78bfa; }
+        .prose pre { background:#0d1117 !important; border:1px solid var(--c-border2); border-radius:10px; padding:1rem; margin:0.6em 0; overflow-x:auto; position:relative; }
+        .prose pre code { background:transparent; border:none; padding:0; color:#e6edf3; font-size:0.82em; }
+
+        /* Tag pill styles */
+        .tag { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-family:'JetBrains Mono',monospace; padding:2px 7px; border-radius:99px; border:1px solid; font-weight:500; }
+
+        /* Input grow */
+        #user-input { field-sizing: content; max-height: 160px; }
+
+        /* Shimmer on model loading */
+        @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+        .skeleton { background: linear-gradient(90deg, var(--c-surface) 25%, var(--c-surface2) 50%, var(--c-surface) 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius:8px; }
+
+        /* Thinking block */
+        .thinking-block { background: var(--c-surface); border:1px solid var(--c-border); border-left:3px solid var(--c-accent); border-radius:8px; padding:10px 14px; margin:0 0 10px; font-size:0.8em; color:var(--c-muted); font-style:italic; }
+        .thinking-block summary { cursor:pointer; color:var(--c-accent2); font-style:normal; font-weight:600; font-size:0.9em; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+
+        /* Model modal filter pills */
+        .filter-pill { cursor:pointer; padding:4px 12px; border-radius:99px; border:1px solid var(--c-border2); font-size:11px; font-weight:600; font-family:'Syne',sans-serif; transition:all 0.15s; color:var(--c-muted); }
+        .filter-pill.active { background:var(--c-accent); border-color:var(--c-accent); color:#fff; }
+        .filter-pill:hover:not(.active) { border-color:var(--c-accent); color:var(--c-accent); }
+
+        /* Model card */
+        .model-card { background:var(--c-surface); border:1px solid var(--c-border); border-radius:12px; padding:12px 14px; cursor:pointer; transition:all 0.15s; }
+        .model-card:hover { border-color:var(--c-accent); background:var(--c-surface2); }
+        .model-card.selected { border-color:var(--c-accent); background:rgba(108,99,255,0.08); box-shadow:0 0 0 1px var(--c-accent) inset; }
+
+        /* Terms modal scroll */
+        #terms-body { scrollbar-width: thin; }
+
+        /* Gradient mesh background for header */
+        header { background: linear-gradient(135deg, #0e1018 0%, #111525 100%); }
+
+        /* Welcome gradient */
+        .welcome-card { background: linear-gradient(135deg, rgba(108,99,255,0.08) 0%, rgba(167,139,250,0.05) 100%); border:1px solid rgba(108,99,255,0.2); }
+
+        /* Attachment type color per category */
+        .cat-text { color: var(--c-accent2); }
+        .cat-vision { color: var(--c-blue); }
+        .cat-audio { color: var(--c-green); }
+        .cat-video { color: var(--c-orange); }
+        .cat-embed { color: var(--c-cyan); }
+        .cat-rerank { color: var(--c-pink); }
+        .cat-speech { color: var(--c-yellow); }
+        .cat-trans { color: var(--c-red); }
+
+        /* Thinking spinner mini */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin { animation: spin 1s linear infinite; }
+
+        /* Section label */
+        .section-label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--c-muted); font-family:'Syne',sans-serif; }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     TERMS & CONDITIONS MODAL (shown on first visit)
+     ════════════════════════════════════════════════ -->
+<div id="terms-overlay" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+    <div class="bg-[#0e1018] border border-[#1f2333] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="p-6 border-b border-[#1f2333] shrink-0">
+            <div class="flex items-center gap-3 mb-1">
+                <div class="w-9 h-9 rounded-xl bg-[#6c63ff]/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-[#a78bfa]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-white text-lg" style="font-family:'Syne',sans-serif">Terms & Conditions</h2>
+                    <p class="text-xs text-[#6b7280]">Please read before continuing</p>
+                </div>
+            </div>
+        </div>
+        <div id="terms-body" class="p-6 overflow-y-auto flex-1 space-y-4 text-sm text-[#9ca3af] leading-relaxed">
+            <div class="bg-[#1c1020] border border-red-500/30 rounded-xl p-4">
+                <p class="text-red-400 font-semibold text-xs uppercase tracking-wider mb-1">⚠️ Important Disclaimer</p>
+                <p>The creators of <strong class="text-white">NexusAI</strong> (<em>Zelvior</em>) are <strong class="text-white">not responsible</strong> for any actions taken by users based on outputs generated through this tool. You are solely responsible for how you use this application and any AI-generated content.</p>
+            </div>
+            <p><strong class="text-white">1. Acceptance</strong><br>By clicking "I Agree & Continue", you acknowledge that you have read, understood, and agree to these terms.</p>
+            <p><strong class="text-white">2. Use of AI Models</strong><br>This tool routes your requests through the <a href="https://openrouter.ai" target="_blank" class="text-[#a78bfa] underline">OpenRouter API</a>, providing access to third-party AI models. We do not own, operate, or control these models.</p>
+            <p><strong class="text-white">3. API Key</strong><br>Your OpenRouter API key is stored only in your browser's localStorage. We never transmit it to any server other than OpenRouter's official API endpoint.</p>
+            <p><strong class="text-white">4. Content Policy</strong><br>Do not use this tool to generate illegal content, harmful material, or content that violates OpenRouter's or any model provider's terms of service.</p>
+            <p><strong class="text-white">5. No Warranty</strong><br>This tool is provided "as is" without any warranty. AI outputs may be inaccurate, incomplete, or misleading. Always verify critical information.</p>
+            <p><strong class="text-white">6. Uncensored Models</strong><br>Some models listed may have reduced content filters. You accept full responsibility for using such models in compliance with applicable laws.</p>
+            <p><strong class="text-white">7. Data Privacy</strong><br>Your conversations are sent to OpenRouter/model providers per their privacy policies. No conversation data is stored by NexusAI.</p>
+            <p class="text-xs text-[#6b7280]">Last updated: June 2025 · Created by Zelvior</p>
+        </div>
+        <div class="p-5 border-t border-[#1f2333] shrink-0 flex gap-3">
+            <button id="terms-decline-btn" class="flex-1 py-2.5 rounded-xl border border-[#1f2333] text-[#6b7280] hover:text-white hover:border-[#374151] transition-colors text-sm font-semibold">Decline</button>
+            <button id="terms-accept-btn" class="flex-1 py-2.5 rounded-xl bg-[#6c63ff] hover:bg-[#5b52ee] text-white transition-colors text-sm font-semibold" style="font-family:'Syne',sans-serif">I Agree & Continue →</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     HEADER
+     ════════════════════════════════════════════════ -->
+<header class="shrink-0 border-b border-[#1f2333] px-4 py-2.5 flex items-center gap-3 z-20 shadow-xl">
+    <!-- Logo -->
+    <div class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6c63ff] to-[#a78bfa] flex items-center justify-center shadow-lg shadow-[#6c63ff]/30">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <span class="text-base font-black text-white hidden sm:block" style="font-family:'Syne',sans-serif; letter-spacing:-0.02em">NexusAI</span>
+        <span class="text-[10px] font-bold text-[#6b7280] bg-[#141720] px-2 py-0.5 rounded border border-[#1f2333] hidden sm:inline-block">FREE TIER</span>
+    </div>
+
+    <!-- Model selector button -->
+    <button id="open-models-btn" class="flex-1 max-w-xs flex items-center gap-2 px-3 py-1.5 bg-[#141720] hover:bg-[#1f2333] rounded-xl border border-[#1f2333] hover:border-[#2a2f45] transition-all text-left overflow-hidden shadow-sm">
+        <svg id="model-loading-icon" class="w-3.5 h-3.5 text-[#6c63ff] shrink-0 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <svg id="model-cpu-icon" class="w-3.5 h-3.5 text-[#6c63ff] shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke-width="2"/><rect x="9" y="9" width="6" height="6" stroke-width="2"/></svg>
+        <span id="current-model-display" class="text-sm font-semibold text-[#e2e4f0] truncate flex-1" style="font-family:'Syne',sans-serif">Scanning models...</span>
+        <svg class="w-4 h-4 text-[#6b7280] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    </button>
+
+    <div class="ml-auto flex items-center gap-1">
+        <button id="new-chat-btn" title="New Chat" class="p-2 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <button id="docs-btn" title="Docs & Credits" class="p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </button>
+        <button id="settings-btn" title="Settings" class="p-2 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+        </button>
+    </div>
+</header>
+
+<!-- ════════════════════════════════════════════════
+     MAIN WORKSPACE
+     ════════════════════════════════════════════════ -->
+<main class="flex-1 flex overflow-hidden relative">
+
+    <!-- CHAT PANEL -->
+    <div id="chat-panel" class="flex-1 flex flex-col h-full overflow-hidden bg-[var(--c-bg)]" style="min-width:0">
+
+        <!-- Messages -->
+        <div id="chat-container" class="flex-1 overflow-y-auto px-4 py-6 space-y-1 scroll-smooth">
+            <!-- Welcome injected by JS -->
+        </div>
+
+        <!-- Input bar -->
+        <div class="shrink-0 border-t border-[#1f2333] bg-[#0e1018] px-4 pt-3 pb-4">
+            <!-- Model quick-switch badge -->
+            <div id="model-badge-bar" class="flex items-center gap-2 mb-2 overflow-x-auto pb-1 scrollbar-none" style="scrollbar-width:none"></div>
+
+            <form id="chat-form" class="flex items-end gap-2 max-w-4xl mx-auto">
+                <div class="flex-1 relative bg-[#141720] border border-[#1f2333] focus-within:border-[#6c63ff]/60 rounded-2xl overflow-hidden transition-colors shadow-lg">
+                    <textarea id="user-input" rows="1"
+                        class="w-full bg-transparent text-[#e2e4f0] placeholder-[#4b5563] px-4 py-3 pr-12 resize-none outline-none text-sm leading-relaxed"
+                        placeholder="Message NexusAI… (Shift+Enter for new line)"></textarea>
+                    <!-- Attach / extra actions could go here -->
+                </div>
+                <button type="submit" id="send-btn"
+                    class="p-3 rounded-xl bg-[#6c63ff] hover:bg-[#5b52ee] text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-lg shadow-[#6c63ff]/30 active:scale-95">
+                    <svg id="send-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                    <svg id="stop-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" stroke-width="2"/></svg>
+                </button>
+            </form>
+            <p class="text-center text-[10px] text-[#374151] mt-2">NexusAI can make mistakes · Powered by <a href="https://openrouter.ai" target="_blank" class="hover:text-[#a78bfa] transition-colors">OpenRouter</a> · Built by <span class="text-[#6c63ff]">Zelvior</span></p>
+        </div>
+    </div>
+
+    <!-- CANVAS PANEL (hidden by default) -->
+    <div id="canvas-panel" class="hidden flex-col bg-[#0d1117] border-l border-[#1f2333] h-full overflow-hidden" style="width:50%;min-width:320px;max-width:60%">
+        <!-- Canvas Header -->
+        <div class="flex items-center justify-between bg-[#0e1018] border-b border-[#1f2333] px-4 py-2 shrink-0">
+            <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span class="text-sm font-semibold text-[#e2e4f0]" style="font-family:'Syne',sans-serif">Canvas</span>
+                <span id="canvas-lang-badge" class="hidden text-[10px] mono bg-[#141720] text-[#a78bfa] px-2 py-0.5 rounded border border-[#2a2f45]"></span>
+            </div>
+            <div class="flex items-center gap-1">
+                <button id="copy-canvas-btn" title="Copy" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors flex items-center gap-1 text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span class="hidden sm:inline">Copy</span>
+                </button>
+                <button id="close-canvas-btn" title="Close" class="p-1.5 text-[#6b7280] hover:text-red-400 hover:bg-[#141720] rounded-lg transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Canvas content -->
+        <div id="canvas-empty" class="flex-1 flex flex-col items-center justify-center text-[#374151] space-y-3">
+            <svg class="w-12 h-12 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            <p class="text-sm">Code canvas ready</p>
+        </div>
+        <pre id="canvas-pre" class="hidden flex-1 m-0 p-5 overflow-auto text-sm mono text-[#e6edf3] leading-relaxed"><code id="canvas-content" class="block"></code></pre>
+    </div>
+</main>
+
+<!-- ════════════════════════════════════════════════
+     MODAL OVERLAY
+     ════════════════════════════════════════════════ -->
+<div id="modal-overlay" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden z-50 transition-opacity opacity-0"></div>
+
+<!-- ════════════════════════════════════════════════
+     MODELS MODAL
+     ════════════════════════════════════════════════ -->
+<div id="models-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0e1018] border border-[#1f2333] rounded-2xl w-[95%] max-w-2xl shadow-2xl overflow-hidden hidden z-[60] flex-col max-h-[88vh] scale-95 opacity-0 transition-all duration-200">
+    <div class="p-4 border-b border-[#1f2333] flex justify-between items-center shrink-0">
+        <div>
+            <h2 class="text-base font-black text-white flex items-center gap-2" style="font-family:'Syne',sans-serif">
+                <svg class="w-5 h-5 text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                Free Models Library
+            </h2>
+            <p id="model-count-label" class="text-[11px] text-[#6b7280] mt-0.5">Scanning OpenRouter…</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="refresh-models-btn" title="Refresh" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+            <button class="close-modal-btn p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Search + Filters -->
+    <div class="px-4 py-3 border-b border-[#1f2333] bg-[#07080d] shrink-0 space-y-2">
+        <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4b5563]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+            <input id="model-search-input" type="text" placeholder="Search name, expertise, provider…" class="w-full bg-[#141720] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-[#4b5563] outline-none transition-colors">
+        </div>
+        <div id="filter-pills" class="flex gap-1.5 flex-wrap">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="text">💬 Text</button>
+            <button class="filter-pill" data-filter="vision">👁 Vision</button>
+            <button class="filter-pill" data-filter="uncensored">🔓 Uncensored</button>
+            <button class="filter-pill" data-filter="coding">💻 Coding</button>
+            <button class="filter-pill" data-filter="reasoning">🧠 Reasoning</button>
+            <button class="filter-pill" data-filter="audio">🎵 Audio</button>
+            <button class="filter-pill" data-filter="image-gen">🎨 Image Gen</button>
+        </div>
+    </div>
+
+    <div id="models-list" class="flex-1 overflow-y-auto p-3 space-y-1.5 bg-[#07080d]">
+        <div class="flex flex-col items-center justify-center py-12 text-[#4b5563] gap-3">
+            <svg class="w-8 h-8 spin text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <p class="text-sm">Scanning OpenRouter for free models…</p>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SETTINGS MODAL
+     ════════════════════════════════════════════════ -->
+<div id="settings-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0e1018] border border-[#1f2333] rounded-2xl w-[90%] max-w-md shadow-2xl overflow-hidden hidden z-[60] scale-95 opacity-0 transition-all duration-200">
+    <div class="p-4 border-b border-[#1f2333] flex justify-between items-center">
+        <h2 class="font-black text-white text-base" style="font-family:'Syne',sans-serif">Settings</h2>
+        <button class="close-modal-btn p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    </div>
+    <div class="p-5 space-y-4">
+        <div>
+            <label class="block text-sm font-semibold text-[#e2e4f0] mb-1 flex justify-between items-center">
+                <span>OpenRouter API Key</span>
+                <a href="https://openrouter.ai/keys" target="_blank" class="text-xs text-[#6c63ff] hover:underline">Get free key →</a>
+            </label>
+            <input type="password" id="api-key-input" placeholder="sk-or-v1-…"
+                class="w-full bg-[#07080d] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl px-3 py-2.5 text-white text-sm outline-none transition-colors mono">
+            <p class="text-xs text-[#4b5563] mt-1">Stored in localStorage only. Never sent elsewhere.</p>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-[#e2e4f0] mb-1">System Prompt</label>
+            <textarea id="sys-prompt-input" rows="4"
+                class="w-full bg-[#07080d] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl px-3 py-2 text-white text-xs outline-none transition-colors mono resize-none"></textarea>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-[#e2e4f0] mb-1">Temperature <span id="temp-val" class="text-[#6c63ff] mono">0.7</span></label>
+            <input type="range" id="temp-slider" min="0" max="2" step="0.1" value="0.7" class="w-full accent-[#6c63ff]">
+        </div>
+    </div>
+    <div class="p-4 border-t border-[#1f2333] flex justify-end gap-2">
+        <button class="close-modal-btn px-4 py-2 rounded-xl border border-[#1f2333] text-[#6b7280] hover:text-white text-sm transition-colors">Cancel</button>
+        <button id="save-settings-btn" class="px-5 py-2 bg-[#6c63ff] hover:bg-[#5b52ee] text-white font-semibold rounded-xl transition-colors text-sm" style="font-family:'Syne',sans-serif">Save</button>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     DOCS / CREDITS MODAL
+     ════════════════════════════════════════════════ -->
+<div id="docs-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0e1018] border border-[#1f2333] rounded-2xl w-[90%] max-w-lg shadow-2xl overflow-hidden hidden z-[60] scale-95 opacity-0 transition-all duration-200 flex-col max-h-[88vh]">
+    <div class="p-4 border-b border-[#1f2333] flex justify-between items-center shrink-0">
+        <h2 class="font-black text-white text-base" style="font-family:'Syne',sans-serif">Documentation & Credits</h2>
+        <button class="close-modal-btn p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-5 space-y-5 text-sm text-[#9ca3af]">
+        <!-- Creator card -->
+        <div class="bg-gradient-to-br from-[#6c63ff]/10 to-[#a78bfa]/5 border border-[#6c63ff]/20 rounded-xl p-4">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-[#6c63ff]/20 flex items-center justify-center text-xl">⚡</div>
+                <div>
+                    <p class="font-black text-white" style="font-family:'Syne',sans-serif">NexusAI</p>
+                    <p class="text-xs text-[#6b7280]">Designed & built by <strong class="text-[#a78bfa]">Zelvior</strong></p>
+                </div>
+            </div>
+            <p>A fully free, production-grade AI chat interface with live model scanning, code canvas, and mid-chat model switching — all in a single HTML file.</p>
+        </div>
+        <!-- OpenRouter credit -->
+        <div>
+            <p class="section-label mb-2">Model Provider</p>
+            <div class="flex items-start gap-3 bg-[#141720] rounded-xl p-3 border border-[#1f2333]">
+                <span class="text-xl mt-0.5">🔗</span>
+                <div>
+                    <p class="font-semibold text-white"><a href="https://openrouter.ai" target="_blank" class="hover:text-[#a78bfa] transition-colors">OpenRouter</a></p>
+                    <p class="text-xs mt-1">All AI models are served through OpenRouter's unified API. NexusAI continuously scans their <code class="text-[#a78bfa] bg-[#1f2333] px-1 rounded">/api/v1/models</code> endpoint and filters for 100% free-tier models across all modalities.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Features -->
+        <div>
+            <p class="section-label mb-2">Features</p>
+            <div class="space-y-2">
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Live Model Scanner</strong> — Fetches &amp; categorises all free OpenRouter models on load with type, expertise, and uncensored tags.</span></div>
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Mid-Chat Switching</strong> — Change the active model at any point; the new model picks up the same conversation context.</span></div>
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Smart Code Canvas</strong> — Hidden by default; auto-opens with syntax highlighting whenever code is detected in a response.</span></div>
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Thinking Indicator</strong> — Animated dots + streaming typewriter effect while the model generates.</span></div>
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Category Filters</strong> — Filter models by Text, Vision, Uncensored, Coding, Reasoning, Audio, Image Gen.</span></div>
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Quick-Switch Bar</strong> — Recent models shown as pills above the input for instant switching.</span></div>
+                <div class="flex gap-2"><span class="text-[#6c63ff] shrink-0">▸</span><span><strong class="text-white">Temperature Control</strong> — Adjustable in Settings.</span></div>
+            </div>
+        </div>
+        <!-- Tech stack -->
+        <div>
+            <p class="section-label mb-2">Tech Stack</p>
+            <div class="flex flex-wrap gap-2 text-xs">
+                <span class="bg-[#141720] border border-[#1f2333] rounded-lg px-3 py-1 text-[#9ca3af]">Vanilla JS (ES2022)</span>
+                <span class="bg-[#141720] border border-[#1f2333] rounded-lg px-3 py-1 text-[#9ca3af]">Tailwind CSS CDN</span>
+                <span class="bg-[#141720] border border-[#1f2333] rounded-lg px-3 py-1 text-[#9ca3af]">Marked.js</span>
+                <span class="bg-[#141720] border border-[#1f2333] rounded-lg px-3 py-1 text-[#9ca3af]">Highlight.js</span>
+                <span class="bg-[#141720] border border-[#1f2333] rounded-lg px-3 py-1 text-[#9ca3af]">DOMPurify</span>
+                <span class="bg-[#141720] border border-[#1f2333] rounded-lg px-3 py-1 text-[#9ca3af]">OpenRouter API</span>
+            </div>
+        </div>
+        <p class="text-xs text-[#374151]">v2.0.0 · © 2025 Zelvior · MIT License</p>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TOAST CONTAINER
+     ════════════════════════════════════════════════ -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[300] flex flex-col gap-2 pointer-events-none"></div>
+
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT
+     ════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── Constants ─────────────────────────────────────────────────────────
+const API_URL    = 'https://openrouter.ai/api/v1/chat/completions';
+const MODELS_API = 'https://openrouter.ai/api/v1/models';
+const SCAN_INTERVAL = 5 * 60 * 1000; // re-scan every 5 min
+const DEFAULT_SYS  = `You are NexusAI, a highly capable AI assistant built by Zelvior on OpenRouter's free model tier. Be helpful, precise, and concise. When asked to write code, always use fenced code blocks with the correct language tag (e.g. \`\`\`python). For complex questions, reason step-by-step.`;
+const DEFAULT_MODEL = 'google/gemini-2.5-flash-lite-preview';
+
+// ── State ──────────────────────────────────────────────────────────────
+const state = {
+    apiKey:      localStorage.getItem('nx_api_key') || '',
+    systemPrompt:localStorage.getItem('nx_sys_prompt') || DEFAULT_SYS,
+    temperature: parseFloat(localStorage.getItem('nx_temp') || '0.7'),
+    messages:    [],
+    isGenerating:false,
+    currentModelId: localStorage.getItem('nx_model') || DEFAULT_MODEL,
+    models:      [],
+    isCanvasOpen:false,
+    currentCanvasCode: '',
+    currentFilter: 'all',
+    recentModels: JSON.parse(localStorage.getItem('nx_recent_models') || '[]'),
+    abortController: null,
+};
+
+// ── DOM refs ───────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const ui = {
+    chatContainer:    $('chat-container'),
+    chatPanel:        $('chat-panel'),
+    chatForm:         $('chat-form'),
+    userInput:        $('user-input'),
+    sendBtn:          $('send-btn'),
+    sendIcon:         $('send-icon'),
+    stopIcon:         $('stop-icon'),
+    modelBadgeBar:    $('model-badge-bar'),
+    openModelsBtn:    $('open-models-btn'),
+    currentModelDisplay: $('current-model-display'),
+    modelLoadingIcon: $('model-loading-icon'),
+    modelCpuIcon:     $('model-cpu-icon'),
+    modalOverlay:     $('modal-overlay'),
+    modelsModal:      $('models-modal'),
+    modelsList:       $('models-list'),
+    modelSearchInput: $('model-search-input'),
+    modelCountLabel:  $('model-count-label'),
+    refreshModelsBtn: $('refresh-models-btn'),
+    filterPills:      document.querySelectorAll('.filter-pill'),
+    settingsModal:    $('settings-modal'),
+    apiKeyInput:      $('api-key-input'),
+    sysPromptInput:   $('sys-prompt-input'),
+    tempSlider:       $('temp-slider'),
+    tempVal:          $('temp-val'),
+    saveSettingsBtn:  $('save-settings-btn'),
+    docsModal:        $('docs-modal'),
+    docsBtn:          $('docs-btn'),
+    settingsBtn:      $('settings-btn'),
+    newChatBtn:       $('new-chat-btn'),
+    canvasPanel:      $('canvas-panel'),
+    canvasEmpty:      $('canvas-empty'),
+    canvasPre:        $('canvas-pre'),
+    canvasContent:    $('canvas-content'),
+    canvasLangBadge:  $('canvas-lang-badge'),
+    copyCanvasBtn:    $('copy-canvas-btn'),
+    closeCanvasBtn:   $('close-canvas-btn'),
+    toastContainer:   $('toast-container'),
+    termsOverlay:     $('terms-overlay'),
+    termsAcceptBtn:   $('terms-accept-btn'),
+    termsDeclineBtn:  $('terms-decline-btn'),
+};
+
+// ── Terms ──────────────────────────────────────────────────────────────
+if (localStorage.getItem('nx_terms_accepted')) {
+    ui.termsOverlay.remove();
+} else {
+    ui.termsAcceptBtn.addEventListener('click', () => {
+        localStorage.setItem('nx_terms_accepted', '1');
+        ui.termsOverlay.style.transition = 'opacity 0.3s';
+        ui.termsOverlay.style.opacity = '0';
+        setTimeout(() => ui.termsOverlay.remove(), 300);
+        if (!state.apiKey) setTimeout(() => openModal(ui.settingsModal), 600);
+    });
+    ui.termsDeclineBtn.addEventListener('click', () => {
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Syne,sans-serif;color:#6b7280;font-size:14px;">You must accept the terms to use NexusAI.</div>';
+    });
+}
+
+// ── Init settings ──────────────────────────────────────────────────────
+ui.apiKeyInput.value    = state.apiKey;
+ui.sysPromptInput.value = state.systemPrompt;
+ui.tempSlider.value     = state.temperature;
+ui.tempVal.textContent  = state.temperature;
+ui.tempSlider.addEventListener('input', () => { ui.tempVal.textContent = ui.tempSlider.value; });
+
+// ── Marked config ──────────────────────────────────────────────────────
+const renderer = new marked.Renderer();
+renderer.code = function({ text, lang }) {
+    const code = text || '';
+    const language = (lang && hljs.getLanguage(lang)) ? lang : 'plaintext';
+    let highlighted;
+    try { highlighted = hljs.highlight(code, { language }).value; }
+    catch { highlighted = hljs.highlightAuto(code).value; }
+    return `<pre><code class="hljs language-${language}">${highlighted}</code></pre>`;
+};
+marked.use({ breaks: true, gfm: true, renderer });
+
+// Safe sync parse — works with marked v4+ which may return a Promise when async hooks are used
+const mdParse = (text) => {
+    try {
+        // marked.parse with async:false forces synchronous output in v4+
+        const result = marked.parse(text || '', { async: false });
+        return (result instanceof Promise) ? (text || '') : result;
+    } catch {
+        return text || '';
+    }
+};
+
+// ── Toast ──────────────────────────────────────────────────────────────
+const showToast = (msg, type = 'info') => {
+    const t = document.createElement('div');
+    const isErr = type === 'error';
+    const bg = isErr ? 'bg-[#1c0f0f] border-red-500/50 text-red-300' : type === 'success' ? 'bg-[#0f1c12] border-green-500/50 text-green-300' : 'bg-[#141720] border-[#2a2f45] text-[#e2e4f0]';
+    const icon = isErr ? '✕' : type === 'success' ? '✓' : 'ℹ';
+    t.className = `px-4 py-2.5 rounded-xl border text-sm font-medium flex items-center gap-2.5 shadow-xl pointer-events-auto transform translate-y-4 opacity-0 transition-all duration-200 ${bg}`;
+    t.innerHTML = `<span class="text-base">${icon}</span><span>${msg}</span>`;
+    ui.toastContainer.appendChild(t);
+    requestAnimationFrame(() => { t.classList.remove('translate-y-4','opacity-0'); });
+    setTimeout(() => { t.classList.add('translate-y-4','opacity-0'); setTimeout(() => t.remove(), 200); }, 3500);
+};
+
+// ── Modal system ───────────────────────────────────────────────────────
+const allModals = [ui.modelsModal, ui.settingsModal, ui.docsModal];
+
+const openModal = (el) => {
+    ui.modalOverlay.classList.remove('hidden');
+    el.classList.remove('hidden');
+    el.classList.add('flex');
+    void el.offsetWidth;
+    ui.modalOverlay.classList.remove('opacity-0');
+    el.classList.remove('opacity-0','scale-95');
+};
+
+const closeAllModals = () => {
+    ui.modalOverlay.classList.add('opacity-0');
+    allModals.forEach(m => m.classList.add('opacity-0','scale-95'));
+    setTimeout(() => {
+        ui.modalOverlay.classList.add('hidden');
+        allModals.forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); });
+    }, 200);
+};
+
+ui.modalOverlay.addEventListener('click', closeAllModals);
+document.querySelectorAll('.close-modal-btn').forEach(b => b.addEventListener('click', closeAllModals));
+ui.openModelsBtn.addEventListener('click', () => { openModal(ui.modelsModal); renderModelsList(); setTimeout(() => ui.modelSearchInput.focus(), 100); });
+ui.settingsBtn.addEventListener('click', () => openModal(ui.settingsModal));
+ui.docsBtn.addEventListener('click', () => openModal(ui.docsModal));
+
+// ── Settings save ──────────────────────────────────────────────────────
+ui.saveSettingsBtn.addEventListener('click', () => {
+    const key = ui.apiKeyInput.value.trim();
+    state.apiKey = key;
+    key ? localStorage.setItem('nx_api_key', key) : localStorage.removeItem('nx_api_key');
+    state.systemPrompt = ui.sysPromptInput.value.trim() || DEFAULT_SYS;
+    localStorage.setItem('nx_sys_prompt', state.systemPrompt);
+    state.temperature = parseFloat(ui.tempSlider.value);
+    localStorage.setItem('nx_temp', state.temperature);
+    closeAllModals();
+    showToast('Settings saved', 'success');
+});
+
+// ── Model tags / expertise ─────────────────────────────────────────────
+const getModelTags = (m) => {
+    const txt = `${m.id} ${m.name} ${m.description || ''}`.toLowerCase();
+    const tags = [];
+    const arch = (m.architecture || {});
+    const mods = arch.modality || '';
+    const instruct = arch.instruct_type || '';
+
+    // Category
+    if (/uncensored|dolphin|bagel|abliterat|dark.?idol|sao.?hermes|noromaid|midnight|manticore/.test(txt)) {
+        tags.push({ label:'🔓 Uncensored', cls:'bg-red-900/30 text-red-400 border-red-500/30' });
+    }
+    if (/vision|vl\b|pixtral|llava|bakllava|moondream|qvq|minicpm.v|omnivision|image.?input|multimodal/.test(txt) || /image/.test(mods)) {
+        tags.push({ label:'👁 Vision', cls:'bg-blue-900/30 text-blue-400 border-blue-500/30' });
+    }
+    if (/coder|codex|code|starcoder|deepseekcoder|qwen.*coder|devstral|codestral/.test(txt)) {
+        tags.push({ label:'💻 Coding', cls:'bg-emerald-900/30 text-emerald-400 border-emerald-500/30' });
+    }
+    if (/qwq|deepseek.r|think|reason|math|o1|o3|r1/.test(txt)) {
+        tags.push({ label:'🧠 Reasoning', cls:'bg-purple-900/30 text-purple-400 border-purple-500/30' });
+    }
+    if (/audio|whisper|speech|tts|asr|transcri/.test(txt) || /audio/.test(mods)) {
+        tags.push({ label:'🎵 Audio', cls:'bg-green-900/30 text-green-400 border-green-500/30' });
+    }
+    if (/image.*gen|dall|stable.?diff|flux|midjourney|imagen|text.?to.?image/.test(txt)) {
+        tags.push({ label:'🎨 Image Gen', cls:'bg-pink-900/30 text-pink-400 border-pink-500/30' });
+    }
+    if (/embed/.test(txt)) {
+        tags.push({ label:'📐 Embeddings', cls:'bg-cyan-900/30 text-cyan-400 border-cyan-500/30' });
+    }
+    if (/rerank/.test(txt)) {
+        tags.push({ label:'🔀 Rerank', cls:'bg-orange-900/30 text-orange-400 border-orange-500/30' });
+    }
+    // Family
+    if (/gemini/.test(txt))      tags.push({ label:'Gemini', cls:'bg-[#1e3a5f]/50 text-[#60a5fa] border-[#3b82f6]/30' });
+    else if (/llama/.test(txt))  tags.push({ label:'Llama', cls:'bg-[#3b1f5e]/50 text-[#c084fc] border-[#a855f7]/30' });
+    else if (/mistral|mixtral|devstral/.test(txt)) tags.push({ label:'Mistral', cls:'bg-[#3d1f00]/50 text-[#fb923c] border-[#f97316]/30' });
+    else if (/qwen/.test(txt))   tags.push({ label:'Qwen', cls:'bg-[#1e3a1f]/50 text-[#4ade80] border-[#22c55e]/30' });
+    else if (/deepseek/.test(txt)) tags.push({ label:'DeepSeek', cls:'bg-[#0f2a3d]/50 text-[#38bdf8] border-[#0ea5e9]/30' });
+    else if (/claude/.test(txt)) tags.push({ label:'Claude', cls:'bg-[#3b2a1f]/50 text-[#fbbf24] border-[#f59e0b]/30' });
+
+    if (tags.length === 0) tags.push({ label:'💬 Text', cls:'bg-[#1f2333] text-[#9ca3af] border-[#2a2f45]' });
+    return tags;
+};
+
+const modelPassesFilter = (m, filter) => {
+    if (filter === 'all') return true;
+    const txt = `${m.id} ${m.name} ${m.description || ''}`.toLowerCase();
+    const mods = (m.architecture?.modality || '');
+    switch(filter) {
+        case 'text':      return !(/audio|vision|image.gen|embed|rerank/.test(txt));
+        case 'vision':    return /vision|vl\b|pixtral|llava|moondream|qvq|minicpm.v|omnivision/.test(txt) || /image/.test(mods);
+        case 'uncensored':return /uncensored|dolphin|bagel|abliterat|dark.?idol|sao.?hermes|noromaid|midnight|manticore/.test(txt);
+        case 'coding':    return /coder|codex|code|starcoder|deepseekcoder|qwen.*coder|devstral/.test(txt);
+        case 'reasoning': return /qwq|deepseek.r|think|reason|math|r1/.test(txt);
+        case 'audio':     return /audio|whisper|speech|tts|asr/.test(txt) || /audio/.test(mods);
+        case 'image-gen': return /image.*gen|dall|stable.?diff|flux|imagen|text.?to.?image/.test(txt);
+        default: return true;
+    }
+};
+
+// ── Fallback bundled free models (used when API unreachable) ──────────
+const FALLBACK_MODELS = [
+    { id:'google/gemini-2.5-flash-lite-preview', name:'Gemini 2.5 Flash Lite', description:'Google fast free model', context_length:1000000, pricing:{prompt:'0',completion:'0'} },
+    { id:'google/gemini-flash-1.5', name:'Gemini Flash 1.5', description:'Google multimodal free', context_length:1000000, pricing:{prompt:'0',completion:'0'} },
+    { id:'meta-llama/llama-3.1-8b-instruct:free', name:'Llama 3.1 8B Instruct', description:'Meta open source', context_length:131072, pricing:{prompt:'0',completion:'0'} },
+    { id:'meta-llama/llama-3.2-3b-instruct:free', name:'Llama 3.2 3B Instruct', description:'Meta compact fast', context_length:131072, pricing:{prompt:'0',completion:'0'} },
+    { id:'meta-llama/llama-3.2-1b-instruct:free', name:'Llama 3.2 1B Instruct', description:'Meta ultra-light', context_length:131072, pricing:{prompt:'0',completion:'0'} },
+    { id:'mistralai/mistral-7b-instruct:free', name:'Mistral 7B Instruct', description:'Mistral open weights', context_length:32768, pricing:{prompt:'0',completion:'0'} },
+    { id:'qwen/qwen-2.5-7b-instruct:free', name:'Qwen 2.5 7B Instruct', description:'Alibaba multilingual', context_length:32768, pricing:{prompt:'0',completion:'0'} },
+    { id:'deepseek/deepseek-r1:free', name:'DeepSeek R1', description:'Reasoning model', context_length:163840, pricing:{prompt:'0',completion:'0'} },
+    { id:'deepseek/deepseek-chat-v3-0324:free', name:'DeepSeek V3', description:'DeepSeek chat v3', context_length:65536, pricing:{prompt:'0',completion:'0'} },
+    { id:'microsoft/phi-3-mini-128k-instruct:free', name:'Phi-3 Mini 128K', description:'Microsoft small model', context_length:128000, pricing:{prompt:'0',completion:'0'} },
+    { id:'nousresearch/hermes-3-llama-3.1-8b:free', name:'Hermes 3 Llama 3.1 8B', description:'Uncensored fine-tune', context_length:131072, pricing:{prompt:'0',completion:'0'} },
+];
+
+// ── Chat-capable model check ──────────────────────────────────────────
+const isChatCapable = (m) => {
+    if (!m) return true; // assume yes if unknown
+    const txt = `${m.id} ${m.name} ${m.description || ''}`.toLowerCase();
+    const mods = (m.architecture?.modality || m.architecture?.input_modalities?.join('') || '').toLowerCase();
+    // Exclude non-chat types
+    if (/embed|rerank/.test(txt)) return false;
+    if (/tts\b|text.?to.?speech/.test(txt) && !/chat|instruct/.test(txt)) return false;
+    if (/image.*gen|text.?to.?image/.test(txt) && !/chat|instruct/.test(txt)) return false;
+    // If modality explicitly says only image output (no text output)
+    if (mods && !/text/.test(mods) && /image/.test(mods)) return false;
+    return true;
+};
+
+// ── Fetch free models ──────────────────────────────────────────────────
+// Build a prioritised list of strategies to fetch the OpenRouter models list.
+// 1. Direct fetch with API key (works when a key is set — OpenRouter sends CORS headers).
+// 2. Direct fetch without key (works when served from a real origin).
+// 3. allorigins.win proxy  (reliable CORS proxy, returns { contents: '...' }).
+// 4. corsproxy.io          (alternative proxy).
+const buildFetchStrategies = () => {
+    const commonHeaders = { 'Accept': 'application/json', 'HTTP-Referer': window.location.href, 'X-Title': 'NexusAI by Zelvior' };
+    const strategies = [];
+
+    // Strategy 1: direct with Authorization (OpenRouter returns proper CORS headers for authenticated requests)
+    if (state.apiKey) {
+        strategies.push({
+            label: 'direct+auth',
+            fetch: () => fetch(MODELS_API, { method:'GET', headers:{ ...commonHeaders, 'Authorization':`Bearer ${state.apiKey}` } }),
+            parse: r => r.json(),
+        });
+    }
+
+    // Strategy 2: direct without auth
+    strategies.push({
+        label: 'direct',
+        fetch: () => fetch(MODELS_API, { method:'GET', headers: commonHeaders }),
+        parse: r => r.json(),
+    });
+
+    // Strategy 3: allorigins.win proxy
+    strategies.push({
+        label: 'proxy:allorigins',
+        fetch: () => fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(MODELS_API)}`),
+        parse: async r => { const j = await r.json(); return JSON.parse(j.contents); },
+    });
+
+    // Strategy 4: corsproxy.io
+    strategies.push({
+        label: 'proxy:corsproxy.io',
+        fetch: () => fetch(`https://corsproxy.io/?${encodeURIComponent(MODELS_API)}`),
+        parse: r => r.json(),
+    });
+
+    return strategies;
+};
+
+const processFreeModels = (data) => {
+    const allFree = (data.data || []).filter(m => {
+        if (!m.pricing) return false;
+        const p = String(m.pricing.prompt || '0');
+        const c = String(m.pricing.completion || '0');
+        return parseFloat(p) === 0 && parseFloat(c) === 0;
+    }).sort((a,b) => (a.name||'').localeCompare(b.name||''));
+    return allFree;
+};
+
+const fetchFreeModels = async () => {
+    ui.modelLoadingIcon.classList.remove('hidden');
+    ui.modelCpuIcon.classList.add('hidden');
+    ui.currentModelDisplay.textContent = 'Scanning models…';
+
+    const strategies = buildFetchStrategies();
+    let lastErr = null;
+
+    for (const strategy of strategies) {
+        try {
+            console.log(`[NexusAI] Trying model fetch: ${strategy.label}`);
+            const res = await strategy.fetch();
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await strategy.parse(res);
+            if (!data || !Array.isArray(data.data)) throw new Error('Unexpected response shape');
+
+            const allFree = processFreeModels(data);
+            if (allFree.length === 0) throw new Error('No free models returned');
+
+            state.models = allFree;
+            // Ensure currently selected model exists in list
+            if (!state.models.find(m => m.id === state.currentModelId)) {
+                const fb = FALLBACK_MODELS.find(m => m.id === state.currentModelId);
+                if (fb) state.models.unshift(fb);
+            }
+
+            updateModelDisplay(state.currentModelId);
+            if (!ui.modelsModal.classList.contains('hidden')) renderModelsList();
+            ui.modelCountLabel.textContent = `${state.models.length} free models available`;
+            showToast(`${state.models.length} free models loaded`, 'success');
+            ui.modelLoadingIcon.classList.add('hidden');
+            ui.modelCpuIcon.classList.remove('hidden');
+            return; // ✅ success
+
+        } catch(err) {
+            console.warn(`[NexusAI] Strategy "${strategy.label}" failed:`, err.message);
+            lastErr = err;
+        }
+    }
+
+    // All strategies exhausted — use built-in fallback list
+    console.error('[NexusAI] All fetch strategies failed. Using built-in fallback models.', lastErr);
+    if (state.models.length === 0) {
+        state.models = [...FALLBACK_MODELS];
+        showToast(`Can't reach OpenRouter — ${FALLBACK_MODELS.length} built-in models loaded.`, 'error');
+    } else {
+        showToast('Model refresh failed. Using cached list.', 'error');
+    }
+    updateModelDisplay(state.currentModelId);
+    ui.modelCountLabel.textContent = `${state.models.length} models (built-in fallback)`;
+    if (!ui.modelsModal.classList.contains('hidden')) renderModelsList();
+    ui.modelLoadingIcon.classList.add('hidden');
+    ui.modelCpuIcon.classList.remove('hidden');
+};
+
+const updateModelDisplay = (id) => {
+    const found = state.models.find(m => m.id === id);
+    ui.currentModelDisplay.textContent = found ? found.name : id.split('/').pop();
+};
+
+const selectModel = (id) => {
+    state.currentModelId = id;
+    localStorage.setItem('nx_model', id);
+    updateModelDisplay(id);
+    // Track recents
+    state.recentModels = [id, ...state.recentModels.filter(r => r !== id)].slice(0, 5);
+    localStorage.setItem('nx_recent_models', JSON.stringify(state.recentModels));
+    renderModelBadges();
+    closeAllModals();
+    showToast(`Model: ${id.split('/').pop()}`, 'success');
+};
+
+// ── Render models list ─────────────────────────────────────────────────
+const renderModelsList = (query = '') => {
+    const q = query || ui.modelSearchInput.value || '';
+    const filter = state.currentFilter;
+
+    if (!state.models.length) {
+        ui.modelsList.innerHTML = `<div class="flex flex-col items-center justify-center py-12 text-[#4b5563] gap-3">
+            <svg class="w-7 h-7 spin text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <p class="text-sm">Scanning OpenRouter for free models…</p>
+        </div>`;
+        return;
+    }
+
+    const filtered = state.models.filter(m => {
+        const txt = `${m.name} ${m.id} ${m.description || ''}`.toLowerCase();
+        return txt.includes(q.toLowerCase()) && modelPassesFilter(m, filter);
+    });
+
+    if (!filtered.length) {
+        ui.modelsList.innerHTML = `<div class="text-center py-10 text-[#4b5563] text-sm">No models match "${q || filter}"</div>`;
+        return;
+    }
+
+    const frag = document.createDocumentFragment();
+    filtered.forEach(m => {
+        const tags = getModelTags(m);
+        const selected = m.id === state.currentModelId;
+        const ctx = m.context_length ? (m.context_length >= 1000 ? Math.round(m.context_length/1000)+'k' : m.context_length) + ' ctx' : '';
+        const desc = m.description ? m.description.slice(0, 100) + (m.description.length > 100 ? '…' : '') : '';
+
+        const el = document.createElement('div');
+        el.className = `model-card${selected ? ' selected' : ''}`;
+        const safeName = DOMPurify.sanitize(m.name || '');
+        const safeId = DOMPurify.sanitize(m.id || '');
+        const safeDesc = desc ? DOMPurify.sanitize(desc) : '';
+        el.innerHTML = `
+            <div class="flex justify-between items-start gap-2 mb-1">
+                <span class="font-bold text-sm text-white" style="font-family:'Syne',sans-serif">${safeName}${selected ? ' <span class="text-[#6c63ff] text-xs">✓ Active</span>' : ''}</span>
+                ${ctx ? `<span class="text-[10px] text-[#4b5563] mono shrink-0 mt-0.5">${ctx}</span>` : ''}
+            </div>
+            <div class="text-[10px] text-[#4b5563] mono mb-2 truncate">${safeId}</div>
+            ${safeDesc ? `<div class="text-[11px] text-[#6b7280] mb-2 leading-relaxed">${safeDesc}</div>` : ''}
+            <div class="flex flex-wrap gap-1">${tags.map(t => `<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>
+        `;
+        el.addEventListener('click', () => selectModel(m.id));
+        frag.appendChild(el);
+    });
+    ui.modelsList.innerHTML = '';
+    ui.modelsList.appendChild(frag);
+};
+
+ui.modelSearchInput.addEventListener('input', e => renderModelsList(e.target.value));
+ui.refreshModelsBtn.addEventListener('click', fetchFreeModels);
+
+// Filter pills
+ui.filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+        ui.filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        state.currentFilter = pill.dataset.filter;
+        renderModelsList();
+    });
+});
+
+// ── Model badge bar ────────────────────────────────────────────────────
+const renderModelBadges = () => {
+    ui.modelBadgeBar.innerHTML = '';
+    if (!state.recentModels.length) return;
+    const label = document.createElement('span');
+    label.className = 'section-label shrink-0 mt-0.5';
+    label.textContent = 'Recent:';
+    ui.modelBadgeBar.appendChild(label);
+    state.recentModels.forEach(id => {
+        const m = state.models.find(x => x.id === id);
+        if (!m) return;
+        const btn = document.createElement('button');
+        const active = id === state.currentModelId;
+        btn.className = `text-[10px] px-2.5 py-1 rounded-lg border transition-colors mono shrink-0 ${active ? 'bg-[#6c63ff]/20 border-[#6c63ff]/50 text-[#a78bfa]' : 'bg-[#141720] border-[#1f2333] text-[#6b7280] hover:border-[#6c63ff]/50 hover:text-[#a78bfa]'}`;
+        btn.textContent = m.name.split(' ').slice(0,3).join(' ');
+        btn.title = id;
+        btn.addEventListener('click', () => { selectModel(id); renderModelBadges(); });
+        ui.modelBadgeBar.appendChild(btn);
+    });
+};
+
+// ── Canvas ─────────────────────────────────────────────────────────────
+const openCanvas = () => {
+    if (state.isCanvasOpen) return;
+    state.isCanvasOpen = true;
+    ui.canvasPanel.classList.remove('hidden');
+    ui.canvasPanel.classList.add('flex', 'flex-col');
+    if (window.innerWidth < 768) {
+        ui.canvasPanel.style.cssText = 'position:fixed;inset:0;width:100%;max-width:100%;z-index:40;display:flex;flex-direction:column;';
+    }
+    setTimeout(() => ui.chatContainer.scrollTop = ui.chatContainer.scrollHeight, 50);
+};
+
+const closeCanvas = () => {
+    if (!state.isCanvasOpen) return;
+    state.isCanvasOpen = false;
+    ui.canvasPanel.classList.add('hidden');
+    ui.canvasPanel.classList.remove('flex', 'flex-col');
+    ui.canvasPanel.style.cssText = '';
+};
+
+const updateCanvas = (code, lang = '') => {
+    if (!code?.trim()) return;
+    state.currentCanvasCode = code;
+    ui.canvasEmpty.classList.add('hidden');
+    ui.canvasPre.classList.remove('hidden');
+    ui.canvasPre.classList.add('flex-1');
+    if (lang) {
+        ui.canvasLangBadge.textContent = lang;
+        ui.canvasLangBadge.classList.remove('hidden');
+        try {
+            const validLang = hljs.getLanguage(lang) ? lang : 'plaintext';
+            ui.canvasContent.innerHTML = hljs.highlight(code, { language: validLang }).value;
+        } catch { ui.canvasContent.textContent = code; }
+    } else {
+        ui.canvasLangBadge.classList.add('hidden');
+        ui.canvasContent.textContent = code;
+    }
+};
+
+const extractCodeFromStream = (text) => {
+    const re = /```([\w-]*)\n([\s\S]*?)(?:```|$)/g;
+    let m, lastCode = null, lastLang = '';
+    while ((m = re.exec(text)) !== null) { lastLang = m[1]; lastCode = m[2]; }
+    if (lastCode !== null) { openCanvas(); updateCanvas(lastCode, lastLang); }
+};
+
+ui.closeCanvasBtn.addEventListener('click', closeCanvas);
+ui.copyCanvasBtn.addEventListener('click', () => {
+    if (!state.currentCanvasCode) return;
+    navigator.clipboard.writeText(state.currentCanvasCode).then(() => showToast('Code copied', 'success'));
+});
+
+// ── Chat rendering ─────────────────────────────────────────────────────
+const removeWelcome = () => { const w = $('welcome-card'); if(w) w.remove(); };
+
+const appendMessage = (role, content = '') => {
+    removeWelcome();
+    const isUser = role === 'user';
+    const wrap = document.createElement('div');
+    wrap.className = `msg-enter flex gap-3 px-2 py-1 rounded-xl ${isUser ? 'justify-end' : ''}`;
+
+    const html = isUser
+        ? DOMPurify.sanitize(content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'))
+        : DOMPurify.sanitize(mdParse(content || ''));
+
+    if (isUser) {
+        wrap.innerHTML = `
+            <div class="max-w-[80%] bg-[#1a1d2e] border border-[#2a2f45] rounded-2xl rounded-tr-sm px-4 py-3 text-sm text-[#e2e4f0] leading-relaxed">${html}</div>
+            <div class="w-8 h-8 rounded-xl bg-[#141720] border border-[#1f2333] flex items-center justify-center shrink-0 text-sm font-bold text-[#6c63ff]" style="font-family:'Syne',sans-serif">U</div>
+        `;
+        ui.chatContainer.appendChild(wrap);
+        ui.chatContainer.scrollTop = ui.chatContainer.scrollHeight;
+        return null;
+    } else {
+        const modelShort = state.currentModelId.split('/').pop();
+        wrap.innerHTML = `
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6c63ff]/30 to-[#a78bfa]/20 border border-[#6c63ff]/30 flex items-center justify-center shrink-0 text-base">⚡</div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs font-black text-[#a78bfa]" style="font-family:'Syne',sans-serif">NexusAI</span>
+                    <span class="text-[10px] mono text-[#4b5563] bg-[#141720] px-1.5 py-0.5 rounded border border-[#1f2333]">${modelShort}</span>
+                </div>
+                <div class="prose max-w-none text-[#c9d1d9] text-sm leading-relaxed ai-msg pl-3 message-content"></div>
+            </div>
+        `;
+        ui.chatContainer.appendChild(wrap);
+        ui.chatContainer.scrollTop = ui.chatContainer.scrollHeight;
+        const contentEl = wrap.querySelector('.message-content');
+        if (content) {
+            contentEl.innerHTML = html;
+            contentEl.querySelectorAll('pre code').forEach(b => hljs.highlightElement(b));
+        }
+        return contentEl;
+    }
+};
+
+// Thinking indicator
+const appendThinking = () => {
+    const wrap = document.createElement('div');
+    wrap.id = 'thinking-indicator';
+    wrap.className = 'msg-enter flex gap-3 px-2 py-1';
+    wrap.innerHTML = `
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6c63ff]/30 to-[#a78bfa]/20 border border-[#6c63ff]/30 flex items-center justify-center shrink-0">⚡</div>
+        <div class="flex items-center gap-2 py-2">
+            <div class="thinking-dots"><span></span><span></span><span></span></div>
+            <span class="text-xs text-[#4b5563]">Thinking…</span>
+        </div>
+    `;
+    ui.chatContainer.appendChild(wrap);
+    ui.chatContainer.scrollTop = ui.chatContainer.scrollHeight;
+    return wrap;
+};
+
+const removeThinking = () => { const t = $('thinking-indicator'); if(t) t.remove(); };
+
+// ── Submit / Stream ────────────────────────────────────────────────────
+const handleFormSubmit = async (e) => {
+    e?.preventDefault();
+    if (state.isGenerating) {
+        state.abortController?.abort();
+        return;
+    }
+    if (!state.apiKey) { openModal(ui.settingsModal); showToast('Enter your OpenRouter API key first', 'error'); return; }
+
+    const prompt = ui.userInput.value.trim();
+    if (!prompt) return;
+
+    // Guard: warn if selected model is not chat-capable
+    const activeModel = state.models.find(m => m.id === state.currentModelId);
+    if (activeModel && !isChatCapable(activeModel)) {
+        showToast(`"${activeModel.name}" is not a chat model. Please switch models.`, 'error');
+        openModal(ui.modelsModal);
+        return;
+    }
+
+    ui.userInput.value = '';
+    ui.userInput.style.height = 'auto';
+    appendMessage('user', prompt);
+    state.messages.push({ role:'user', content: prompt });
+
+    state.isGenerating = true;
+    state.abortController = new AbortController();
+    ui.sendIcon.classList.add('hidden');
+    ui.stopIcon.classList.remove('hidden');
+    ui.userInput.disabled = true;
+
+    appendThinking();
+
+    let assistantResponse = '';
+    let contentEl = null;
+
+    try {
+        const body = {
+            model: state.currentModelId,
+            messages: [{ role:'system', content: state.systemPrompt }, ...state.messages],
+            stream: true,
+            temperature: state.temperature,
+        };
+
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${state.apiKey}`,
+                'Content-Type': 'application/json',
+                'HTTP-Referer': window.location.href,
+                'X-Title': 'NexusAI by Zelvior',
+            },
+            body: JSON.stringify(body),
+            signal: state.abortController.signal,
+        });
+
+        if (!res.ok) {
+            let errMsg = `API Error ${res.status}`;
+            try {
+                const errData = await res.json();
+                const raw = errData?.error?.message || errData?.message || errMsg;
+                if (res.status === 400) errMsg = `Bad request: ${raw} — try switching models.`;
+                else if (res.status === 401) errMsg = 'Invalid API key. Go to Settings and check your key.';
+                else if (res.status === 402) errMsg = 'Insufficient credits on OpenRouter.';
+                else if (res.status === 429) errMsg = 'Rate limit hit. Please wait a moment, then retry.';
+                else if (res.status === 503 || res.status === 502) errMsg = `Provider unavailable (${res.status}). Try a different model.`;
+                else errMsg = raw;
+            } catch { /* keep default */ }
+            throw new Error(errMsg);
+        }
+
+        removeThinking();
+        contentEl = appendMessage('assistant', '');
+        if (contentEl) contentEl.classList.add('typing-cursor');
+
+        const reader  = res.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            for (const line of lines) {
+                if (!line.startsWith('data: ') || line.trim() === 'data: [DONE]') continue;
+                try {
+                    const d = JSON.parse(line.slice(6));
+                    if (d.error) throw new Error(d.error.message || 'Stream provider error');
+                    const delta = d.choices?.[0]?.delta?.content;
+                    if (!delta) continue;
+                    assistantResponse += delta;
+                    if (contentEl) {
+                        contentEl.innerHTML = DOMPurify.sanitize(mdParse(assistantResponse));
+                        ui.chatContainer.scrollTop = ui.chatContainer.scrollHeight;
+                        extractCodeFromStream(assistantResponse);
+                    }
+                } catch(parseErr) {
+                    if (parseErr.message.includes('provider error') || parseErr.message.includes('Stream')) throw parseErr;
+                }
+            }
+        }
+
+        if (contentEl) contentEl.querySelectorAll('pre code').forEach(b => hljs.highlightElement(b));
+        state.messages.push({ role:'assistant', content: assistantResponse });
+
+    } catch(err) {
+        removeThinking();
+        if (err.name === 'AbortError') {
+            if (contentEl) contentEl.innerHTML += '<span class="text-[#4b5563] text-xs italic ml-1">[stopped]</span>';
+            if (assistantResponse) state.messages.push({ role:'assistant', content: assistantResponse });
+        } else {
+            console.error('Chat error:', err);
+            const safeMsg = DOMPurify.sanitize(err.message);
+            const errHtml = `<div class="space-y-1.5">
+                <div class="text-red-400 text-sm font-semibold">⚠ ${safeMsg}</div>
+                <button class="switch-model-err-btn text-[11px] text-[#6c63ff] hover:underline">→ Switch to a different model</button>
+            </div>`;
+            if (!contentEl) contentEl = appendMessage('assistant', '');
+            if (contentEl) {
+                contentEl.innerHTML = errHtml;
+                contentEl.querySelector('.switch-model-err-btn')?.addEventListener('click', () => openModal(ui.modelsModal));
+            }
+            showToast(err.message.slice(0, 90), 'error');
+        }
+    } finally {
+        if (contentEl) contentEl.classList.remove('typing-cursor');
+        state.isGenerating = false;
+        state.abortController = null;
+        ui.sendIcon.classList.remove('hidden');
+        ui.stopIcon.classList.add('hidden');
+        ui.userInput.disabled = false;
+        ui.userInput.focus();
+    }
+};
+
+ui.chatForm.addEventListener('submit', handleFormSubmit);
+ui.userInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleFormSubmit(); }
+});
+ui.userInput.addEventListener('input', () => {
+    ui.userInput.style.height = 'auto';
+    ui.userInput.style.height = ui.userInput.scrollHeight + 'px';
+});
+
+// ── New chat ───────────────────────────────────────────────────────────
+ui.newChatBtn.addEventListener('click', () => {
+    if (state.isGenerating) { showToast('Stop generation first', 'error'); return; }
+    state.messages = [];
+    ui.chatContainer.innerHTML = '';
+    closeCanvas();
+    renderWelcome();
+    showToast('New conversation started', 'success');
+});
+
+// ── Welcome message ────────────────────────────────────────────────────
+const renderWelcome = () => {
+    const d = document.createElement('div');
+    d.id = 'welcome-card';
+    d.className = 'welcome-card rounded-2xl p-5 msg-enter';
+    d.innerHTML = `
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6c63ff] to-[#a78bfa] flex items-center justify-center text-xl shadow-lg shadow-[#6c63ff]/30">⚡</div>
+            <div>
+                <h3 class="font-black text-white text-lg" style="font-family:'Syne',sans-serif">NexusAI</h3>
+                <p class="text-xs text-[#6b7280]">Powered by OpenRouter · Free Models · Built by Zelvior</p>
+            </div>
+        </div>
+        <p class="text-sm text-[#9ca3af] leading-relaxed mb-3">
+            System ready. All free OpenRouter models loaded. The code canvas is <strong class="text-white">hidden</strong> and will appear automatically when you request code.
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+            ${['Ask anything', 'Write & run code', 'Switch models mid-chat', 'Explore 100+ free models'].map(t =>
+                `<div class="bg-[#141720] border border-[#1f2333] rounded-xl px-3 py-2 text-xs text-[#6b7280] hover:border-[#6c63ff]/50 hover:text-[#a78bfa] cursor-pointer transition-colors">${t}</div>`
+            ).join('')}
+        </div>
+    `;
+    d.querySelectorAll('.grid > div').forEach(btn => {
+        btn.addEventListener('click', () => {
+            ui.userInput.value = btn.textContent.trim();
+            ui.userInput.focus();
+        });
+    });
+    ui.chatContainer.appendChild(d);
+};
+
+// ── Keyboard shortcut ──────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAllModals();
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openModal(ui.modelsModal); }
+});
+
+// ── Auto-scan interval ─────────────────────────────────────────────────
+setInterval(fetchFreeModels, SCAN_INTERVAL);
+
+// ── Boot ───────────────────────────────────────────────────────────────
+renderWelcome();
+fetchFreeModels();
+renderModelBadges();
+if (!state.apiKey && localStorage.getItem('nx_terms_accepted')) {
+    setTimeout(() => openModal(ui.settingsModal), 800);
+}
+</script>
+</body>
+</html>
