@@ -2,7 +2,7 @@
 
 A **fully free, production-grade AI chat interface** powered by [OpenRouter](https://openrouter.ai). Single HTML file, zero backend, Apache 2.0 licensed.
 
-🚀 **Live**: Open `index.html` in any modern browser  
+🚀 **Live**: Open `https://zelvior.github.io/chatbot` in any modern browser  
 📦 **Zero Dependencies**: Pure HTML + CSS + JavaScript (uses CDN libraries for convenience)  
 🔐 **Privacy-First**: API keys stored locally in localStorage only  
 🎨 **Beautiful UI**: Dark theme with Tailwind CSS, responsive design  
