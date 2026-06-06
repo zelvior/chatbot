@@ -192,26 +192,11 @@ body.light-mode body::before{opacity:.05;}
 /* Voice */
 #voice-btn.listening{background:var(--c-red)!important;color:#fff!important;animation:voicePulse 1.2s infinite;}
 /* Attach pill */
-.attach-pill{display:inline-flex;align-items:center;gap:5px;background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:10px;padding:3px 8px 3px 5px;font-size:10px;color:var(--c-text);white-space:nowrap;max-width:160px;transition:border-color .15s;}
-.attach-pill:hover{border-color:var(--c-accent);}
-.attach-pill .pill-thumb{width:22px;height:22px;border-radius:5px;object-fit:cover;flex-shrink:0;}
-.attach-pill .pill-icon{width:22px;height:22px;border-radius:5px;background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
-.attach-pill .pill-info{display:flex;flex-direction:column;min-width:0;flex:1;}
-.attach-pill .pill-name{font-size:9px;font-weight:600;color:var(--c-text);truncate;max-width:90px;overflow:hidden;text-overflow:ellipsis;}
-.attach-pill .pill-meta{font-size:8px;color:var(--c-muted);font-family:'JetBrains Mono',monospace;}
-.attach-pill .pill-rm{color:var(--c-muted);cursor:pointer;line-height:1;padding:0 1px;flex-shrink:0;font-size:11px;}
-.attach-pill .pill-rm:hover{color:var(--c-red);}
-#attach-bar{display:none;flex-wrap:wrap;gap:5px;padding:6px 10px;border-top:1px solid var(--c-border);background:var(--c-surface);}
+.attach-pill{display:inline-flex;align-items:center;gap:4px;background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:99px;padding:2px 8px 2px 4px;font-size:10px;color:var(--c-text);white-space:nowrap;}
+.attach-pill button{color:var(--c-muted);cursor:pointer;line-height:1;padding:0 1px;}
+.attach-pill button:hover{color:var(--c-red);}
+#attach-bar{display:none;flex-wrap:wrap;gap:4px;padding:4px 8px;border-top:1px solid var(--c-border);background:var(--c-surface);}
 #attach-bar.has-files{display:flex;}
-/* Drag & Drop overlay */
-#drag-overlay{position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;pointer-events:none;}
-#drag-overlay.active{display:flex;pointer-events:all;}
-#drag-overlay-inner{border:2px dashed var(--c-accent);border-radius:20px;background:rgba(108,99,255,.08);backdrop-filter:blur(4px);padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;gap:12px;}
-#drag-overlay-inner svg{color:var(--c-accent);opacity:.8;}
-#drag-overlay-inner p{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--c-accent2);}
-#drag-overlay-inner span{font-size:.75rem;color:var(--c-muted);}
-/* Input drop zone highlight */
-#input-wrap.drag-over{border:1px solid var(--c-accent)!important;box-shadow:0 0 0 2px rgba(108,99,255,.2)!important;}
 /* Branch nav */
 .branch-nav{display:flex;align-items:center;gap:4px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--c-muted);margin-top:4px;}
 .branch-nav button{padding:1px 6px;border:1px solid var(--c-border2);border-radius:4px;background:var(--c-surface2);color:var(--c-muted);cursor:pointer;font-size:9px;}
@@ -400,15 +385,6 @@ body.light-mode body::before{opacity:.05;}
 <!-- SIDEBAR OVERLAY -->
 <div id="sidebar-overlay"></div>
 
-<!-- DRAG & DROP OVERLAY -->
-<div id="drag-overlay">
-  <div id="drag-overlay-inner">
-    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-    <p>Drop files here</p>
-    <span>Text, code, images, PDF · max 5MB each</span>
-  </div>
-</div>
-
 <!-- HEADER -->
 <header class="shrink-0 border-b border-[#1f2333] px-2 sm:px-3 py-2 flex items-center gap-2 z-20 shadow-xl">
   <button id="sidebar-toggle" title="Chat History (Ctrl+B)" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors shrink-0">
@@ -561,7 +537,7 @@ body.light-mode body::before{opacity:.05;}
           <button type="button" id="attach-btn" title="Attach file (RAG)" class="p-2.5 sm:p-3 rounded-xl bg-[#141720] hover:bg-[#1f2333] text-[#6b7280] hover:text-[#a78bfa] border border-[#1f2333] transition-all shrink-0 active:scale-95">
             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
           </button>
-          <input type="file" id="attach-file-input" class="hidden" multiple accept=".txt,.md,.js,.ts,.jsx,.tsx,.py,.html,.css,.json,.csv,.xml,.yaml,.yml,.sh,.sql,.rs,.go,.java,.c,.cpp,.rb,.php,.swift,.kt,.r,.tex,.log,.toml,.env,.pdf,image/*">
+          <input type="file" id="attach-file-input" class="hidden" multiple accept=".txt,.md,.js,.ts,.jsx,.tsx,.py,.html,.css,.json,.csv,.xml,.yaml,.yml,.sh,.sql,.rs,.go,.java,.c,.cpp,.rb,.php,.swift,.kt,.r,.tex,.log,.toml,.env">
           <button type="button" id="voice-btn" title="Voice input" class="p-2.5 sm:p-3 rounded-xl bg-[#141720] hover:bg-[#1f2333] text-[#6b7280] hover:text-red-400 border border-[#1f2333] transition-all shrink-0 active:scale-95">
             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
           </button>
@@ -1024,76 +1000,60 @@ body.light-mode body::before{opacity:.05;}
 
 <script>
 'use strict';
-const DEFAULT_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const DEFAULT_MODELS_URL = 'https://openrouter.ai/api/v1/models';
-const OR_AUTH_URL = 'https://openrouter.ai/auth';
-const OR_OAUTH_CB = location.origin + location.pathname;
-const APP_NAME = 'VortexAI';
-const SCAN_INTERVAL = 6 * 60 * 1000;
-const DEFAULT_MODEL = 'google/gemini-2.5-flash-lite-preview';
-const KNOWN_DEAD = ['openrouter/quasar-alpha','liquid/lfm-40b:free','neversleep/llama-3-lumimaid-70b:free'];
-const FALLBACK_MODELS = [
+const API_URL='https://openrouter.ai/api/v1/chat/completions';
+const MODELS_API='https://openrouter.ai/api/v1/models';
+const SCAN_INTERVAL=5*60*1000;
+const CORE_SYS=`You are VortexAI, a professional AI assistant built by Zelvior (Pakistan). Version 6.0. License: Apache 2.0. Powered by OpenRouter free models. Be helpful, precise, and use fenced code blocks with language tags. Never deny being VortexAI.`;
+const DEFAULT_MODEL='google/gemini-2.5-flash-lite-preview';
+const KNOWN_DEAD=['openrouter/quasar-alpha','liquid/lfm-40b:free','neversleep/llama-3-lumimaid-70b:free'];
+const FALLBACK_MODELS=[
   {id:'google/gemini-2.5-flash-lite-preview',name:'Gemini 2.5 Flash Lite',description:'Google fast',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
-  {id:'google/gemini-flash-1.5',name:'Gemini Flash 1.5',description:'Google multimodal',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
+  {id:'google/gemini-flash-1.5',name:'Gemini Flash 1.5',description:'Google',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
   {id:'meta-llama/llama-3.1-8b-instruct:free',name:'Llama 3.1 8B',description:'Meta',context_length:131072,pricing:{prompt:'0',completion:'0'}},
-  {id:'mistralai/mistral-7b-instruct:free',name:'Mistral 7B',description:'Mistral AI',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+  {id:'mistralai/mistral-7b-instruct:free',name:'Mistral 7B',description:'Mistral',context_length:32768,pricing:{prompt:'0',completion:'0'}},
   {id:'qwen/qwen-2.5-7b-instruct:free',name:'Qwen 2.5 7B',description:'Alibaba',context_length:32768,pricing:{prompt:'0',completion:'0'}},
   {id:'deepseek/deepseek-r1:free',name:'DeepSeek R1',description:'Reasoning',context_length:163840,pricing:{prompt:'0',completion:'0'}},
   {id:'deepseek/deepseek-chat-v3-0324:free',name:'DeepSeek V3',description:'Chat',context_length:65536,pricing:{prompt:'0',completion:'0'}},
   {id:'nousresearch/hermes-3-llama-3.1-8b:free',name:'Hermes 3 8B',description:'Uncensored',context_length:131072,pricing:{prompt:'0',completion:'0'}},
-  {id:'microsoft/phi-3-mini-128k-instruct:free',name:'Phi-3 Mini 128K',description:'Microsoft',context_length:128000,pricing:{prompt:'0',completion:'0'}},
-  {id:'google/gemma-2-9b-it:free',name:'Gemma 2 9B',description:'Google',context_length:8192,pricing:{prompt:'0',completion:'0'}},
-  {id:'meta-llama/llama-3.2-3b-instruct:free',name:'Llama 3.2 3B',description:'Meta tiny',context_length:131072,pricing:{prompt:'0',completion:'0'}},
-  {id:'qwen/qwen3-8b:free',name:'Qwen3 8B',description:'Alibaba latest',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+  {id:'microsoft/phi-3-mini-128k-instruct:free',name:'Phi-3 Mini',description:'Microsoft',context_length:128000,pricing:{prompt:'0',completion:'0'}},
+  {id:'google/gemma-2-9b-it:free',name:'Gemma 2 9B',description:'Google open',context_length:8192,pricing:{prompt:'0',completion:'0'}},
 ];
-const CORE_SYS = `You are VortexAI, a professional AI assistant by Zelvior (Pakistan). v6.1. Apache 2.0. Powered by OpenRouter. Be helpful, precise, use fenced code blocks with language tags. Never deny being VortexAI.`;
 
-/* ── STATE ── */
-const state = {
-  apiKey: localStorage.getItem('nx_api_key') || '',
-  oauthKey: localStorage.getItem('nx_oauth_key') || '',
-  authMode: localStorage.getItem('nx_auth_mode') || 'none',
-  customBaseUrl: localStorage.getItem('nx_custom_base_url') || '',
-  customModelId: localStorage.getItem('nx_custom_model_id') || '',
-  customSys: localStorage.getItem('nx_custom_sys') || '',
-  temperature: parseFloat(localStorage.getItem('nx_temp') || '0.7'),
-  ctxLimit: parseInt(localStorage.getItem('nx_ctx_limit') || '40'),
-  maxTokens: parseInt(localStorage.getItem('nx_max_tokens') || '8192'),
-  autoScroll: localStorage.getItem('nx_autoscroll') !== '0',
-  autoCanvas: localStorage.getItem('nx_autocanvas') !== '0',
-  timestamps: localStorage.getItem('nx_timestamps') === '1',
-  lightMode: localStorage.getItem('nx_light_mode') === '1',
-  compact: localStorage.getItem('nx_compact') === '1',
-  fontMono: localStorage.getItem('nx_font_mono') === '1',
-  theme: localStorage.getItem('nx_theme') || '',
-  username: localStorage.getItem('nx_username') || '',
-  autoTTS: localStorage.getItem('nx_auto_tts') === '1',
-  enhancerModel: localStorage.getItem('nx_enhancer_model') || '__current__',
-  enhancerStyle: localStorage.getItem('nx_enhancer_style') || 'detailed',
-  messages: [], isGenerating: false,
-  modelId: localStorage.getItem('nx_model') || DEFAULT_MODEL,
-  models: [],
-  recentModels: JSON.parse(localStorage.getItem('nx_recent_models') || '[]'),
-  favModels: JSON.parse(localStorage.getItem('nx_fav_models') || '[]'),
-  abortCtrl: null, chatId: null,
-  canvasCode: '', canvasLang: '', canvasTab: 'code', canvasOpen: false,
-  currentFilter: 'all', currentSort: 'name',
-  diffSnapshot: '', pinnedMsgs: [],
-  isListening: false, attachments: [], idb: null,
+const state={
+  apiKey:localStorage.getItem('nx_api_key')||'',
+  customSys:localStorage.getItem('nx_custom_sys')||'',
+  temperature:parseFloat(localStorage.getItem('nx_temp')||'0.7'),
+  ctxLimit:parseInt(localStorage.getItem('nx_ctx_limit')||'40'),
+  maxTokens:parseInt(localStorage.getItem('nx_max_tokens')||'8192'),
+  autoScroll:localStorage.getItem('nx_autoscroll')!=='0',
+  autoCanvas:localStorage.getItem('nx_autocanvas')!=='0',
+  timestamps:localStorage.getItem('nx_timestamps')==='1',
+  lightMode:localStorage.getItem('nx_light_mode')==='1',
+  compact:localStorage.getItem('nx_compact')==='1',
+  fontMono:localStorage.getItem('nx_font_mono')==='1',
+  theme:localStorage.getItem('nx_theme')||'',
+  username:localStorage.getItem('nx_username')||'',
+  autoTTS:localStorage.getItem('nx_auto_tts')==='1',
+  messages:[],
+  isGenerating:false,
+  modelId:localStorage.getItem('nx_model')||DEFAULT_MODEL,
+  models:[],
+  recentModels:JSON.parse(localStorage.getItem('nx_recent_models')||'[]'),
+  favModels:JSON.parse(localStorage.getItem('nx_fav_models')||'[]'),
+  abortCtrl:null,
+  chatId:null,
+  canvasCode:'',
+  canvasLang:'',
+  canvasTab:'code',
+  canvasOpen:false,
+  currentFilter:'all',
+  currentSort:'name',
+  diffSnapshot:'',
+  pinnedMsgs:[],
+  isListening:false,
+  attachments:[],
+  idb:null,
 };
-
-/* ── AUTH HELPERS ── */
-const getActiveKey = () => state.oauthKey || state.apiKey || '';
-const getApiUrl = () => {
-  const base = (state.customBaseUrl || DEFAULT_API_URL.replace('/chat/completions','')).replace(/\/$/, '');
-  return base + '/chat/completions';
-};
-const getModelsUrl = () => {
-  const base = (state.customBaseUrl || DEFAULT_MODELS_URL.replace('/models','')).replace(/\/$/, '');
-  return base + '/models';
-};
-const getEffectiveModelId = () => state.customModelId || state.modelId;
-const isAuthenticated = () => !!getActiveKey();
 
 const $=id=>document.getElementById(id);
 const el={
@@ -1237,142 +1197,35 @@ el.fontDefaultBtn.addEventListener('click',()=>{applyFont(false);localStorage.se
 el.fontMonoBtn.addEventListener('click',()=>{applyFont(true);localStorage.setItem('nx_font_mono','1');});
 el.toggleKeyVisibility.addEventListener('click',()=>{el.apiKeyInput.type=el.apiKeyInput.type==='password'?'text':'password';});
 
-/* ── AUTH STATUS UI ── */
-const updateAuthUI = () => {
-  const bar = $('auth-status-bar'), dot = $('auth-dot'), txt = $('auth-status-text'), signout = $('auth-signout-btn');
-  const anonBar = $('anon-limit-bar');
-  if (!bar) return;
-  if (state.authMode === 'oauth' && state.oauthKey) {
-    bar.className = 'auth-status-bar authed';
-    if (dot) dot.className = 'auth-dot green';
-    if (txt) txt.textContent = '✓ Signed in via OpenRouter OAuth';
-    if (signout) signout.classList.remove('hidden');
-    if (anonBar) anonBar.classList.remove('show');
-  } else if (state.apiKey) {
-    bar.className = 'auth-status-bar authed';
-    if (dot) dot.className = 'auth-dot green';
-    if (txt) txt.textContent = '✓ API key configured';
-    if (signout) signout.classList.add('hidden');
-    if (anonBar) anonBar.classList.remove('show');
-  } else {
-    bar.className = 'auth-status-bar anon';
-    if (dot) dot.className = 'auth-dot gray';
-    if (txt) txt.textContent = 'No key — sign in or add API key (some free models work without auth)';
-    if (signout) signout.classList.add('hidden');
-    if (anonBar) anonBar.classList.add('show');
-  }
-  if (el.currentModelDisplay) el.currentModelDisplay.style.color = isAuthenticated() ? '' : '#eab308';
-};
-updateAuthUI();
-
-/* ── OAUTH ── */
-let _oauthPopup = null, _oauthTimer = null;
-const resetOAuthBtn = () => {
-  const btn = $('oauth-btn'), loading = $('oauth-loading');
-  if (btn) { btn.disabled = false; btn.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Sign in with OpenRouter'; }
-  if (loading) loading.classList.remove('show');
-};
-const applyOAuthKey = key => {
-  state.oauthKey = key; state.authMode = 'oauth';
-  localStorage.setItem('nx_oauth_key', key); localStorage.setItem('nx_auth_mode', 'oauth');
-  updateAuthUI(); resetOAuthBtn();
-  toast('✓ Signed in with OpenRouter!', 'success');
-  if (!state.models.length) fetchModels();
-  closeAllModals();
-};
-const exchangeOAuthCode = async code => {
-  try {
-    const res = await fetch('https://openrouter.ai/api/v1/auth/keys', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code}) });
-    if (!res.ok) throw new Error(`Exchange failed: ${res.status}`);
-    const data = await res.json();
-    const key = data.key || data.api_key || data.token;
-    if (!key) throw new Error('No key in response');
-    applyOAuthKey(key);
-  } catch (err) {
-    console.warn('[VortexAI OAuth]', err);
-    toast('Auto-exchange failed. Please paste your API key manually.', 'error');
-    const body = $('custom-api-body');
-    if (body) { body.classList.add('open'); $('custom-api-chevron')?.classList.add('rotate-180'); }
-    resetOAuthBtn();
-  }
-};
-const startOAuth = () => {
-  const btn = $('oauth-btn'), loading = $('oauth-loading');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<svg class="w-4 h-4 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Opening…'; }
-  if (loading) loading.classList.add('show');
-  const authUrl = `${OR_AUTH_URL}?callback_url=${encodeURIComponent(OR_OAUTH_CB)}`;
-  const w=520,h=620,left=Math.max(0,(screen.width-w)/2),top=Math.max(0,(screen.height-h)/2);
-  _oauthPopup = window.open(authUrl,'vortexai_oauth',`width=${w},height=${h},left=${left},top=${top},scrollbars=yes`);
-  if (!_oauthPopup) { toast('Popup blocked! Opening in new tab…','error'); window.open(authUrl,'_blank'); resetOAuthBtn(); return; }
-  let attempts = 0;
-  _oauthTimer = setInterval(() => {
-    attempts++;
-    if (attempts > 180) { clearInterval(_oauthTimer); resetOAuthBtn(); toast('OAuth timed out. Use manual API key.','error'); _oauthPopup?.close(); return; }
-    try {
-      const url = _oauthPopup?.location?.href || '';
-      if (url.includes('code=')) {
-        clearInterval(_oauthTimer);
-        const code = new URL(url).searchParams.get('code');
-        _oauthPopup.close();
-        if (code) exchangeOAuthCode(code); else { resetOAuthBtn(); toast('OAuth failed — no code','error'); }
-      }
-    } catch(e) {}
-    if (_oauthPopup?.closed && attempts > 5) { clearInterval(_oauthTimer); resetOAuthBtn(); }
-  }, 1000);
-  window.addEventListener('message', e => {
-    if (!e.data) return;
-    const d = typeof e.data==='string' ? (() => { try{return JSON.parse(e.data);}catch{return{};} })() : e.data;
-    if (d.type==='api_key'&&d.key) { clearInterval(_oauthTimer); _oauthPopup?.close(); applyOAuthKey(d.key); }
-    else if (d.type==='authorization_code'&&d.code) { clearInterval(_oauthTimer); _oauthPopup?.close(); exchangeOAuthCode(d.code); }
-  }, {once:true});
-};
-const checkOAuthCallback = () => {
-  const params = new URLSearchParams(location.search);
-  const code = params.get('code');
-  if (code) {
-    const url = new URL(location.href); url.searchParams.delete('code'); url.searchParams.delete('state');
-    history.replaceState({}, '', url.toString());
-    toast('Completing sign-in…', 'info');
-    exchangeOAuthCode(code);
-  }
-};
-$('oauth-btn')?.addEventListener('click', startOAuth);
-$('auth-signout-btn')?.addEventListener('click', () => {
-  state.oauthKey=''; state.authMode = state.apiKey ? 'manual' : 'none';
-  localStorage.removeItem('nx_oauth_key'); localStorage.removeItem('nx_auth_mode');
-  updateAuthUI(); toast('Signed out','info');
-});
-$('custom-api-toggle')?.addEventListener('click', () => {
-  const body=$('custom-api-body'), chev=$('custom-api-chevron');
-  const open=body?.classList.toggle('open'); chev?.classList.toggle('rotate-180',open);
-});
-
-/* ── TTS ── */
-let ttsGlobalOn = false;
-el.ttsBtn?.addEventListener('click', () => {
-  ttsGlobalOn = !ttsGlobalOn;
-  el.ttsBtn.style.color = ttsGlobalOn ? 'var(--c-accent2)' : '';
-  if (!ttsGlobalOn && window.speechSynthesis) window.speechSynthesis.cancel();
-  toast(ttsGlobalOn ? 'TTS enabled' : 'TTS disabled', 'info');
-});
-const speakText = txt => {
-  if (!window.speechSynthesis) return;
+/* ── TTS BTN ── */
+let ttsOn=false;
+if(el.ttsBtn){
+  el.ttsBtn.addEventListener('click',()=>{
+    ttsOn=!ttsOn;
+    el.ttsBtn.style.color=ttsOn?'var(--c-accent2)':'';
+    if(!ttsOn&&window.speechSynthesis)window.speechSynthesis.cancel();
+    toast(ttsOn?'TTS enabled':'TTS disabled','info');
+  });
+}
+const speakText=txt=>{
+  if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(txt.replace(/```[\s\S]*?```/g,'[code]').replace(/[#*_`~]/g,'').slice(0,2000));
-  u.rate = 1.05; window.speechSynthesis.speak(u);
+  const u=new SpeechSynthesisUtterance(txt.replace(/```[\s\S]*?```/g,'[code]').replace(/[#*_`~]/g,'').slice(0,2000));
+  u.rate=1.05;window.speechSynthesis.speak(u);
 };
 
 /* ── TERMS ── */
-if (localStorage.getItem('nx_terms_v2')) {
-  el.termsOverlay?.remove();
-} else if (el.termsOverlay) {
-  el.termsAcceptBtn?.addEventListener('click', () => {
+if(localStorage.getItem('nx_terms_v2')){
+  el.termsOverlay.remove();
+}else{
+  el.termsAcceptBtn.addEventListener('click',()=>{
     localStorage.setItem('nx_terms_v2','1');
-    el.termsOverlay.style.transition='opacity .3s'; el.termsOverlay.style.opacity='0';
+    el.termsOverlay.style.transition='opacity .3s';
+    el.termsOverlay.style.opacity='0';
     setTimeout(()=>el.termsOverlay.remove(),300);
-    if (!isAuthenticated()) setTimeout(()=>openModal(el.settingsModal),600);
+    if(!state.apiKey)setTimeout(()=>openModal(el.settingsModal),600);
   });
-  el.termsDeclineBtn?.addEventListener('click', () => {
+  el.termsDeclineBtn.addEventListener('click',()=>{
     document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100svh;font-family:sans-serif;color:#6b7280;padding:2rem;text-align:center;">You must accept the terms to use VortexAI.</div>';
   });
 }
@@ -1472,19 +1325,13 @@ el.exportBtn.addEventListener('click',()=>openModal(el.exportModal));
 /* ── SAVE SETTINGS ── */
 el.saveSettingsBtn.addEventListener('click',()=>{
   const key=el.apiKeyInput.value.trim();
-  state.apiKey=key; key?localStorage.setItem('nx_api_key',key):localStorage.removeItem('nx_api_key');
-  if(key) state.authMode='manual';
-  const cbUrl=$('custom-base-url')?.value?.trim()||'';
-  state.customBaseUrl=cbUrl; cbUrl?localStorage.setItem('nx_custom_base_url',cbUrl):localStorage.removeItem('nx_custom_base_url');
-  const cmId=$('custom-model-id')?.value?.trim()||'';
-  state.customModelId=cmId; cmId?localStorage.setItem('nx_custom_model_id',cmId):localStorage.removeItem('nx_custom_model_id');
-  state.temperature=parseFloat(el.tempSlider.value); localStorage.setItem('nx_temp',state.temperature);
-  state.ctxLimit=parseInt(el.ctxLimitSlider.value); localStorage.setItem('nx_ctx_limit',state.ctxLimit);
-  state.maxTokens=parseInt(el.maxTokensSlider.value); localStorage.setItem('nx_max_tokens',state.maxTokens);
-  state.username=el.usernameInput.value.trim(); localStorage.setItem('nx_username',state.username);
+  state.apiKey=key;key?localStorage.setItem('nx_api_key',key):localStorage.removeItem('nx_api_key');
+  state.temperature=parseFloat(el.tempSlider.value);localStorage.setItem('nx_temp',state.temperature);
+  state.ctxLimit=parseInt(el.ctxLimitSlider.value);localStorage.setItem('nx_ctx_limit',state.ctxLimit);
+  state.maxTokens=parseInt(el.maxTokensSlider.value);localStorage.setItem('nx_max_tokens',state.maxTokens);
+  state.username=el.usernameInput.value.trim();localStorage.setItem('nx_username',state.username);
   localStorage.setItem('nx_theme',state.theme);
-  updateAuthUI(); updateModelDisplay(state.modelId);
-  closeAllModals(); toast('Settings saved','success');
+  closeAllModals();toast('Settings saved','success');
 });
 
 /* ── SYS PROMPT BAR ── */
@@ -1696,41 +1543,36 @@ const procFreeModels=data=>(data.data||[])
   .sort((a,b)=>(a.name||'').localeCompare(b.name||''));
 
 const fetchModels=async()=>{
-  if(el.modelLoadingIcon)el.modelLoadingIcon.classList.remove('hidden');
-  if(el.modelCpuIcon)el.modelCpuIcon.classList.add('hidden');
-  if(el.currentModelDisplay){el.currentModelDisplay.textContent='Scanning…';}
-  const key=getActiveKey();
-  const modelsUrl=getModelsUrl();
-  const hdrs={'Accept':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME};
-  const authHdrs=key?{...hdrs,'Authorization':`Bearer ${key}`}:hdrs;
+  el.modelLoadingIcon.classList.remove('hidden');el.modelCpuIcon.classList.add('hidden');
+  el.currentModelDisplay.textContent='Scanning…';
+  const hdrs={'Accept':'application/json','HTTP-Referer':location.href,'X-Title':'VortexAI'};
   const strategies=[
-    {fetch:()=>fetch(modelsUrl,{headers:authHdrs}),parse:r=>r.json()},
-    {fetch:()=>fetch(modelsUrl,{headers:hdrs}),parse:r=>r.json()},
-    {fetch:()=>fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(modelsUrl)}`),parse:async r=>{const j=await r.json();return JSON.parse(j.contents);}},
-    {fetch:()=>fetch(`https://corsproxy.io/?${encodeURIComponent(modelsUrl)}`),parse:r=>r.json()},
+    {fetch:()=>fetch(MODELS_API,{headers:{...hdrs,'Authorization':`Bearer ${state.apiKey}`}}),parse:r=>r.json()},
+    {fetch:()=>fetch(MODELS_API,{headers:hdrs}),parse:r=>r.json()},
+    {fetch:()=>fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(MODELS_API)}`),parse:async r=>{const j=await r.json();return JSON.parse(j.contents);}},
+    {fetch:()=>fetch(`https://corsproxy.io/?${encodeURIComponent(MODELS_API)}`),parse:r=>r.json()},
   ];
-  let success=false;
   for(const s of strategies){
     try{
-      const res=await Promise.race([s.fetch(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),9000))]);
-      if(!res.ok)throw new Error(res.status);
+      const res=await s.fetch();if(!res.ok)throw new Error(res.status);
       const data=await s.parse(res);if(!Array.isArray(data?.data))throw new Error('bad shape');
-      const models=state.customBaseUrl?(data.data||[]).sort((a,b)=>(a.name||'').localeCompare(b.name||'')):procFreeModels(data);
-      if(!models.length)throw new Error('no models');
-      state.models=models;
-      if(!state.models.find(m=>m.id===state.modelId)){const fb=FALLBACK_MODELS.find(m=>m.id===state.modelId);if(fb)state.models.unshift(fb);}
+      const free=procFreeModels(data);if(!free.length)throw new Error('no free');
+      state.models=free;
+      const hasCur=free.find(m=>m.id===state.modelId);
+      if(!hasCur){const fb=FALLBACK_MODELS.find(m=>m.id===state.modelId);if(fb)state.models.unshift(fb);}
       updateModelDisplay(state.modelId);
-      if(el.modelsModal&&!el.modelsModal.classList.contains('hidden'))renderModelsList();
-      if(el.modelCountLabel)el.modelCountLabel.textContent=`${state.models.length} ${state.customBaseUrl?'':'free '}models`;
+      if(!el.modelsModal.classList.contains('hidden'))renderModelsList();
+      el.modelCountLabel.textContent=`${state.models.length} free models`;
       toast(`${state.models.length} models loaded`,'success');
-      success=true; break;
-    }catch(e){console.warn('[VortexAI] model fetch failed:',e.message);}
+      el.modelLoadingIcon.classList.add('hidden');el.modelCpuIcon.classList.remove('hidden');
+      return;
+    }catch{}
   }
-  if(!success){if(!state.models.length){state.models=[...FALLBACK_MODELS];toast(`Offline — ${FALLBACK_MODELS.length} built-in models`,'error');}else toast('Refresh failed. Using cached.','error');updateModelDisplay(state.modelId);if(el.modelsModal&&!el.modelsModal.classList.contains('hidden'))renderModelsList();if(el.modelCountLabel)el.modelCountLabel.textContent=`${state.models.length} models (offline)`;}
-  if(el.modelLoadingIcon)el.modelLoadingIcon.classList.add('hidden');
-  if(el.modelCpuIcon)el.modelCpuIcon.classList.remove('hidden');
-  if(el.currentModelDisplay)el.currentModelDisplay.classList.remove('scanning');
-  populateEnhancerModelSelect?.();
+  if(!state.models.length){state.models=[...FALLBACK_MODELS];toast('Offline mode — built-in models','error');}
+  updateModelDisplay(state.modelId);
+  el.modelCountLabel.textContent=`${state.models.length} models (offline)`;
+  if(!el.modelsModal.classList.contains('hidden'))renderModelsList();
+  el.modelLoadingIcon.classList.add('hidden');el.modelCpuIcon.classList.remove('hidden');
 };
 
 const updateModelDisplay=id=>{
@@ -1846,9 +1688,1320 @@ const switchTab=tab=>{
 document.querySelectorAll('.canvas-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
 const runPreview=(code,lang='html')=>{
+  let doc=code;
+  if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>
+'use strict';
+const API_URL='https://openrouter.ai/api/v1/chat/completions';
+const MODELS_API='https://openrouter.ai/api/v1/models';
+const SCAN_INTERVAL=6*60*1000;
+const CORE_SYS=`You are VortexAI, a professional AI assistant built by Zelvior (Pakistan). Version 6.0. License: Apache 2.0. Powered by OpenRouter free models. Be helpful, precise, and use fenced code blocks with correct language tags. Never deny being VortexAI.`;
+const DEFAULT_MODEL='google/gemini-2.5-flash-lite-preview';
+const KNOWN_DEAD=['openrouter/quasar-alpha','liquid/lfm-40b:free','neversleep/llama-3-lumimaid-70b:free'];
+const FALLBACK_MODELS=[
+  {id:'google/gemini-2.5-flash-lite-preview',name:'Gemini 2.5 Flash Lite',description:'Google fast multimodal',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
+  {id:'google/gemini-flash-1.5',name:'Gemini Flash 1.5',description:'Google multimodal',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
+  {id:'meta-llama/llama-3.1-8b-instruct:free',name:'Llama 3.1 8B',description:'Meta open source',context_length:131072,pricing:{prompt:'0',completion:'0'}},
+  {id:'mistralai/mistral-7b-instruct:free',name:'Mistral 7B',description:'Mistral AI',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+  {id:'qwen/qwen-2.5-7b-instruct:free',name:'Qwen 2.5 7B',description:'Alibaba',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+  {id:'deepseek/deepseek-r1:free',name:'DeepSeek R1',description:'Reasoning model',context_length:163840,pricing:{prompt:'0',completion:'0'}},
+  {id:'deepseek/deepseek-chat-v3-0324:free',name:'DeepSeek V3',description:'Chat optimized',context_length:65536,pricing:{prompt:'0',completion:'0'}},
+  {id:'nousresearch/hermes-3-llama-3.1-8b:free',name:'Hermes 3 8B',description:'Uncensored',context_length:131072,pricing:{prompt:'0',completion:'0'}},
+  {id:'microsoft/phi-3-mini-128k-instruct:free',name:'Phi-3 Mini 128K',description:'Microsoft small',context_length:128000,pricing:{prompt:'0',completion:'0'}},
+  {id:'google/gemma-2-9b-it:free',name:'Gemma 2 9B',description:'Google open',context_length:8192,pricing:{prompt:'0',completion:'0'}},
+  {id:'meta-llama/llama-3.2-3b-instruct:free',name:'Llama 3.2 3B',description:'Meta tiny fast',context_length:131072,pricing:{prompt:'0',completion:'0'}},
+  {id:'qwen/qwen3-8b:free',name:'Qwen3 8B',description:'Alibaba latest',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+];
+
+/* ── STATE ── */
+const state={
+  apiKey:localStorage.getItem('nx_api_key')||'',
+  customSys:localStorage.getItem('nx_custom_sys')||'',
+  temperature:parseFloat(localStorage.getItem('nx_temp')||'0.7'),
+  ctxLimit:parseInt(localStorage.getItem('nx_ctx_limit')||'40'),
+  maxTokens:parseInt(localStorage.getItem('nx_max_tokens')||'8192'),
+  autoScroll:localStorage.getItem('nx_autoscroll')!=='0',
+  autoCanvas:localStorage.getItem('nx_autocanvas')!=='0',
+  timestamps:localStorage.getItem('nx_timestamps')==='1',
+  lightMode:localStorage.getItem('nx_light_mode')==='1',
+  compact:localStorage.getItem('nx_compact')==='1',
+  fontMono:localStorage.getItem('nx_font_mono')==='1',
+  theme:localStorage.getItem('nx_theme')||'',
+  username:localStorage.getItem('nx_username')||'',
+  autoTTS:localStorage.getItem('nx_auto_tts')==='1',
+  enhancerModel:localStorage.getItem('nx_enhancer_model')||'__current__',
+  enhancerStyle:localStorage.getItem('nx_enhancer_style')||'detailed',
+  messages:[],isGenerating:false,
+  modelId:localStorage.getItem('nx_model')||DEFAULT_MODEL,
+  models:[],
+  recentModels:JSON.parse(localStorage.getItem('nx_recent_models')||'[]'),
+  favModels:JSON.parse(localStorage.getItem('nx_fav_models')||'[]'),
+  abortCtrl:null,chatId:null,
+  canvasCode:'',canvasLang:'',canvasTab:'code',canvasOpen:false,
+  currentFilter:'all',currentSort:'name',
+  diffSnapshot:'',pinnedMsgs:[],
+  isListening:false,attachments:[],idb:null,
+};
+
+/* ── DOM REFS ── */
+const $=id=>document.getElementById(id);
+const el={
+  chatContainer:$('chat-container'),chatInner:$('chat-inner'),
+  chatForm:$('chat-form'),userInput:$('user-input'),
+  sendBtn:$('send-btn'),sendIcon:$('send-icon'),stopIcon:$('stop-icon'),
+  modelBadgeBar:$('model-badge-bar'),openModelsBtn:$('open-models-btn'),
+  currentModelDisplay:$('current-model-display'),
+  modelLoadingIcon:$('model-loading-icon'),modelCpuIcon:$('model-cpu-icon'),
+  modalOverlay:$('modal-overlay'),modelsModal:$('models-modal'),
+  modelsList:$('models-list'),modelSearchInput:$('model-search-input'),
+  modelCountLabel:$('model-count-label'),refreshModelsBtn:$('refresh-models-btn'),
+  settingsModal:$('settings-modal'),apiKeyInput:$('api-key-input'),
+  tempSlider:$('temp-slider'),tempVal:$('temp-val'),
+  ctxLimitSlider:$('ctx-limit-slider'),ctxLimitVal:$('ctx-limit-val'),
+  maxTokensSlider:$('max-tokens-slider'),maxTokensVal:$('max-tokens-val'),
+  saveSettingsBtn:$('save-settings-btn'),
+  docsModal:$('docs-modal'),docsBtn:$('docs-btn'),docsBtnMobile:$('docs-btn-mobile'),
+  settingsBtn:$('settings-btn'),exportBtn:$('export-btn'),exportModal:$('export-modal'),
+  exportMdBtn:$('export-md-btn'),exportJsonBtn:$('export-json-btn'),
+  exportHtmlBtn:$('export-html-btn'),exportTxtBtn:$('export-txt-btn'),
+  newChatBtn:$('new-chat-btn'),
+  canvasPanel:$('canvas-panel'),canvasEmpty:$('canvas-empty'),
+  canvasPre:$('canvas-pre'),canvasContent:$('canvas-content'),
+  canvasLangBadge:$('canvas-lang-badge'),copyCanvasBtn:$('copy-canvas-btn'),
+  closeCanvasBtn:$('close-canvas-btn'),canvasIframe:$('canvas-iframe'),
+  refreshPreviewBtn:$('refresh-preview-btn'),runCanvasBtn:$('run-canvas-btn'),
+  openPreviewTabBtn:$('open-preview-tab-btn'),
+  canvasCodeTab:$('canvas-code-tab'),canvasPreviewTab:$('canvas-preview-tab'),
+  canvasEditorTab:$('canvas-editor-tab'),canvasDiffTab:$('canvas-diff-tab'),
+  canvasEditor:$('canvas-editor'),canvasEditorInfo:$('canvas-editor-info'),
+  editorFormatBtn:$('editor-format-btn'),editorRunBtn:$('editor-run-btn'),
+  editorApplyBtn:$('editor-apply-btn'),downloadCanvasBtn:$('download-canvas-btn'),
+  diffOutput:$('diff-output'),diffSnapBtn:$('diff-snap-btn'),
+  toastContainer:$('toast-container'),termsOverlay:$('terms-overlay'),
+  termsAcceptBtn:$('terms-accept-btn'),termsDeclineBtn:$('terms-decline-btn'),
+  sidebar:$('sidebar'),sidebarToggle:$('sidebar-toggle'),
+  sidebarOverlay:$('sidebar-overlay'),historyList:$('history-list'),
+  newChatSidebarBtn:$('new-chat-sidebar-btn'),clearHistoryBtn:$('clear-history-btn'),
+  exportHistoryBtn:$('export-history-btn'),importHistoryBtn:$('import-history-btn'),
+  importHistoryFile:$('import-history-file'),
+  sysPromptBar:$('sys-prompt-bar'),sysPromptLive:$('sys-prompt-live'),
+  sysPromptClose:$('sys-prompt-close'),sysPromptBtn:$('sys-prompt-btn'),
+  tokenProgressFill:$('token-progress-fill'),
+  msgCountLabel:$('msg-count-label'),charCount:$('char-count'),
+  resizeHandle:$('resize-handle'),
+  compactToggle:$('compact-toggle'),compactThumb:$('compact-thumb'),
+  autoscrollToggle:$('autoscroll-toggle'),autoscrollThumb:$('autoscroll-thumb'),
+  lightModeToggle:$('light-mode-toggle'),lightModeThumb:$('light-mode-thumb'),
+  autocanvasToggle:$('autocanvas-toggle'),autocanvasThumb:$('autocanvas-thumb'),
+  timestampsToggle:$('timestamps-toggle'),timestampsThumb:$('timestamps-thumb'),
+  autoTTSToggle:$('auto-tts-toggle'),autoTTSThumb:$('auto-tts-thumb'),
+  scrollToBottom:$('scroll-to-bottom'),regenBtn:$('regen-btn'),
+  toggleKeyVisibility:$('toggle-key-visibility'),
+  customSysBar:$('custom-sys-bar'),customSysInput:$('custom-sys-input'),
+  customSysClose:$('custom-sys-close'),
+  historySearch:$('history-search'),statChats:$('stat-chats'),statMsgs:$('stat-msgs'),
+  usernameInput:$('username-input'),ttsBtn:$('tts-btn'),
+  ctxRing:$('ctx-ring'),cmdPalette:$('cmd-palette'),cmdInput:$('cmd-input'),
+  cmdResults:$('cmd-results'),cmdPaletteBtn:$('cmd-palette-btn'),
+  fontDefaultBtn:$('font-default-btn'),fontMonoBtn:$('font-mono-btn'),
+  attachBtn:$('attach-btn'),attachFileInput:$('attach-file-input'),attachBar:$('attach-bar'),
+  voiceBtn:$('voice-btn'),enhanceBtn:$('enhance-btn'),
+};
+
+/* ── HELPERS ── */
+const genId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const dlFile=(content,filename,mime)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:mime}));a.download=filename;a.click();URL.revokeObjectURL(a.href);};
+const estimateTokens=t=>Math.ceil((t||'').length/3.8);
+const EXT_MAP={js:'js',javascript:'js',jsx:'jsx',tsx:'tsx',ts:'ts',python:'py',py:'py',html:'html',css:'css',svg:'svg',json:'json',md:'md',sh:'sh',bash:'sh',c:'c',cpp:'cpp',java:'java',rs:'rs',go:'go',rb:'rb',php:'php'};
+
+/* ── TOAST ── */
+const toast=(msg,type='info')=>{
+  const t=document.createElement('div');
+  const bg=type==='error'?'bg-[#1c0f0f] border-red-500/50 text-red-300':type==='success'?'bg-[#0f1c12] border-green-500/50 text-green-300':'bg-[#141720] border-[#2a2f45] text-[#e2e4f0]';
+  t.className=`px-3 py-2 rounded-xl border text-xs font-medium flex items-center gap-2 shadow-xl pointer-events-auto transform translate-y-4 opacity-0 transition-all duration-200 ${bg}`;
+  t.innerHTML=`<span>${type==='error'?'✕':type==='success'?'✓':'ℹ'}</span><span class="flex-1 min-w-0 line-clamp-2">${DOMPurify.sanitize(String(msg))}</span>`;
+  el.toastContainer.appendChild(t);
+  requestAnimationFrame(()=>t.classList.remove('translate-y-4','opacity-0'));
+  setTimeout(()=>{t.classList.add('translate-y-4','opacity-0');setTimeout(()=>t.remove(),200);},3800);
+};
+
+/* ── THEMING ── */
+const mkToggle=(toggleEl,thumbEl,on)=>{if(!toggleEl||!thumbEl)return;toggleEl.style.background=on?'var(--c-accent)':'var(--c-border2)';thumbEl.style.background=on?'white':'var(--c-muted)';thumbEl.style.transform=on?'translateX(20px)':'translateX(0)';toggleEl.setAttribute('aria-checked',String(on));};
+const applyTheme=t=>{document.body.className=document.body.className.replace(/\btheme-\w+/g,'');if(t)document.body.classList.add('theme-'+t);document.querySelectorAll('.theme-btn').forEach(b=>b.style.borderColor=b.dataset.theme===t?'rgba(255,255,255,.9)':'');};
+const applyFont=mono=>{state.fontMono=mono;mono?document.body.classList.add('font-mono'):document.body.classList.remove('font-mono');if(el.fontDefaultBtn)el.fontDefaultBtn.className=`flex-1 py-1.5 rounded-lg border text-xs font-semibold transition-colors ${!mono?'border-[#6c63ff] bg-[#6c63ff]/10 text-[#a78bfa]':'border-[#1f2333] text-[#6b7280]'}`;if(el.fontMonoBtn)el.fontMonoBtn.className=`flex-1 py-1.5 rounded-lg border text-xs mono transition-colors ${mono?'border-[#6c63ff] bg-[#6c63ff]/10 text-[#a78bfa]':'border-[#1f2333] text-[#6b7280]'}`;};
+
+/* Apply saved settings */
+applyTheme(state.theme);applyFont(state.fontMono);
+if(state.compact)document.body.classList.add('compact');
+if(state.lightMode)document.body.classList.add('light-mode');
+mkToggle(el.compactToggle,el.compactThumb,state.compact);
+mkToggle(el.autoscrollToggle,el.autoscrollThumb,state.autoScroll);
+mkToggle(el.lightModeToggle,el.lightModeThumb,state.lightMode);
+mkToggle(el.autocanvasToggle,el.autocanvasThumb,state.autoCanvas);
+mkToggle(el.timestampsToggle,el.timestampsThumb,state.timestamps);
+mkToggle(el.autoTTSToggle,el.autoTTSThumb,state.autoTTS);
+if(el.apiKeyInput)el.apiKeyInput.value=state.apiKey;
+if(el.tempSlider){el.tempSlider.value=state.temperature;if(el.tempVal)el.tempVal.textContent=state.temperature.toFixed(1);}
+if(el.ctxLimitSlider){el.ctxLimitSlider.value=state.ctxLimit;if(el.ctxLimitVal)el.ctxLimitVal.textContent=state.ctxLimit;}
+if(el.maxTokensSlider){el.maxTokensSlider.value=state.maxTokens;if(el.maxTokensVal)el.maxTokensVal.textContent=state.maxTokens;}
+if(el.usernameInput)el.usernameInput.value=state.username;
+if(el.sysPromptLive)el.sysPromptLive.value=state.customSys;
+if(el.customSysInput)el.customSysInput.value=state.customSys;
+
+/* ── SLIDER LIVE ── */
+el.tempSlider?.addEventListener('input',()=>el.tempVal&&(el.tempVal.textContent=parseFloat(el.tempSlider.value).toFixed(1)));
+el.ctxLimitSlider?.addEventListener('input',()=>el.ctxLimitVal&&(el.ctxLimitVal.textContent=el.ctxLimitSlider.value));
+el.maxTokensSlider?.addEventListener('input',()=>el.maxTokensVal&&(el.maxTokensVal.textContent=el.maxTokensSlider.value));
+
+/* ── TOGGLE LISTENERS ── */
+const bindToggle=(toggleEl,thumbEl,key,stateKey,extraFn)=>{
+  toggleEl?.addEventListener('click',()=>{state[stateKey]=!state[stateKey];mkToggle(toggleEl,thumbEl,state[stateKey]);localStorage.setItem(key,state[stateKey]?'1':'0');if(extraFn)extraFn(state[stateKey]);});
+};
+bindToggle(el.compactToggle,el.compactThumb,'nx_compact','compact',v=>document.body.classList.toggle('compact',v));
+bindToggle(el.autoscrollToggle,el.autoscrollThumb,'nx_autoscroll','autoScroll');
+bindToggle(el.lightModeToggle,el.lightModeThumb,'nx_light_mode','lightMode',v=>document.body.classList.toggle('light-mode',v));
+bindToggle(el.autocanvasToggle,el.autocanvasThumb,'nx_autocanvas','autoCanvas');
+bindToggle(el.timestampsToggle,el.timestampsThumb,'nx_timestamps','timestamps');
+bindToggle(el.autoTTSToggle,el.autoTTSThumb,'nx_auto_tts','autoTTS');
+document.querySelectorAll('.theme-btn').forEach(b=>b.addEventListener('click',()=>{state.theme=b.dataset.theme;applyTheme(state.theme);}));
+el.fontDefaultBtn?.addEventListener('click',()=>{applyFont(false);localStorage.setItem('nx_font_mono','0');});
+el.fontMonoBtn?.addEventListener('click',()=>{applyFont(true);localStorage.setItem('nx_font_mono','1');});
+el.toggleKeyVisibility?.addEventListener('click',()=>{if(el.apiKeyInput)el.apiKeyInput.type=el.apiKeyInput.type==='password'?'text':'password';});
+
+/* ── TTS ── */
+let ttsGlobalOn=false;
+el.ttsBtn?.addEventListener('click',()=>{ttsGlobalOn=!ttsGlobalOn;el.ttsBtn.style.color=ttsGlobalOn?'var(--c-accent2)':'';if(!ttsGlobalOn&&window.speechSynthesis)window.speechSynthesis.cancel();toast(ttsGlobalOn?'TTS enabled':'TTS disabled','info');});
+const speakText=txt=>{if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt.replace(/```[\s\S]*?```/g,'[code]').replace(/[#*_`~]/g,'').slice(0,2000));u.rate=1.05;window.speechSynthesis.speak(u);};
+
+/* ── TERMS ── */
+if(localStorage.getItem('nx_terms_v2')){
+  el.termsOverlay?.remove();
+}else if(el.termsOverlay){
+  el.termsAcceptBtn?.addEventListener('click',()=>{localStorage.setItem('nx_terms_v2','1');el.termsOverlay.style.transition='opacity .3s';el.termsOverlay.style.opacity='0';setTimeout(()=>el.termsOverlay.remove(),300);if(!state.apiKey)setTimeout(()=>openModal(el.settingsModal),600);});
+  el.termsDeclineBtn?.addEventListener('click',()=>{document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100svh;font-family:sans-serif;color:#6b7280;padding:2rem;text-align:center;">You must accept the terms to use VortexAI.</div>';});
+}
+
+/* ── MARKDOWN RENDERER ── */
+const renderer=new marked.Renderer();
+renderer.code=function({text,lang}){
+  const code=text||'';const language=(lang&&hljs.getLanguage(lang))?lang:'plaintext';
+  let hl;try{hl=hljs.highlight(code,{language}).value;}catch{hl=hljs.highlightAuto(code).value;}
+  const isWeb=/^(html|css|javascript|js|jsx|tsx|svg)$/i.test(lang||'');
+  const runBtn=isWeb?`<button class="code-run-btn" data-lang="${lang||'html'}">▶ Run</button>`:'';
+  const dlBtn=`<button class="code-dl-btn" data-lang="${lang||'txt'}">↓ Save</button>`;
+  const cvs=`<button class="code-canvas-btn" data-lang="${lang||''}">⊞ Canvas</button>`;
+  return`<div class="code-block-wrap"><div class="code-block-header"><span class="lang-label">${DOMPurify.sanitize(language)}</span><div class="code-block-actions">${runBtn}<button class="code-copy-btn">Copy</button>${dlBtn}${cvs}</div></div><pre><code class="hljs language-${DOMPurify.sanitize(language)}">${hl}</code></pre></div>`;
+};
+renderer.table=function(token){
+  if(token&&typeof token==='object'&&'header' in token){
+    const hd='<tr>'+token.header.map(c=>`<th>${marked.parseInline(c.text||'')}</th>`).join('')+'</tr>';
+    const bd=token.rows.map(row=>'<tr>'+row.map(c=>`<td>${marked.parseInline(c.text||'')}</td>`).join('')+'</tr>').join('');
+    return`<div class="table-wrap"><table><thead>${hd}</thead><tbody>${bd}</tbody></table></div>`;
+  }
+  return`<div class="table-wrap"><table><thead>${token}</thead><tbody>${arguments[1]||''}</tbody></table></div>`;
+};
+marked.use({breaks:true,gfm:true,renderer});
+const mdParse=txt=>{try{const r=marked.parse(txt||'',{async:false});return(r instanceof Promise)?(txt||''):r;}catch{return txt||'';}};
+
+/* ── CODE BLOCK DELEGATION ── */
+document.addEventListener('click',e=>{
+  const cpy=e.target.closest('.code-copy-btn');if(cpy){const code=cpy.closest('.code-block-wrap')?.querySelector('code');if(code){navigator.clipboard.writeText(code.textContent).then(()=>{const p=cpy.textContent;cpy.textContent='Copied!';setTimeout(()=>cpy.textContent=p,1500);});}return;}
+  const dl=e.target.closest('.code-dl-btn');if(dl){const code=dl.closest('.code-block-wrap')?.querySelector('code');if(code){const ext=EXT_MAP[(dl.dataset.lang||'').toLowerCase()]||'txt';dlFile(code.textContent,`vortexai.${ext}`,'text/plain');toast(`Saved .${ext}`,'success');}return;}
+  const run=e.target.closest('.code-run-btn');if(run){const code=run.closest('.code-block-wrap')?.querySelector('code');if(code){openCanvas();switchTab('preview');runPreview(code.textContent,run.dataset.lang);}return;}
+  const cvs=e.target.closest('.code-canvas-btn');if(cvs){const code=cvs.closest('.code-block-wrap')?.querySelector('code');if(code){openCanvas();updateCanvas(code.textContent,cvs.dataset.lang);switchTab('code');toast('Sent to canvas','success');}return;}
+});
+
+/* ── TOKEN BAR ── */
+const updateTokenBar=()=>{
+  const total=state.messages.reduce((s,m)=>s+estimateTokens(m.content),0)+estimateTokens(CORE_SYS);
+  const model=state.models.find(m=>m.id===state.modelId);
+  const limit=model?.context_length||128000;
+  const pct=Math.min(100,(total/limit)*100);
+  if(el.tokenProgressFill){el.tokenProgressFill.style.width=pct+'%';el.tokenProgressFill.style.background=pct>80?'var(--c-red)':pct>60?'var(--c-orange)':'var(--c-accent)';}
+  if(el.msgCountLabel)el.msgCountLabel.textContent=state.messages.length+' msg'+(state.messages.length!==1?'s':'');
+  const deg=Math.round(pct*3.6);
+  if(el.ctxRing){el.ctxRing.style.background=`conic-gradient(${pct>80?'var(--c-red)':pct>60?'var(--c-orange)':'var(--c-accent)'} ${deg}deg, var(--c-border2) ${deg}deg)`;el.ctxRing.classList.toggle('hidden',pct===0);}
+  const hasAI=state.messages.some(m=>m.role==='assistant');
+  if(el.regenBtn)el.regenBtn.classList.toggle('visible',hasAI&&!state.isGenerating);
+};
+
+/* ── CHAR COUNT ── */
+el.userInput?.addEventListener('input',()=>{
+  const len=el.userInput.value.length;
+  if(el.charCount){el.charCount.textContent=len||'0';el.charCount.className=len>3000?'danger':len>1500?'warn':'';}
+  el.userInput.style.height='auto';
+  el.userInput.style.height=Math.min(el.userInput.scrollHeight,160)+'px';
+});
+
+/* ── MODALS ── */
+const allModals=[el.modelsModal,el.settingsModal,el.docsModal,el.exportModal].filter(Boolean);
+const openModal=mel=>{if(!mel)return;el.modalOverlay?.classList.remove('hidden');mel.classList.remove('hidden');mel.classList.add('flex');void mel.offsetWidth;el.modalOverlay?.classList.remove('opacity-0');mel.classList.remove('opacity-0','scale-95');};
+const closeAllModals=()=>{el.modalOverlay?.classList.add('opacity-0');allModals.forEach(m=>m.classList.add('opacity-0','scale-95'));setTimeout(()=>{el.modalOverlay?.classList.add('hidden');allModals.forEach(m=>{m.classList.add('hidden');m.classList.remove('flex');});},200);};
+el.modalOverlay?.addEventListener('click',closeAllModals);
+document.querySelectorAll('.close-modal-btn').forEach(b=>b.addEventListener('click',closeAllModals));
+el.openModelsBtn?.addEventListener('click',()=>{openModal(el.modelsModal);renderModelsList();setTimeout(()=>el.modelSearchInput?.focus(),80);});
+el.settingsBtn?.addEventListener('click',()=>openModal(el.settingsModal));
+el.docsBtn?.addEventListener('click',()=>openModal(el.docsModal));
+el.docsBtnMobile?.addEventListener('click',()=>openModal(el.docsModal));
+el.exportBtn?.addEventListener('click',()=>openModal(el.exportModal));
+
+/* ── SAVE SETTINGS ── */
+el.saveSettingsBtn?.addEventListener('click',()=>{
+  const key=el.apiKeyInput?.value?.trim()||'';
+  state.apiKey=key;key?localStorage.setItem('nx_api_key',key):localStorage.removeItem('nx_api_key');
+  if(el.tempSlider){state.temperature=parseFloat(el.tempSlider.value);localStorage.setItem('nx_temp',state.temperature);}
+  if(el.ctxLimitSlider){state.ctxLimit=parseInt(el.ctxLimitSlider.value);localStorage.setItem('nx_ctx_limit',state.ctxLimit);}
+  if(el.maxTokensSlider){state.maxTokens=parseInt(el.maxTokensSlider.value);localStorage.setItem('nx_max_tokens',state.maxTokens);}
+  if(el.usernameInput){state.username=el.usernameInput.value.trim();localStorage.setItem('nx_username',state.username);}
+  localStorage.setItem('nx_theme',state.theme);
+  closeAllModals();toast('Settings saved','success');
+});
+
+/* ── SYS PROMPT ── */
+el.sysPromptBtn?.addEventListener('click',()=>{el.sysPromptBar?.classList.toggle('open');if(el.sysPromptBar?.classList.contains('open'))el.sysPromptLive?.focus();});
+el.sysPromptClose?.addEventListener('click',()=>el.sysPromptBar?.classList.remove('open'));
+el.sysPromptLive?.addEventListener('input',()=>{state.customSys=el.sysPromptLive.value.trim();localStorage.setItem('nx_custom_sys',state.customSys);if(el.customSysInput)el.customSysInput.value=state.customSys;});
+el.customSysClose?.addEventListener('click',()=>{if(el.customSysBar){el.customSysBar.classList.add('hidden');el.customSysBar.style.display='none';}});
+el.customSysInput?.addEventListener('input',()=>{state.customSys=el.customSysInput.value.trim();localStorage.setItem('nx_custom_sys',state.customSys);if(el.sysPromptLive)el.sysPromptLive.value=state.customSys;});
+
+/* ── EXPORTS ── */
+const exportMd=()=>{if(!state.messages.length){toast('No messages','error');return;}let md=`# VortexAI Chat\n_Model: ${state.modelId}_\n_${new Date().toLocaleString()}_\n\n---\n\n`;state.messages.forEach(m=>{md+=`**${m.role==='user'?(state.username||'You'):'VortexAI'}:**\n\n${m.content}\n\n---\n\n`;});dlFile(md,`vortexai-${Date.now()}.md`,'text/markdown');closeAllModals();toast('Exported Markdown','success');};
+const exportJson=()=>{if(!state.messages.length){toast('No messages','error');return;}dlFile(JSON.stringify({model:state.modelId,date:new Date().toISOString(),messages:state.messages},null,2),`vortexai-${Date.now()}.json`,'application/json');closeAllModals();toast('Exported JSON','success');};
+const exportHtml=()=>{if(!state.messages.length){toast('No messages','error');return;}const rows=state.messages.map(m=>{const isU=m.role==='user';return`<div style="margin:16px 0;padding:12px 16px;border-radius:12px;background:${isU?'#1a1d2e':'#0e1018'};border:1px solid #1f2333"><div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:600;text-transform:uppercase">${isU?(state.username||'You'):'VortexAI'}</div><div style="font-size:14px;line-height:1.7">${isU?m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'):marked.parse(m.content||'')}</div></div>`;}).join('');dlFile(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VortexAI Export</title><style>body{font-family:Inter,sans-serif;background:#07080d;color:#e2e4f0;padding:2rem;max-width:800px;margin:0 auto;line-height:1.6}pre{background:#0d1117;padding:1rem;border-radius:8px;overflow:auto}code{font-family:monospace}</style></head><body><h1>⚡ VortexAI</h1><p style="color:#6b7280">${state.modelId} · ${new Date().toLocaleString()}</p><hr style="border-color:#1f2333;margin:1.5rem 0">${rows}</body></html>`,`vortexai-${Date.now()}.html`,'text/html');closeAllModals();toast('Exported HTML','success');};
+const exportTxt=()=>{if(!state.messages.length){toast('No messages','error');return;}let txt=`VortexAI Chat\nModel: ${state.modelId}\n${new Date().toLocaleString()}\n${'='.repeat(60)}\n\n`;state.messages.forEach(m=>{txt+=`[${m.role==='user'?(state.username||'You'):'VortexAI'}]\n${m.content}\n\n${'-'.repeat(40)}\n\n`;});dlFile(txt,`vortexai-${Date.now()}.txt`,'text/plain');closeAllModals();toast('Exported Text','success');};
+el.exportMdBtn?.addEventListener('click',exportMd);el.exportJsonBtn?.addEventListener('click',exportJson);el.exportHtmlBtn?.addEventListener('click',exportHtml);el.exportTxtBtn?.addEventListener('click',exportTxt);
+
+/* ── INDEXEDDB ── */
+const openIDB=()=>new Promise(res=>{if(!window.indexedDB){res(null);return;}const req=indexedDB.open('vortexai',1);req.onupgradeneeded=e=>e.target.result.createObjectStore('chats',{keyPath:'id'});req.onsuccess=e=>{state.idb=e.target.result;res(state.idb);};req.onerror=()=>res(null);});
+const idbAll=()=>new Promise(res=>{if(!state.idb){res([]);return;}const req=state.idb.transaction('chats','readonly').objectStore('chats').getAll();req.onsuccess=()=>res((req.result||[]).sort((a,b)=>b.ts-a.ts));req.onerror=()=>res([]);});
+const idbPut=chat=>new Promise(res=>{if(!state.idb){res();return;}const tx=state.idb.transaction('chats','readwrite');tx.objectStore('chats').put(chat);tx.oncomplete=()=>res();tx.onerror=()=>res();});
+const idbDel=id=>new Promise(res=>{if(!state.idb){res();return;}const tx=state.idb.transaction('chats','readwrite');tx.objectStore('chats').delete(id);tx.oncomplete=()=>res();tx.onerror=()=>res();});
+const idbClear=()=>new Promise(res=>{if(!state.idb){res();return;}const tx=state.idb.transaction('chats','readwrite');tx.objectStore('chats').clear();tx.oncomplete=()=>res();tx.onerror=()=>res();});
+
+/* ── HISTORY ── */
+const saveChat=async()=>{
+  if(!state.messages.length)return;
+  const title=(state.messages[0]?.content||'New Chat').slice(0,55);
+  await idbPut({id:state.chatId,title,messages:state.messages,modelId:state.modelId,ts:Date.now()});
+  renderHistory();
+};
+const renderHistory=async(q='')=>{
+  let hist=await idbAll();
+  if(q){const ql=q.toLowerCase();hist=hist.filter(c=>c.title.toLowerCase().includes(ql)||c.messages.some(m=>m.content.toLowerCase().includes(ql)));}
+  if(el.statChats)el.statChats.textContent=hist.length;
+  if(el.statMsgs)el.statMsgs.textContent=hist.reduce((s,c)=>s+c.messages.length,0);
+  if(!hist.length){if(el.historyList)el.historyList.innerHTML=`<div class="text-center py-6 text-[#2a2f45] text-xs">${q?'No results':'No chats yet'}</div>`;return;}
+  const frag=document.createDocumentFragment();
+  hist.forEach(chat=>{
+    const row=document.createElement('button');row.className=`history-item${chat.id===state.chatId?' active':''}`;
+    const d=new Date(chat.ts);
+    row.innerHTML=`<svg class="w-3 h-3 text-[#4b5563] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg><div class="flex-1 min-w-0 text-left"><div class="text-xs text-[#c9d1d9] truncate">${DOMPurify.sanitize(chat.title)}</div><div class="text-[9px] text-[#4b5563] mt-0.5">${d.toLocaleDateString(undefined,{month:'short',day:'numeric'})} · ${chat.messages.length} msgs</div></div><button class="del-btn p-0.5 text-[#374151] hover:text-red-400 rounded transition-colors shrink-0" data-id="${chat.id}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+    row.addEventListener('click',ev=>{if(ev.target.closest('.del-btn'))return;loadChat(chat.id);if(window.innerWidth<768)setSidebar(false);});
+    row.querySelector('.del-btn').addEventListener('click',async ev=>{ev.stopPropagation();await idbDel(chat.id);if(state.chatId===chat.id)newChat();else renderHistory(el.historySearch?.value||'');});
+    frag.appendChild(row);
+  });
+  if(el.historyList){el.historyList.innerHTML='';el.historyList.appendChild(frag);}
+};
+const loadChat=async id=>{
+  const hist=await idbAll();const chat=hist.find(c=>c.id===id);if(!chat)return;
+  state.messages=[...chat.messages];state.chatId=chat.id;
+  if(chat.modelId)selectModel(chat.modelId,true);
+  if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();
+  chat.messages.forEach(m=>appendMsg(m.role,m.content,true));
+  updateTokenBar();renderHistory();
+  setTimeout(()=>{if(el.chatContainer)el.chatContainer.scrollTop=el.chatContainer.scrollHeight;},50);
+};
+el.historySearch?.addEventListener('input',()=>renderHistory(el.historySearch.value));
+el.clearHistoryBtn?.addEventListener('click',async()=>{if(!confirm('Clear all chat history?'))return;await idbClear();renderHistory();newChat();toast('History cleared','success');});
+el.exportHistoryBtn?.addEventListener('click',async()=>{const hist=await idbAll();if(!hist.length){toast('No history','error');return;}dlFile(JSON.stringify(hist,null,2),`vortexai-history-${Date.now()}.json`,'application/json');toast(`Exported ${hist.length} chats`,'success');});
+el.importHistoryBtn?.addEventListener('click',()=>el.importHistoryFile?.click());
+el.importHistoryFile?.addEventListener('change',()=>{
+  const f=el.importHistoryFile.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=async ev=>{try{const data=JSON.parse(ev.target.result);if(!Array.isArray(data))throw new Error('Invalid');for(const chat of data)if(chat.id&&chat.messages)await idbPut(chat);renderHistory();toast(`Imported ${data.length} chats`,'success');}catch{toast('Import failed — invalid JSON','error');}el.importHistoryFile.value='';};
+  reader.readAsText(f);
+});
+
+/* ── SIDEBAR ── */
+let sidebarOpen=window.innerWidth>=1024;
+const setSidebar=open=>{sidebarOpen=open;if(window.innerWidth<768){el.sidebar?.classList.toggle('mobile-open',open);el.sidebarOverlay?.classList.toggle('active',open);}else{el.sidebar?.classList.toggle('collapsed',!open);el.sidebarOverlay?.classList.remove('active');}};
+setSidebar(sidebarOpen);
+el.sidebarToggle?.addEventListener('click',()=>setSidebar(!sidebarOpen));
+el.sidebarOverlay?.addEventListener('click',()=>setSidebar(false));
+window.addEventListener('resize',()=>{if(window.innerWidth>=768){el.sidebarOverlay?.classList.remove('active');el.sidebar?.classList.remove('mobile-open');}});
+
+/* ── MODEL TAGS ── */
+const getModelTags=m=>{
+  const txt=`${m.id} ${m.name} ${m.description||''}`.toLowerCase();
+  const mods=(m.architecture?.modality||'').toLowerCase();
+  const tags=[];
+  if(/uncensored|dolphin|bagel|abliterat|noromaid|midnight|manticore/.test(txt))tags.push({label:'🔓 Uncensored',cls:'bg-red-900/30 text-red-400 border-red-500/30'});
+  if(/vision|vl\b|pixtral|llava|moondream|qvq|minicpm.v|omnivision/.test(txt)||/image/.test(mods))tags.push({label:'👁 Vision',cls:'bg-blue-900/30 text-blue-400 border-blue-500/30'});
+  if(/coder|codex|starcoder|deepseekcoder|qwen.*coder|devstral|codestral/.test(txt))tags.push({label:'💻 Coding',cls:'bg-emerald-900/30 text-emerald-400 border-emerald-500/30'});
+  if(/qwq|deepseek.r|think|reason|r1\b/.test(txt))tags.push({label:'🧠 Reasoning',cls:'bg-purple-900/30 text-purple-400 border-purple-500/30'});
+  if(/audio|whisper|speech|tts|asr/.test(txt))tags.push({label:'🎵 Audio',cls:'bg-green-900/30 text-green-400 border-green-500/30'});
+  if(/image.*gen|dall|flux|imagen|text.?to.?image/.test(txt))tags.push({label:'🎨 Image Gen',cls:'bg-pink-900/30 text-pink-400 border-pink-500/30'});
+  if(/gemini/.test(txt))tags.push({label:'Gemini',cls:'bg-[#1e3a5f]/50 text-[#60a5fa] border-[#3b82f6]/30'});
+  else if(/llama/.test(txt))tags.push({label:'Llama',cls:'bg-[#3b1f5e]/50 text-[#c084fc] border-[#a855f7]/30'});
+  else if(/mistral|mixtral|devstral/.test(txt))tags.push({label:'Mistral',cls:'bg-[#3d1f00]/50 text-[#fb923c] border-[#f97316]/30'});
+  else if(/qwen/.test(txt))tags.push({label:'Qwen',cls:'bg-[#1e3a1f]/50 text-[#4ade80] border-[#22c55e]/30'});
+  else if(/deepseek/.test(txt))tags.push({label:'DeepSeek',cls:'bg-[#0f2a3d]/50 text-[#38bdf8] border-[#0ea5e9]/30'});
+  else if(/claude/.test(txt))tags.push({label:'Claude',cls:'bg-[#3b2a1f]/50 text-[#fbbf24] border-[#f59e0b]/30'});
+  else if(/phi/.test(txt))tags.push({label:'Phi',cls:'bg-[#1e2a3f]/50 text-[#93c5fd] border-[#60a5fa]/30'});
+  else if(/gemma/.test(txt))tags.push({label:'Gemma',cls:'bg-[#2a1f3b]/50 text-[#f0abfc] border-[#e879f9]/30'});
+  if(tags.length===0)tags.push({label:'💬 Text',cls:'bg-[#1f2333] text-[#9ca3af] border-[#2a2f45]'});
+  return tags;
+};
+const modelPassesFilter=(m,f)=>{
+  if(f==='all')return true;if(f==='favorites')return state.favModels.includes(m.id);
+  const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();
+  switch(f){case 'text':return!(/audio|vision|image.gen|embed|rerank/.test(txt));case 'vision':return/vision|vl\b|pixtral|llava|moondream|qvq/.test(txt);case 'uncensored':return/uncensored|dolphin|bagel|abliterat|noromaid/.test(txt);case 'coding':return/coder|codex|starcoder|devstral/.test(txt);case 'reasoning':return/qwq|deepseek.r|think|r1\b/.test(txt);case 'audio':return/audio|whisper|speech|tts/.test(txt);case 'image-gen':return/image.*gen|dall|flux|imagen/.test(txt);case 'large':return/70b|72b|90b|104b|180b|405b|671b/.test(txt);case 'small':return/1b|2b|3b|4b|7b|8b/.test(txt);default:return true;}
+};
+const isChatCapable=m=>{if(!m)return true;const txt=`${m.id} ${m.name}`.toLowerCase();return!/embed|rerank/.test(txt);};
+
+/* ── FETCH MODELS ── */
+const parseFreeModels=data=>(data.data||[]).filter(m=>{if(!m.pricing||KNOWN_DEAD.includes(m.id))return false;return parseFloat(String(m.pricing.prompt||'0'))===0&&parseFloat(String(m.pricing.completion||'0'))===0;}).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+
+const fetchModels=async()=>{
+  if(el.modelLoadingIcon)el.modelLoadingIcon.classList.remove('hidden');
+  if(el.modelCpuIcon)el.modelCpuIcon.classList.add('hidden');
+  if(el.currentModelDisplay)el.currentModelDisplay.textContent='Scanning…';
+  const hdrs={'Accept':'application/json','HTTP-Referer':location.href,'X-Title':'VortexAI'};
+  const authHdrs=state.apiKey?{...hdrs,'Authorization':`Bearer ${state.apiKey}`}:hdrs;
+  const strategies=[
+    {fetch:()=>fetch(MODELS_API,{headers:authHdrs}),parse:r=>r.json()},
+    {fetch:()=>fetch(MODELS_API,{headers:hdrs}),parse:r=>r.json()},
+    {fetch:()=>fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(MODELS_API)}`),parse:async r=>{const j=await r.json();return JSON.parse(j.contents);}},
+    {fetch:()=>fetch(`https://corsproxy.io/?${encodeURIComponent(MODELS_API)}`),parse:r=>r.json()},
+    {fetch:()=>fetch(`https://cors-anywhere.herokuapp.com/${MODELS_API}`,{headers:hdrs}),parse:r=>r.json()},
+  ];
+  let success=false;
+  for(const s of strategies){
+    try{
+      const res=await Promise.race([s.fetch(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),8000))]);
+      if(!res.ok)throw new Error(res.status);
+      const data=await s.parse(res);
+      if(!Array.isArray(data?.data))throw new Error('bad shape');
+      const free=parseFreeModels(data);if(!free.length)throw new Error('no free models');
+      state.models=free;
+      // ensure current model is in list
+      if(!state.models.find(m=>m.id===state.modelId)){const fb=FALLBACK_MODELS.find(m=>m.id===state.modelId);if(fb)state.models.unshift(fb);}
+      updateModelDisplay(state.modelId);
+      if(!el.modelsModal?.classList.contains('hidden'))renderModelsList();
+      if(el.modelCountLabel)el.modelCountLabel.textContent=`${state.models.length} free models available`;
+      toast(`${state.models.length} models loaded`,'success');
+      success=true;break;
+    }catch(e){console.warn('[VortexAI] model strategy failed:',e.message);}
+  }
+  if(!success){
+    if(!state.models.length){state.models=[...FALLBACK_MODELS];toast(`Offline — ${FALLBACK_MODELS.length} built-in models`,'error');}
+    else toast('Models refresh failed. Using cached.','error');
+    updateModelDisplay(state.modelId);
+    if(!el.modelsModal?.classList.contains('hidden'))renderModelsList();
+    if(el.modelCountLabel)el.modelCountLabel.textContent=`${state.models.length} models (offline)`;
+  }
+  if(el.modelLoadingIcon)el.modelLoadingIcon.classList.add('hidden');
+  if(el.modelCpuIcon)el.modelCpuIcon.classList.remove('hidden');
+  populateEnhancerModelSelect();
+};
+
+const updateModelDisplay=id=>{const found=state.models.find(m=>m.id===id);if(el.currentModelDisplay)el.currentModelDisplay.textContent=found?found.name:id.split('/').pop();updateTokenBar();};
+const selectModel=(id,silent=false)=>{
+  state.modelId=id;localStorage.setItem('nx_model',id);
+  updateModelDisplay(id);
+  state.recentModels=[id,...state.recentModels.filter(r=>r!==id)].slice(0,5);
+  localStorage.setItem('nx_recent_models',JSON.stringify(state.recentModels));
+  renderModelBadges();
+  if(!silent)closeAllModals();
+  if(!silent)toast(`Model: ${id.split('/').pop()}`,'success');
+};
+
+/* ── MODELS LIST ── */
+const sortModels=models=>{
+  if(state.currentSort==='ctx')return[...models].sort((a,b)=>(b.context_length||0)-(a.context_length||0));
+  if(state.currentSort==='recent')return[...models].sort((a,b)=>{const ai=state.recentModels.indexOf(a.id),bi=state.recentModels.indexOf(b.id);if(ai<0&&bi<0)return(a.name||'').localeCompare(b.name||'');if(ai<0)return 1;if(bi<0)return -1;return ai-bi;});
+  return[...models].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+};
+const renderModelsList=(q='')=>{
+  const query=q||el.modelSearchInput?.value||'';
+  if(!state.models.length){if(el.modelsList)el.modelsList.innerHTML='<div class="col-span-2 flex items-center justify-center py-10 text-[#4b5563] text-xs gap-2"><svg class="w-5 h-5 spin text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Loading…</div>';return;}
+  const filtered=sortModels(state.models.filter(m=>{const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();return txt.includes(query.toLowerCase())&&modelPassesFilter(m,state.currentFilter);}));
+  if(!filtered.length){if(el.modelsList)el.modelsList.innerHTML=`<div class="col-span-2 text-center py-8 text-[#4b5563] text-xs">No models match "${DOMPurify.sanitize(query||state.currentFilter)}"</div>`;return;}
+  const frag=document.createDocumentFragment();
+  filtered.forEach(m=>{
+    const tags=getModelTags(m);const sel=m.id===state.modelId,fav=state.favModels.includes(m.id);
+    const ctx=m.context_length?(m.context_length>=1000?Math.round(m.context_length/1000)+'k':m.context_length)+' ctx':'';
+    const d=document.createElement('div');d.className=`model-card${sel?' selected':''}${fav?' fav':''}`;
+    d.innerHTML=`<div class="flex justify-between items-start gap-2 mb-1"><span class="font-bold text-xs text-white leading-tight" style="font-family:'Syne',sans-serif">${DOMPurify.sanitize(m.name||'')}${sel?'<span class="text-[#6c63ff] text-[9px] ml-1">✓</span>':''}</span><div class="flex items-center gap-1 shrink-0">${ctx?`<span class="text-[9px] text-[#4b5563] mono">${ctx}</span>`:''}<button class="fav-star${fav?' starred':''}" data-id="${m.id}" title="${fav?'Unfavorite':'Favorite'}">${fav?'★':'☆'}</button></div></div><div class="text-[9px] text-[#4b5563] mono mb-1.5 truncate">${DOMPurify.sanitize(m.id||'')}</div>${m.description?`<div class="text-[10px] text-[#6b7280] mb-1.5 line-clamp-2">${DOMPurify.sanitize(m.description.slice(0,80))}</div>`:''}<div class="flex flex-wrap gap-1">${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>`;
+    d.querySelector('.fav-star').addEventListener('click',ev=>{ev.stopPropagation();const id=ev.target.dataset.id;const idx=state.favModels.indexOf(id);if(idx<0)state.favModels.push(id);else state.favModels.splice(idx,1);localStorage.setItem('nx_fav_models',JSON.stringify(state.favModels));ev.target.textContent=state.favModels.includes(id)?'★':'☆';ev.target.classList.toggle('starred',state.favModels.includes(id));d.classList.toggle('fav',state.favModels.includes(id));renderModelBadges();populateEnhancerModelSelect();});
+    d.addEventListener('click',ev=>{if(ev.target.closest('.fav-star'))return;selectModel(m.id);});
+    frag.appendChild(d);
+  });
+  if(el.modelsList){el.modelsList.innerHTML='';el.modelsList.appendChild(frag);}
+};
+el.modelSearchInput?.addEventListener('input',e=>renderModelsList(e.target.value));
+el.refreshModelsBtn?.addEventListener('click',fetchModels);
+document.querySelectorAll('.filter-pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('active'));p.classList.add('active');state.currentFilter=p.dataset.filter;renderModelsList();}));
+document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-sort]').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.currentSort=b.dataset.sort;renderModelsList();}));
+
+const renderModelBadges=()=>{
+  if(!el.modelBadgeBar)return;el.modelBadgeBar.innerHTML='';
+  const favs=state.favModels.slice(0,3).map(id=>state.models.find(m=>m.id===id)).filter(Boolean);
+  const recents=state.recentModels.map(id=>state.models.find(m=>m.id===id)).filter(m=>m&&!favs.find(f=>f.id===m.id)).slice(0,3);
+  const all=[...favs,...recents];if(!all.length)return;
+  const lbl=document.createElement('span');lbl.className='section-label shrink-0 mt-0.5';lbl.textContent=favs.length?'Pinned:':'Recent:';
+  el.modelBadgeBar.appendChild(lbl);
+  all.forEach(m=>{const active=m.id===state.modelId,fav=state.favModels.includes(m.id);const btn=document.createElement('button');btn.className=`text-[9px] sm:text-[10px] px-2 py-1 rounded-lg border transition-colors mono shrink-0 ${active?'bg-[#6c63ff]/20 border-[#6c63ff]/50 text-[#a78bfa]':'bg-[#141720] border-[#1f2333] text-[#6b7280] hover:border-[#6c63ff]/50 hover:text-[#a78bfa]'}`;btn.textContent=(fav?'⭐ ':'')+m.name.split(' ').slice(0,3).join(' ');btn.title=m.id;btn.addEventListener('click',()=>{selectModel(m.id);renderModelBadges();});el.modelBadgeBar.appendChild(btn);});
+};
+
+/* ── CANVAS ── */
+const openCanvas=()=>{if(state.canvasOpen)return;state.canvasOpen=true;el.canvasPanel?.classList.remove('hidden');el.canvasPanel?.classList.add('flex','flex-col');el.resizeHandle?.classList.remove('hidden');if(window.innerWidth<768)el.canvasPanel?.classList.add('canvas-mobile');};
+const closeCanvas=()=>{if(!state.canvasOpen)return;state.canvasOpen=false;el.canvasPanel?.classList.add('hidden');el.canvasPanel?.classList.remove('flex','flex-col','canvas-mobile');el.resizeHandle?.classList.add('hidden');};
+const switchTab=tab=>{
+  state.canvasTab=tab;
+  document.querySelectorAll('.canvas-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  el.canvasCodeTab?.classList.toggle('hidden',tab!=='code');
+  el.canvasPreviewTab?.classList.toggle('hidden',tab!=='preview');if(el.canvasPreviewTab)el.canvasPreviewTab.classList.toggle('flex',tab==='preview');
+  el.canvasEditorTab?.classList.toggle('hidden',tab!=='editor');if(el.canvasEditorTab)el.canvasEditorTab.classList.toggle('flex',tab==='editor');
+  el.canvasDiffTab?.classList.toggle('hidden',tab!=='diff');if(el.canvasDiffTab)el.canvasDiffTab.classList.toggle('flex',tab==='diff');
+  if(tab==='editor'&&state.canvasCode&&el.canvasEditor){el.canvasEditor.value=state.canvasCode;updateEditorInfo();}
+  if(tab==='diff')renderDiff();
+  if(tab==='preview'&&state.canvasCode)runPreview(state.canvasCode,state.canvasLang);
+};
+document.querySelectorAll('.canvas-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+
+const runPreview=(code,lang='html')=>{
   if(!el.canvasIframe)return;let doc=code;
-  if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>\n${code}\n<\/script></body></html>`;
-  el.canvasIframe.srcdoc=doc; };
+  if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>
+'use strict';
+/* ════════════════════════════════════════
+   VortexAI v6.1 — by Zelvior, Pakistan
+   Apache 2.0 · OpenRouter Powered
+════════════════════════════════════════ */
+
+/* ── CONSTANTS ── */
+const DEFAULT_API_URL  = 'https://openrouter.ai/api/v1/chat/completions';
+const DEFAULT_MODELS_URL = 'https://openrouter.ai/api/v1/models';
+const OR_AUTH_URL = 'https://openrouter.ai/auth';
+const OR_OAUTH_CB = location.origin + location.pathname; // callback = same page
+const APP_NAME = 'VortexAI';
+const DEFAULT_MODEL = 'google/gemini-2.5-flash-lite-preview';
+const SCAN_INTERVAL = 6 * 60 * 1000;
+const KNOWN_DEAD = ['openrouter/quasar-alpha','liquid/lfm-40b:free','neversleep/llama-3-lumimaid-70b:free'];
+
+const FALLBACK_MODELS = [
+  {id:'google/gemini-2.5-flash-lite-preview',name:'Gemini 2.5 Flash Lite',description:'Google fast',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
+  {id:'google/gemini-flash-1.5',name:'Gemini Flash 1.5',description:'Google multimodal',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
+  {id:'meta-llama/llama-3.1-8b-instruct:free',name:'Llama 3.1 8B',description:'Meta',context_length:131072,pricing:{prompt:'0',completion:'0'}},
+  {id:'mistralai/mistral-7b-instruct:free',name:'Mistral 7B',description:'Mistral AI',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+  {id:'qwen/qwen-2.5-7b-instruct:free',name:'Qwen 2.5 7B',description:'Alibaba',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+  {id:'deepseek/deepseek-r1:free',name:'DeepSeek R1',description:'Reasoning',context_length:163840,pricing:{prompt:'0',completion:'0'}},
+  {id:'deepseek/deepseek-chat-v3-0324:free',name:'DeepSeek V3',description:'Chat',context_length:65536,pricing:{prompt:'0',completion:'0'}},
+  {id:'nousresearch/hermes-3-llama-3.1-8b:free',name:'Hermes 3 8B',description:'Uncensored',context_length:131072,pricing:{prompt:'0',completion:'0'}},
+  {id:'microsoft/phi-3-mini-128k-instruct:free',name:'Phi-3 Mini 128K',description:'Microsoft',context_length:128000,pricing:{prompt:'0',completion:'0'}},
+  {id:'google/gemma-2-9b-it:free',name:'Gemma 2 9B',description:'Google',context_length:8192,pricing:{prompt:'0',completion:'0'}},
+  {id:'meta-llama/llama-3.2-3b-instruct:free',name:'Llama 3.2 3B',description:'Meta tiny',context_length:131072,pricing:{prompt:'0',completion:'0'}},
+  {id:'qwen/qwen3-8b:free',name:'Qwen3 8B',description:'Alibaba latest',context_length:32768,pricing:{prompt:'0',completion:'0'}},
+];
+
+const CORE_SYS = `You are VortexAI, a professional AI assistant by Zelvior (Pakistan). v6.1. Apache 2.0. Powered by OpenRouter. Be helpful, precise, use fenced code blocks with language tags. Never deny being VortexAI.`;
+
+/* ── STATE ── */
+const state = {
+  /* auth */
+  apiKey: localStorage.getItem('nx_api_key') || '',
+  oauthKey: localStorage.getItem('nx_oauth_key') || '',   // from OAuth flow
+  authMode: localStorage.getItem('nx_auth_mode') || 'none', // 'oauth' | 'manual' | 'none'
+  customBaseUrl: localStorage.getItem('nx_custom_base_url') || '',
+  customModelId: localStorage.getItem('nx_custom_model_id') || '',
+  /* ui */
+  customSys: localStorage.getItem('nx_custom_sys') || '',
+  temperature: parseFloat(localStorage.getItem('nx_temp') || '0.7'),
+  ctxLimit: parseInt(localStorage.getItem('nx_ctx_limit') || '40'),
+  maxTokens: parseInt(localStorage.getItem('nx_max_tokens') || '8192'),
+  autoScroll: localStorage.getItem('nx_autoscroll') !== '0',
+  autoCanvas: localStorage.getItem('nx_autocanvas') !== '0',
+  timestamps: localStorage.getItem('nx_timestamps') === '1',
+  lightMode: localStorage.getItem('nx_light_mode') === '1',
+  compact: localStorage.getItem('nx_compact') === '1',
+  fontMono: localStorage.getItem('nx_font_mono') === '1',
+  theme: localStorage.getItem('nx_theme') || '',
+  username: localStorage.getItem('nx_username') || '',
+  autoTTS: localStorage.getItem('nx_auto_tts') === '1',
+  enhancerModel: localStorage.getItem('nx_enhancer_model') || '__current__',
+  enhancerStyle: localStorage.getItem('nx_enhancer_style') || 'detailed',
+  /* chat */
+  messages: [], isGenerating: false,
+  modelId: localStorage.getItem('nx_model') || DEFAULT_MODEL,
+  models: [],
+  recentModels: JSON.parse(localStorage.getItem('nx_recent_models') || '[]'),
+  favModels: JSON.parse(localStorage.getItem('nx_fav_models') || '[]'),
+  abortCtrl: null, chatId: null,
+  /* canvas */
+  canvasCode: '', canvasLang: '', canvasTab: 'code', canvasOpen: false,
+  /* misc */
+  currentFilter: 'all', currentSort: 'name',
+  diffSnapshot: '', pinnedMsgs: [],
+  isListening: false, attachments: [], idb: null,
+};
+
+/* ── COMPUTED AUTH HELPERS ── */
+const getActiveKey = () => state.oauthKey || state.apiKey || '';
+const getApiUrl = () => {
+  const base = (state.customBaseUrl || DEFAULT_API_URL.replace('/chat/completions','')).replace(/\/$/, '');
+  return base + '/chat/completions';
+};
+const getModelsUrl = () => {
+  const base = (state.customBaseUrl || DEFAULT_MODELS_URL.replace('/models','')).replace(/\/$/, '');
+  return base + '/models';
+};
+const getEffectiveModelId = () => state.customModelId || state.modelId;
+const isAuthenticated = () => !!getActiveKey();
+
+/* ── DOM ── */
+const $ = id => document.getElementById(id);
+const el = {
+  chatContainer:$('chat-container'),chatInner:$('chat-inner'),
+  chatForm:$('chat-form'),userInput:$('user-input'),
+  sendBtn:$('send-btn'),sendIcon:$('send-icon'),stopIcon:$('stop-icon'),
+  modelBadgeBar:$('model-badge-bar'),openModelsBtn:$('open-models-btn'),
+  currentModelDisplay:$('current-model-display'),
+  modelLoadingIcon:$('model-loading-icon'),modelCpuIcon:$('model-cpu-icon'),
+  modalOverlay:$('modal-overlay'),modelsModal:$('models-modal'),
+  modelsList:$('models-list'),modelSearchInput:$('model-search-input'),
+  modelCountLabel:$('model-count-label'),refreshModelsBtn:$('refresh-models-btn'),
+  settingsModal:$('settings-modal'),apiKeyInput:$('api-key-input'),
+  tempSlider:$('temp-slider'),tempVal:$('temp-val'),
+  ctxLimitSlider:$('ctx-limit-slider'),ctxLimitVal:$('ctx-limit-val'),
+  maxTokensSlider:$('max-tokens-slider'),maxTokensVal:$('max-tokens-val'),
+  saveSettingsBtn:$('save-settings-btn'),
+  docsModal:$('docs-modal'),docsBtn:$('docs-btn'),docsBtnMobile:$('docs-btn-mobile'),
+  settingsBtn:$('settings-btn'),exportBtn:$('export-btn'),exportModal:$('export-modal'),
+  exportMdBtn:$('export-md-btn'),exportJsonBtn:$('export-json-btn'),
+  exportHtmlBtn:$('export-html-btn'),exportTxtBtn:$('export-txt-btn'),
+  newChatBtn:$('new-chat-btn'),
+  canvasPanel:$('canvas-panel'),canvasEmpty:$('canvas-empty'),
+  canvasPre:$('canvas-pre'),canvasContent:$('canvas-content'),
+  canvasLangBadge:$('canvas-lang-badge'),copyCanvasBtn:$('copy-canvas-btn'),
+  closeCanvasBtn:$('close-canvas-btn'),canvasIframe:$('canvas-iframe'),
+  refreshPreviewBtn:$('refresh-preview-btn'),runCanvasBtn:$('run-canvas-btn'),
+  openPreviewTabBtn:$('open-preview-tab-btn'),
+  canvasCodeTab:$('canvas-code-tab'),canvasPreviewTab:$('canvas-preview-tab'),
+  canvasEditorTab:$('canvas-editor-tab'),canvasDiffTab:$('canvas-diff-tab'),
+  canvasEditor:$('canvas-editor'),canvasEditorInfo:$('canvas-editor-info'),
+  editorFormatBtn:$('editor-format-btn'),editorRunBtn:$('editor-run-btn'),
+  editorApplyBtn:$('editor-apply-btn'),downloadCanvasBtn:$('download-canvas-btn'),
+  diffOutput:$('diff-output'),diffSnapBtn:$('diff-snap-btn'),
+  toastContainer:$('toast-container'),termsOverlay:$('terms-overlay'),
+  termsAcceptBtn:$('terms-accept-btn'),termsDeclineBtn:$('terms-decline-btn'),
+  sidebar:$('sidebar'),sidebarToggle:$('sidebar-toggle'),
+  sidebarOverlay:$('sidebar-overlay'),historyList:$('history-list'),
+  newChatSidebarBtn:$('new-chat-sidebar-btn'),clearHistoryBtn:$('clear-history-btn'),
+  exportHistoryBtn:$('export-history-btn'),importHistoryBtn:$('import-history-btn'),
+  importHistoryFile:$('import-history-file'),
+  sysPromptBar:$('sys-prompt-bar'),sysPromptLive:$('sys-prompt-live'),
+  sysPromptClose:$('sys-prompt-close'),sysPromptBtn:$('sys-prompt-btn'),
+  tokenProgressFill:$('token-progress-fill'),
+  msgCountLabel:$('msg-count-label'),charCount:$('char-count'),
+  resizeHandle:$('resize-handle'),
+  compactToggle:$('compact-toggle'),compactThumb:$('compact-thumb'),
+  autoscrollToggle:$('autoscroll-toggle'),autoscrollThumb:$('autoscroll-thumb'),
+  lightModeToggle:$('light-mode-toggle'),lightModeThumb:$('light-mode-thumb'),
+  autocanvasToggle:$('autocanvas-toggle'),autocanvasThumb:$('autocanvas-thumb'),
+  timestampsToggle:$('timestamps-toggle'),timestampsThumb:$('timestamps-thumb'),
+  autoTTSToggle:$('auto-tts-toggle'),autoTTSThumb:$('auto-tts-thumb'),
+  scrollToBottom:$('scroll-to-bottom'),regenBtn:$('regen-btn'),
+  toggleKeyVisibility:$('toggle-key-visibility'),
+  customSysBar:$('custom-sys-bar'),customSysInput:$('custom-sys-input'),
+  customSysClose:$('custom-sys-close'),
+  historySearch:$('history-search'),statChats:$('stat-chats'),statMsgs:$('stat-msgs'),
+  usernameInput:$('username-input'),ttsBtn:$('tts-btn'),
+  ctxRing:$('ctx-ring'),cmdPalette:$('cmd-palette'),cmdInput:$('cmd-input'),
+  cmdResults:$('cmd-results'),cmdPaletteBtn:$('cmd-palette-btn'),
+  fontDefaultBtn:$('font-default-btn'),fontMonoBtn:$('font-mono-btn'),
+  attachBtn:$('attach-btn'),attachFileInput:$('attach-file-input'),attachBar:$('attach-bar'),
+  voiceBtn:$('voice-btn'),enhanceBtn:$('enhance-btn'),
+};
+
+/* ── HELPERS ── */
+const genId = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+const dlFile = (content, filename, mime) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content],{type:mime})); a.download = filename; a.click(); URL.revokeObjectURL(a.href); };
+const estimateTokens = t => Math.ceil((t||'').length / 3.8);
+const EXT_MAP = {js:'js',javascript:'js',jsx:'jsx',tsx:'tsx',ts:'ts',python:'py',py:'py',html:'html',css:'css',svg:'svg',json:'json',md:'md',sh:'sh',bash:'sh',c:'c',cpp:'cpp',java:'java',rs:'rs',go:'go',rb:'rb',php:'php'};
+
+/* ── TOAST ── */
+const toast = (msg, type='info') => {
+  const t = document.createElement('div');
+  const bg = type==='error' ? 'bg-[#1c0f0f] border-red-500/50 text-red-300' : type==='success' ? 'bg-[#0f1c12] border-green-500/50 text-green-300' : 'bg-[#141720] border-[#2a2f45] text-[#e2e4f0]';
+  t.className = `px-3 py-2 rounded-xl border text-xs font-medium flex items-center gap-2 shadow-xl pointer-events-auto transform translate-y-4 opacity-0 transition-all duration-200 ${bg}`;
+  t.innerHTML = `<span>${type==='error'?'✕':type==='success'?'✓':'ℹ'}</span><span class="flex-1 min-w-0 line-clamp-2">${DOMPurify.sanitize(String(msg))}</span>`;
+  el.toastContainer.appendChild(t);
+  requestAnimationFrame(() => t.classList.remove('translate-y-4','opacity-0'));
+  setTimeout(() => { t.classList.add('translate-y-4','opacity-0'); setTimeout(() => t.remove(), 200); }, 3800);
+};
+
+/* ── AUTH STATUS UI ── */
+const updateAuthUI = () => {
+  const bar = $('auth-status-bar'), dot = $('auth-dot'), txt = $('auth-status-text'), signout = $('auth-signout-btn');
+  const anonBar = $('anon-limit-bar');
+  if (!bar) return;
+  if (state.authMode === 'oauth' && state.oauthKey) {
+    bar.className = 'auth-status-bar authed';
+    if (dot) { dot.className = 'auth-dot green'; }
+    if (txt) txt.textContent = '✓ Signed in via OpenRouter OAuth';
+    if (signout) signout.classList.remove('hidden');
+    if (anonBar) anonBar.classList.remove('show');
+  } else if ((state.authMode === 'manual' || state.authMode === 'none') && state.apiKey) {
+    bar.className = 'auth-status-bar authed';
+    if (dot) { dot.className = 'auth-dot green'; }
+    if (txt) txt.textContent = '✓ API key configured';
+    if (signout) signout.classList.add('hidden');
+    if (anonBar) anonBar.classList.remove('show');
+  } else {
+    bar.className = 'auth-status-bar anon';
+    if (dot) { dot.className = 'auth-dot gray'; }
+    if (txt) txt.textContent = 'No key — sign in or add API key (some free models work without auth)';
+    if (signout) signout.classList.add('hidden');
+    if (anonBar) anonBar.classList.add('show');
+  }
+  // Update header model btn color
+  if (el.currentModelDisplay) el.currentModelDisplay.style.color = isAuthenticated() ? '' : '#eab308';
+};
+
+/* ── OAUTH (OpenRouter key exchange) ── */
+// OpenRouter OAuth flow: open popup → user signs in → callback URL gets ?code=
+// We use the simpler "callback key" approach: open auth page with callback_url,
+// OpenRouter redirects back with ?code= which we POST to get the key.
+let _oauthPopup = null;
+let _oauthTimer = null;
+
+const startOAuth = () => {
+  const oauthBtn = $('oauth-btn'), oauthLoading = $('oauth-loading');
+  if (oauthBtn) { oauthBtn.disabled = true; oauthBtn.innerHTML = '<svg class="w-4 h-4 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Opening…'; }
+  if (oauthLoading) { oauthLoading.classList.add('show'); }
+
+  // Build the OpenRouter auth URL with callback pointing back here
+  const callbackUrl = encodeURIComponent(OR_OAUTH_CB);
+  const authUrl = `${OR_AUTH_URL}?callback_url=${callbackUrl}`;
+
+  // Open popup
+  const w = 520, h = 620;
+  const left = Math.max(0, (screen.width - w) / 2);
+  const top = Math.max(0, (screen.height - h) / 2);
+  _oauthPopup = window.open(authUrl, 'vortexai_oauth', `width=${w},height=${h},left=${left},top=${top},scrollbars=yes`);
+
+  if (!_oauthPopup) {
+    // Popup blocked — fallback to redirect
+    toast('Popup blocked! Opening in new tab…', 'error');
+    window.open(authUrl, '_blank');
+    resetOAuthBtn();
+    return;
+  }
+
+  // Poll popup for completion (code= in URL)
+  let attempts = 0;
+  _oauthTimer = setInterval(() => {
+    attempts++;
+    if (attempts > 180) { // 3 min timeout
+      clearInterval(_oauthTimer);
+      resetOAuthBtn();
+      toast('OAuth timed out. Try again or use manual API key.', 'error');
+      _oauthPopup?.close();
+      return;
+    }
+    try {
+      const popupUrl = _oauthPopup?.location?.href || '';
+      if (popupUrl && popupUrl.includes('code=')) {
+        clearInterval(_oauthTimer);
+        const u = new URL(popupUrl);
+        const code = u.searchParams.get('code');
+        _oauthPopup.close();
+        if (code) exchangeOAuthCode(code);
+        else { resetOAuthBtn(); toast('OAuth failed — no code returned', 'error'); }
+      }
+    } catch (e) {
+      // Cross-origin — popup is on OpenRouter, can't read yet. Keep polling.
+    }
+    if (_oauthPopup?.closed && attempts > 5) {
+      // Popup closed without completing — check if we got a key via postMessage
+      clearInterval(_oauthTimer);
+      resetOAuthBtn();
+    }
+  }, 1000);
+
+  // Also listen for postMessage from popup (OpenRouter may send it)
+  window.addEventListener('message', handleOAuthMessage, {once: false});
+};
+
+const handleOAuthMessage = (e) => {
+  // OpenRouter may postMessage {type:'authorization_code', code:'...'}
+  // or {type:'api_key', key:'sk-or-...'}
+  if (!e.data) return;
+  const d = typeof e.data === 'string' ? (() => { try { return JSON.parse(e.data); } catch { return {}; } })() : e.data;
+  if (d.type === 'api_key' && d.key) {
+    clearInterval(_oauthTimer); _oauthPopup?.close();
+    applyOAuthKey(d.key);
+  } else if (d.type === 'authorization_code' && d.code) {
+    clearInterval(_oauthTimer); _oauthPopup?.close();
+    exchangeOAuthCode(d.code);
+  }
+};
+
+const exchangeOAuthCode = async (code) => {
+  const oauthLoading = $('oauth-loading');
+  if (oauthLoading) oauthLoading.querySelector('p')?.setAttribute('data-text','Exchanging code…');
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/auth/keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    if (!res.ok) throw new Error(`Exchange failed: ${res.status}`);
+    const data = await res.json();
+    const key = data.key || data.api_key || data.token;
+    if (!key) throw new Error('No key in response');
+    applyOAuthKey(key);
+  } catch (err) {
+    console.warn('[VortexAI OAuth]', err);
+    // Fallback: ask user to paste key (OpenRouter sometimes doesn't support code exchange for non-registered apps)
+    toast('Auto-exchange failed. Please paste your API key manually.', 'error');
+    const customApiBody = $('custom-api-body');
+    if (customApiBody) { customApiBody.classList.add('open'); $('custom-api-chevron')?.classList.add('rotate-180'); }
+    resetOAuthBtn();
+  }
+};
+
+const applyOAuthKey = (key) => {
+  state.oauthKey = key; state.authMode = 'oauth';
+  localStorage.setItem('nx_oauth_key', key); localStorage.setItem('nx_auth_mode', 'oauth');
+  updateAuthUI(); resetOAuthBtn();
+  toast('✓ Signed in with OpenRouter!', 'success');
+  if (!state.models.length) fetchModels();
+  closeAllModals();
+};
+
+const resetOAuthBtn = () => {
+  const oauthBtn = $('oauth-btn'), oauthLoading = $('oauth-loading');
+  if (oauthBtn) { oauthBtn.disabled = false; oauthBtn.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Sign in with OpenRouter'; }
+  if (oauthLoading) oauthLoading.classList.remove('show');
+};
+
+// Check URL for OAuth callback code on page load
+const checkOAuthCallback = () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  if (code) {
+    // Remove code from URL
+    const url = new URL(location.href); url.searchParams.delete('code'); url.searchParams.delete('state');
+    history.replaceState({}, '', url.toString());
+    toast('Completing sign-in…', 'info');
+    exchangeOAuthCode(code);
+  }
+};
+
+// Sign out
+$('auth-signout-btn')?.addEventListener('click', () => {
+  state.oauthKey = ''; state.authMode = state.apiKey ? 'manual' : 'none';
+  localStorage.removeItem('nx_oauth_key'); localStorage.removeItem('nx_auth_mode');
+  updateAuthUI(); toast('Signed out', 'info');
+});
+
+// OAuth button
+$('oauth-btn')?.addEventListener('click', startOAuth);
+
+// Custom API toggle
+$('custom-api-toggle')?.addEventListener('click', () => {
+  const body = $('custom-api-body'), chev = $('custom-api-chevron');
+  const open = body?.classList.toggle('open');
+  chev?.classList.toggle('rotate-180', open);
+});
+
+/* ── THEMING ── */
+const mkToggle = (toggleEl, thumbEl, on) => { if (!toggleEl || !thumbEl) return; toggleEl.style.background = on ? 'var(--c-accent)' : 'var(--c-border2)'; thumbEl.style.background = on ? 'white' : 'var(--c-muted)'; thumbEl.style.transform = on ? 'translateX(20px)' : 'translateX(0)'; toggleEl.setAttribute('aria-checked', String(on)); };
+const applyTheme = t => { document.body.className = document.body.className.replace(/\btheme-\w+/g, ''); if (t) document.body.classList.add('theme-' + t); document.querySelectorAll('.theme-btn').forEach(b => b.style.borderColor = b.dataset.theme === t ? 'rgba(255,255,255,.9)' : ''); };
+const applyFont = mono => { state.fontMono = mono; mono ? document.body.classList.add('font-mono') : document.body.classList.remove('font-mono'); if (el.fontDefaultBtn) el.fontDefaultBtn.className = `flex-1 py-1.5 rounded-lg border text-xs font-semibold transition-colors ${!mono ? 'border-[#6c63ff] bg-[#6c63ff]/10 text-[#a78bfa]' : 'border-[#1f2333] text-[#6b7280]'}`; if (el.fontMonoBtn) el.fontMonoBtn.className = `flex-1 py-1.5 rounded-lg border text-xs mono transition-colors ${mono ? 'border-[#6c63ff] bg-[#6c63ff]/10 text-[#a78bfa]' : 'border-[#1f2333] text-[#6b7280]'}`; };
+
+applyTheme(state.theme); applyFont(state.fontMono);
+if (state.compact) document.body.classList.add('compact');
+if (state.lightMode) document.body.classList.add('light-mode');
+mkToggle(el.compactToggle, el.compactThumb, state.compact);
+mkToggle(el.autoscrollToggle, el.autoscrollThumb, state.autoScroll);
+mkToggle(el.lightModeToggle, el.lightModeThumb, state.lightMode);
+mkToggle(el.autocanvasToggle, el.autocanvasThumb, state.autoCanvas);
+mkToggle(el.timestampsToggle, el.timestampsThumb, state.timestamps);
+mkToggle(el.autoTTSToggle, el.autoTTSThumb, state.autoTTS);
+if (el.apiKeyInput) el.apiKeyInput.value = state.apiKey;
+if ($('custom-base-url')) $('custom-base-url').value = state.customBaseUrl;
+if ($('custom-model-id')) $('custom-model-id').value = state.customModelId;
+if (el.tempSlider) { el.tempSlider.value = state.temperature; if (el.tempVal) el.tempVal.textContent = state.temperature.toFixed(1); }
+if (el.ctxLimitSlider) { el.ctxLimitSlider.value = state.ctxLimit; if (el.ctxLimitVal) el.ctxLimitVal.textContent = state.ctxLimit; }
+if (el.maxTokensSlider) { el.maxTokensSlider.value = state.maxTokens; if (el.maxTokensVal) el.maxTokensVal.textContent = state.maxTokens; }
+if (el.usernameInput) el.usernameInput.value = state.username;
+if (el.sysPromptLive) el.sysPromptLive.value = state.customSys;
+if (el.customSysInput) el.customSysInput.value = state.customSys;
+updateAuthUI();
+
+/* ── SLIDER LIVE ── */
+el.tempSlider?.addEventListener('input', () => el.tempVal && (el.tempVal.textContent = parseFloat(el.tempSlider.value).toFixed(1)));
+el.ctxLimitSlider?.addEventListener('input', () => el.ctxLimitVal && (el.ctxLimitVal.textContent = el.ctxLimitSlider.value));
+el.maxTokensSlider?.addEventListener('input', () => el.maxTokensVal && (el.maxTokensVal.textContent = el.maxTokensSlider.value));
+
+/* ── TOGGLE BINDINGS ── */
+const bindToggle = (te, th, key, sk, extra) => te?.addEventListener('click', () => { state[sk] = !state[sk]; mkToggle(te, th, state[sk]); localStorage.setItem(key, state[sk] ? '1' : '0'); if (extra) extra(state[sk]); });
+bindToggle(el.compactToggle, el.compactThumb, 'nx_compact', 'compact', v => document.body.classList.toggle('compact', v));
+bindToggle(el.autoscrollToggle, el.autoscrollThumb, 'nx_autoscroll', 'autoScroll');
+bindToggle(el.lightModeToggle, el.lightModeThumb, 'nx_light_mode', 'lightMode', v => document.body.classList.toggle('light-mode', v));
+bindToggle(el.autocanvasToggle, el.autocanvasThumb, 'nx_autocanvas', 'autoCanvas');
+bindToggle(el.timestampsToggle, el.timestampsThumb, 'nx_timestamps', 'timestamps');
+bindToggle(el.autoTTSToggle, el.autoTTSThumb, 'nx_auto_tts', 'autoTTS');
+document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => { state.theme = b.dataset.theme; applyTheme(state.theme); }));
+el.fontDefaultBtn?.addEventListener('click', () => { applyFont(false); localStorage.setItem('nx_font_mono', '0'); });
+el.fontMonoBtn?.addEventListener('click', () => { applyFont(true); localStorage.setItem('nx_font_mono', '1'); });
+el.toggleKeyVisibility?.addEventListener('click', () => { if (el.apiKeyInput) el.apiKeyInput.type = el.apiKeyInput.type === 'password' ? 'text' : 'password'; });
+
+/* ── TTS ── */
+let ttsGlobalOn = false;
+el.ttsBtn?.addEventListener('click', () => { ttsGlobalOn = !ttsGlobalOn; el.ttsBtn.style.color = ttsGlobalOn ? 'var(--c-accent2)' : ''; if (!ttsGlobalOn && window.speechSynthesis) window.speechSynthesis.cancel(); toast(ttsGlobalOn ? 'TTS enabled' : 'TTS disabled', 'info'); });
+const speakText = txt => { if (!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(txt.replace(/```[\s\S]*?```/g,'[code]').replace(/[#*_`~]/g,'').slice(0,2000)); u.rate = 1.05; window.speechSynthesis.speak(u); };
+
+/* ── TERMS ── */
+if (localStorage.getItem('nx_terms_v2')) {
+  el.termsOverlay?.remove();
+} else if (el.termsOverlay) {
+  el.termsAcceptBtn?.addEventListener('click', () => { localStorage.setItem('nx_terms_v2','1'); el.termsOverlay.style.transition='opacity .3s'; el.termsOverlay.style.opacity='0'; setTimeout(() => el.termsOverlay.remove(), 300); if (!isAuthenticated()) setTimeout(() => openModal(el.settingsModal), 600); });
+  el.termsDeclineBtn?.addEventListener('click', () => { document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100svh;font-family:sans-serif;color:#6b7280;padding:2rem;text-align:center;">You must accept the terms to use VortexAI.</div>'; });
+}
+
+/* ── MARKDOWN ── */
+const renderer = new marked.Renderer();
+renderer.code = function({text, lang}) {
+  const code = text||''; const language = (lang && hljs.getLanguage(lang)) ? lang : 'plaintext';
+  let hl; try { hl = hljs.highlight(code, {language}).value; } catch { hl = hljs.highlightAuto(code).value; }
+  const isWeb = /^(html|css|javascript|js|jsx|tsx|svg)$/i.test(lang||'');
+  const runBtn = isWeb ? `<button class="code-run-btn" data-lang="${lang||'html'}">▶ Run</button>` : '';
+  return `<div class="code-block-wrap"><div class="code-block-header"><span class="lang-label">${DOMPurify.sanitize(language)}</span><div class="code-block-actions">${runBtn}<button class="code-copy-btn">Copy</button><button class="code-dl-btn" data-lang="${lang||'txt'}">↓ Save</button><button class="code-canvas-btn" data-lang="${lang||''}">⊞ Canvas</button></div></div><pre><code class="hljs language-${DOMPurify.sanitize(language)}">${hl}</code></pre></div>`;
+};
+renderer.table = function(token) {
+  if (token && typeof token === 'object' && 'header' in token) {
+    const hd = '<tr>' + token.header.map(c => `<th>${marked.parseInline(c.text||'')}</th>`).join('') + '</tr>';
+    const bd = token.rows.map(row => '<tr>' + row.map(c => `<td>${marked.parseInline(c.text||'')}</td>`).join('') + '</tr>').join('');
+    return `<div class="table-wrap"><table><thead>${hd}</thead><tbody>${bd}</tbody></table></div>`;
+  }
+  return `<div class="table-wrap"><table><thead>${token}</thead><tbody>${arguments[1]||''}</tbody></table></div>`;
+};
+marked.use({breaks:true, gfm:true, renderer});
+const mdParse = txt => { try { const r = marked.parse(txt||'',{async:false}); return (r instanceof Promise) ? (txt||'') : r; } catch { return txt||''; } };
+
+/* ── CODE BLOCK EVENTS ── */
+document.addEventListener('click', e => {
+  const cpy = e.target.closest('.code-copy-btn'); if (cpy) { const code = cpy.closest('.code-block-wrap')?.querySelector('code'); if (code) { navigator.clipboard.writeText(code.textContent).then(() => { const p=cpy.textContent; cpy.textContent='Copied!'; setTimeout(()=>cpy.textContent=p,1500); }); } return; }
+  const dl = e.target.closest('.code-dl-btn'); if (dl) { const code = dl.closest('.code-block-wrap')?.querySelector('code'); if (code) { const ext=EXT_MAP[(dl.dataset.lang||'').toLowerCase()]||'txt'; dlFile(code.textContent,`vortexai.${ext}`,'text/plain'); toast(`Saved .${ext}`,'success'); } return; }
+  const run = e.target.closest('.code-run-btn'); if (run) { const code = run.closest('.code-block-wrap')?.querySelector('code'); if (code) { openCanvas(); switchTab('preview'); runPreview(code.textContent, run.dataset.lang); } return; }
+  const cvs = e.target.closest('.code-canvas-btn'); if (cvs) { const code = cvs.closest('.code-block-wrap')?.querySelector('code'); if (code) { openCanvas(); updateCanvas(code.textContent, cvs.dataset.lang); switchTab('code'); toast('Sent to canvas','success'); } return; }
+});
+
+/* ── TOKEN BAR ── */
+const updateTokenBar = () => {
+  const total = state.messages.reduce((s,m) => s + estimateTokens(m.content), 0) + estimateTokens(CORE_SYS);
+  const model = state.models.find(m => m.id === state.modelId);
+  const limit = model?.context_length || 128000;
+  const pct = Math.min(100, (total/limit)*100);
+  if (el.tokenProgressFill) { el.tokenProgressFill.style.width=pct+'%'; el.tokenProgressFill.style.background=pct>80?'var(--c-red)':pct>60?'var(--c-orange)':'var(--c-accent)'; }
+  if (el.msgCountLabel) el.msgCountLabel.textContent = state.messages.length + ' msg' + (state.messages.length!==1?'s':'');
+  const deg = Math.round(pct*3.6);
+  if (el.ctxRing) { el.ctxRing.style.background=`conic-gradient(${pct>80?'var(--c-red)':pct>60?'var(--c-orange)':'var(--c-accent)'} ${deg}deg, var(--c-border2) ${deg}deg)`; el.ctxRing.classList.toggle('hidden',pct===0); }
+  if (el.regenBtn) el.regenBtn.classList.toggle('visible', state.messages.some(m=>m.role==='assistant') && !state.isGenerating);
+};
+
+/* ── CHAR COUNT ── */
+el.userInput?.addEventListener('input', () => {
+  const len = el.userInput.value.length;
+  if (el.charCount) { el.charCount.textContent = len||'0'; el.charCount.className = len>3000?'danger':len>1500?'warn':''; }
+  el.userInput.style.height = 'auto';
+  el.userInput.style.height = Math.min(el.userInput.scrollHeight, 160) + 'px';
+});
+
+/* ── MODALS ── */
+const allModals = [el.modelsModal, el.settingsModal, el.docsModal, el.exportModal].filter(Boolean);
+const openModal = mel => { if (!mel) return; el.modalOverlay?.classList.remove('hidden'); mel.classList.remove('hidden'); mel.classList.add('flex'); void mel.offsetWidth; el.modalOverlay?.classList.remove('opacity-0'); mel.classList.remove('opacity-0','scale-95'); };
+const closeAllModals = () => { el.modalOverlay?.classList.add('opacity-0'); allModals.forEach(m => m.classList.add('opacity-0','scale-95')); setTimeout(() => { el.modalOverlay?.classList.add('hidden'); allModals.forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); }); }, 200); };
+el.modalOverlay?.addEventListener('click', closeAllModals);
+document.querySelectorAll('.close-modal-btn').forEach(b => b.addEventListener('click', closeAllModals));
+el.openModelsBtn?.addEventListener('click', () => { openModal(el.modelsModal); renderModelsList(); setTimeout(() => el.modelSearchInput?.focus(), 80); });
+el.settingsBtn?.addEventListener('click', () => { updateAuthUI(); openModal(el.settingsModal); });
+el.docsBtn?.addEventListener('click', () => openModal(el.docsModal));
+el.docsBtnMobile?.addEventListener('click', () => openModal(el.docsModal));
+el.exportBtn?.addEventListener('click', () => openModal(el.exportModal));
+
+/* ── SAVE SETTINGS ── */
+el.saveSettingsBtn?.addEventListener('click', () => {
+  const key = el.apiKeyInput?.value?.trim() || '';
+  state.apiKey = key;
+  if (key) { localStorage.setItem('nx_api_key', key); if (state.authMode !== 'oauth') { state.authMode='manual'; localStorage.setItem('nx_auth_mode','manual'); } }
+  else { localStorage.removeItem('nx_api_key'); if (state.authMode==='manual') { state.authMode='none'; localStorage.setItem('nx_auth_mode','none'); } }
+  const baseUrl = $('custom-base-url')?.value?.trim() || '';
+  state.customBaseUrl = baseUrl; localStorage.setItem('nx_custom_base_url', baseUrl);
+  const modelOverride = $('custom-model-id')?.value?.trim() || '';
+  state.customModelId = modelOverride; localStorage.setItem('nx_custom_model_id', modelOverride);
+  if (el.tempSlider) { state.temperature = parseFloat(el.tempSlider.value); localStorage.setItem('nx_temp', state.temperature); }
+  if (el.ctxLimitSlider) { state.ctxLimit = parseInt(el.ctxLimitSlider.value); localStorage.setItem('nx_ctx_limit', state.ctxLimit); }
+  if (el.maxTokensSlider) { state.maxTokens = parseInt(el.maxTokensSlider.value); localStorage.setItem('nx_max_tokens', state.maxTokens); }
+  if (el.usernameInput) { state.username = el.usernameInput.value.trim(); localStorage.setItem('nx_username', state.username); }
+  localStorage.setItem('nx_theme', state.theme);
+  updateAuthUI();
+  closeAllModals();
+  toast('Settings saved', 'success');
+  // Refresh models if base URL changed
+  if (baseUrl) setTimeout(fetchModels, 300);
+});
+
+/* ── SYS PROMPT ── */
+el.sysPromptBtn?.addEventListener('click', () => { el.sysPromptBar?.classList.toggle('open'); if (el.sysPromptBar?.classList.contains('open')) el.sysPromptLive?.focus(); });
+el.sysPromptClose?.addEventListener('click', () => el.sysPromptBar?.classList.remove('open'));
+el.sysPromptLive?.addEventListener('input', () => { state.customSys = el.sysPromptLive.value.trim(); localStorage.setItem('nx_custom_sys', state.customSys); if (el.customSysInput) el.customSysInput.value = state.customSys; });
+el.customSysClose?.addEventListener('click', () => { if (el.customSysBar) { el.customSysBar.classList.add('hidden'); el.customSysBar.style.display='none'; } });
+el.customSysInput?.addEventListener('input', () => { state.customSys = el.customSysInput.value.trim(); localStorage.setItem('nx_custom_sys', state.customSys); if (el.sysPromptLive) el.sysPromptLive.value = state.customSys; });
+
+/* ── EXPORTS ── */
+const exportMd = () => { if (!state.messages.length) { toast('No messages','error'); return; } let md=`# VortexAI Chat\n_Model: ${state.modelId}_\n_${new Date().toLocaleString()}_\n\n---\n\n`; state.messages.forEach(m => { md+=`**${m.role==='user'?(state.username||'You'):'VortexAI'}:**\n\n${m.content}\n\n---\n\n`; }); dlFile(md,`vortexai-${Date.now()}.md`,'text/markdown'); closeAllModals(); toast('Exported Markdown','success'); };
+const exportJson = () => { if (!state.messages.length) { toast('No messages','error'); return; } dlFile(JSON.stringify({model:state.modelId,date:new Date().toISOString(),messages:state.messages},null,2),`vortexai-${Date.now()}.json`,'application/json'); closeAllModals(); toast('Exported JSON','success'); };
+const exportHtml = () => { if (!state.messages.length) { toast('No messages','error'); return; } const rows=state.messages.map(m=>{const isU=m.role==='user';return`<div style="margin:16px 0;padding:12px 16px;border-radius:12px;background:${isU?'#1a1d2e':'#0e1018'};border:1px solid #1f2333"><div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:600;text-transform:uppercase">${isU?(state.username||'You'):'VortexAI'}</div><div>${isU?m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'):marked.parse(m.content||'')}</div></div>`;}).join(''); dlFile(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VortexAI Export</title><style>body{font-family:Inter,sans-serif;background:#07080d;color:#e2e4f0;padding:2rem;max-width:800px;margin:0 auto;line-height:1.6}pre{background:#0d1117;padding:1rem;border-radius:8px;overflow:auto}</style></head><body><h1>⚡ VortexAI</h1><p style="color:#6b7280">${state.modelId} · ${new Date().toLocaleString()}</p><hr style="border-color:#1f2333;margin:1.5rem 0">${rows}</body></html>`,`vortexai-${Date.now()}.html`,'text/html'); closeAllModals(); toast('Exported HTML','success'); };
+const exportTxt = () => { if (!state.messages.length) { toast('No messages','error'); return; } let txt=`VortexAI Chat\nModel: ${state.modelId}\n${new Date().toLocaleString()}\n${'='.repeat(60)}\n\n`; state.messages.forEach(m => { txt+=`[${m.role==='user'?(state.username||'You'):'VortexAI'}]\n${m.content}\n\n${'-'.repeat(40)}\n\n`; }); dlFile(txt,`vortexai-${Date.now()}.txt`,'text/plain'); closeAllModals(); toast('Exported Text','success'); };
+el.exportMdBtn?.addEventListener('click', exportMd); el.exportJsonBtn?.addEventListener('click', exportJson); el.exportHtmlBtn?.addEventListener('click', exportHtml); el.exportTxtBtn?.addEventListener('click', exportTxt);
+
+/* ── INDEXEDDB ── */
+const openIDB = () => new Promise(res => { if (!window.indexedDB) { res(null); return; } const req=indexedDB.open('vortexai',1); req.onupgradeneeded=e=>e.target.result.createObjectStore('chats',{keyPath:'id'}); req.onsuccess=e=>{state.idb=e.target.result;res(state.idb);}; req.onerror=()=>res(null); });
+const idbAll = () => new Promise(res => { if (!state.idb) { res([]); return; } const req=state.idb.transaction('chats','readonly').objectStore('chats').getAll(); req.onsuccess=()=>res((req.result||[]).sort((a,b)=>b.ts-a.ts)); req.onerror=()=>res([]); });
+const idbPut = chat => new Promise(res => { if (!state.idb) { res(); return; } const tx=state.idb.transaction('chats','readwrite'); tx.objectStore('chats').put(chat); tx.oncomplete=()=>res(); tx.onerror=()=>res(); });
+const idbDel = id => new Promise(res => { if (!state.idb) { res(); return; } const tx=state.idb.transaction('chats','readwrite'); tx.objectStore('chats').delete(id); tx.oncomplete=()=>res(); tx.onerror=()=>res(); });
+const idbClear = () => new Promise(res => { if (!state.idb) { res(); return; } const tx=state.idb.transaction('chats','readwrite'); tx.objectStore('chats').clear(); tx.oncomplete=()=>res(); tx.onerror=()=>res(); });
+
+/* ── HISTORY ── */
+const saveChat = async () => { if (!state.messages.length) return; const title=(state.messages[0]?.content||'New Chat').slice(0,55); await idbPut({id:state.chatId,title,messages:state.messages,modelId:state.modelId,ts:Date.now()}); renderHistory(); };
+const renderHistory = async (q='') => {
+  let hist = await idbAll();
+  if (q) { const ql=q.toLowerCase(); hist=hist.filter(c=>c.title.toLowerCase().includes(ql)||c.messages.some(m=>m.content.toLowerCase().includes(ql))); }
+  if (el.statChats) el.statChats.textContent = hist.length;
+  if (el.statMsgs) el.statMsgs.textContent = hist.reduce((s,c)=>s+c.messages.length,0);
+  if (!hist.length) { if (el.historyList) el.historyList.innerHTML=`<div class="text-center py-6 text-[#2a2f45] text-xs">${q?'No results':'No chats yet. Start a conversation!'}</div>`; return; }
+  const frag = document.createDocumentFragment();
+  hist.forEach(chat => {
+    const row = document.createElement('button'); row.className=`history-item${chat.id===state.chatId?' active':''}`;
+    row.innerHTML=`<svg class="w-3 h-3 text-[#4b5563] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg><div class="flex-1 min-w-0 text-left"><div class="text-xs text-[#c9d1d9] truncate">${DOMPurify.sanitize(chat.title)}</div><div class="text-[9px] text-[#4b5563] mt-0.5">${new Date(chat.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})} · ${chat.messages.length} msgs</div></div><button class="del-btn p-0.5 text-[#374151] hover:text-red-400 rounded transition-colors shrink-0" data-id="${chat.id}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+    row.addEventListener('click', ev => { if (ev.target.closest('.del-btn')) return; loadChat(chat.id); if (window.innerWidth<768) setSidebar(false); });
+    row.querySelector('.del-btn').addEventListener('click', async ev => { ev.stopPropagation(); await idbDel(chat.id); if (state.chatId===chat.id) newChat(); else renderHistory(el.historySearch?.value||''); });
+    frag.appendChild(row);
+  });
+  if (el.historyList) { el.historyList.innerHTML=''; el.historyList.appendChild(frag); }
+};
+const loadChat = async id => { const hist=await idbAll(); const chat=hist.find(c=>c.id===id); if (!chat) return; state.messages=[...chat.messages]; state.chatId=chat.id; if (chat.modelId) selectModel(chat.modelId,true); if (el.chatInner) el.chatInner.innerHTML=''; closeCanvas(); chat.messages.forEach(m=>appendMsg(m.role,m.content,true)); updateTokenBar(); renderHistory(); setTimeout(()=>{if(el.chatContainer)el.chatContainer.scrollTop=el.chatContainer.scrollHeight;},50); };
+el.historySearch?.addEventListener('input', () => renderHistory(el.historySearch.value));
+el.clearHistoryBtn?.addEventListener('click', async () => { if (!confirm('Clear all chat history?')) return; await idbClear(); renderHistory(); newChat(); toast('History cleared','success'); });
+el.exportHistoryBtn?.addEventListener('click', async () => { const hist=await idbAll(); if (!hist.length) { toast('No history','error'); return; } dlFile(JSON.stringify(hist,null,2),`vortexai-history-${Date.now()}.json`,'application/json'); toast(`Exported ${hist.length} chats`,'success'); });
+el.importHistoryBtn?.addEventListener('click', () => el.importHistoryFile?.click());
+el.importHistoryFile?.addEventListener('change', () => { const f=el.importHistoryFile.files[0]; if (!f) return; const reader=new FileReader(); reader.onload=async ev=>{try{const data=JSON.parse(ev.target.result);if(!Array.isArray(data))throw new Error('Invalid');for(const chat of data)if(chat.id&&chat.messages)await idbPut(chat);renderHistory();toast(`Imported ${data.length} chats`,'success');}catch{toast('Import failed — invalid JSON','error');}el.importHistoryFile.value='';}; reader.readAsText(f); });
+
+/* ── SIDEBAR ── */
+let sidebarOpen = window.innerWidth >= 1024;
+const setSidebar = open => { sidebarOpen=open; if(window.innerWidth<768){el.sidebar?.classList.toggle('mobile-open',open);el.sidebarOverlay?.classList.toggle('active',open);}else{el.sidebar?.classList.toggle('collapsed',!open);el.sidebarOverlay?.classList.remove('active');} };
+setSidebar(sidebarOpen);
+el.sidebarToggle?.addEventListener('click', () => setSidebar(!sidebarOpen));
+el.sidebarOverlay?.addEventListener('click', () => setSidebar(false));
+window.addEventListener('resize', () => { if (window.innerWidth>=768) { el.sidebarOverlay?.classList.remove('active'); el.sidebar?.classList.remove('mobile-open'); } });
+
+/* ── MODEL TAGS ── */
+const getModelTags = m => {
+  const txt = `${m.id} ${m.name} ${m.description||''}`.toLowerCase();
+  const mods = (m.architecture?.modality||'').toLowerCase(); const tags = [];
+  if (/uncensored|dolphin|bagel|abliterat|noromaid|midnight|manticore/.test(txt)) tags.push({label:'🔓 Uncensored',cls:'bg-red-900/30 text-red-400 border-red-500/30'});
+  if (/vision|vl\b|pixtral|llava|moondream|qvq|minicpm.v|omnivision/.test(txt)||/image/.test(mods)) tags.push({label:'👁 Vision',cls:'bg-blue-900/30 text-blue-400 border-blue-500/30'});
+  if (/coder|codex|starcoder|deepseekcoder|qwen.*coder|devstral|codestral/.test(txt)) tags.push({label:'💻 Coding',cls:'bg-emerald-900/30 text-emerald-400 border-emerald-500/30'});
+  if (/qwq|deepseek.r|think|reason|r1\b/.test(txt)) tags.push({label:'🧠 Reasoning',cls:'bg-purple-900/30 text-purple-400 border-purple-500/30'});
+  if (/audio|whisper|speech|tts|asr/.test(txt)) tags.push({label:'🎵 Audio',cls:'bg-green-900/30 text-green-400 border-green-500/30'});
+  if (/image.*gen|dall|flux|imagen|text.?to.?image/.test(txt)) tags.push({label:'🎨 Image Gen',cls:'bg-pink-900/30 text-pink-400 border-pink-500/30'});
+  if (/gemini/.test(txt)) tags.push({label:'Gemini',cls:'bg-[#1e3a5f]/50 text-[#60a5fa] border-[#3b82f6]/30'});
+  else if (/llama/.test(txt)) tags.push({label:'Llama',cls:'bg-[#3b1f5e]/50 text-[#c084fc] border-[#a855f7]/30'});
+  else if (/mistral|mixtral|devstral/.test(txt)) tags.push({label:'Mistral',cls:'bg-[#3d1f00]/50 text-[#fb923c] border-[#f97316]/30'});
+  else if (/qwen/.test(txt)) tags.push({label:'Qwen',cls:'bg-[#1e3a1f]/50 text-[#4ade80] border-[#22c55e]/30'});
+  else if (/deepseek/.test(txt)) tags.push({label:'DeepSeek',cls:'bg-[#0f2a3d]/50 text-[#38bdf8] border-[#0ea5e9]/30'});
+  else if (/claude/.test(txt)) tags.push({label:'Claude',cls:'bg-[#3b2a1f]/50 text-[#fbbf24] border-[#f59e0b]/30'});
+  else if (/phi/.test(txt)) tags.push({label:'Phi',cls:'bg-[#1e2a3f]/50 text-[#93c5fd] border-[#60a5fa]/30'});
+  if (tags.length===0) tags.push({label:'💬 Text',cls:'bg-[#1f2333] text-[#9ca3af] border-[#2a2f45]'});
+  return tags;
+};
+const modelPassesFilter = (m,f) => { if(f==='all')return true;if(f==='favorites')return state.favModels.includes(m.id);const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();switch(f){case 'text':return!(/audio|vision|image.gen|embed|rerank/.test(txt));case 'vision':return/vision|vl\b|pixtral|llava|moondream|qvq/.test(txt);case 'uncensored':return/uncensored|dolphin|bagel|abliterat|noromaid/.test(txt);case 'coding':return/coder|codex|starcoder|devstral/.test(txt);case 'reasoning':return/qwq|deepseek.r|think|r1\b/.test(txt);case 'audio':return/audio|whisper|speech|tts/.test(txt);case 'image-gen':return/image.*gen|dall|flux|imagen/.test(txt);case 'large':return/70b|72b|90b|104b|180b|405b|671b/.test(txt);case 'small':return/1b|2b|3b|4b|7b|8b/.test(txt);default:return true;} };
+const isChatCapable = m => { if (!m) return true; return !/embed|rerank/.test(`${m.id} ${m.name}`.toLowerCase()); };
+
+/* ── FETCH MODELS ── */
+const parseFreeModels = data => (data.data||[]).filter(m => { if(!m.pricing||KNOWN_DEAD.includes(m.id))return false; return parseFloat(String(m.pricing.prompt||'0'))===0&&parseFloat(String(m.pricing.completion||'0'))===0; }).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+
+const fetchModels = async () => {
+  if (el.modelLoadingIcon) el.modelLoadingIcon.classList.remove('hidden');
+  if (el.modelCpuIcon) el.modelCpuIcon.classList.add('hidden');
+  if (el.currentModelDisplay) { el.currentModelDisplay.textContent = 'Scanning…'; el.currentModelDisplay.classList.add('scanning'); }
+  const key = getActiveKey();
+  const hdrs = {'Accept':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME};
+  const authHdrs = key ? {...hdrs,'Authorization':`Bearer ${key}`} : hdrs;
+  const modelsUrl = getModelsUrl();
+  const strategies = [
+    {fetch:()=>fetch(modelsUrl,{headers:authHdrs}),parse:r=>r.json()},
+    {fetch:()=>fetch(modelsUrl,{headers:hdrs}),parse:r=>r.json()},
+    {fetch:()=>fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(modelsUrl)}`),parse:async r=>{const j=await r.json();return JSON.parse(j.contents);}},
+    {fetch:()=>fetch(`https://corsproxy.io/?${encodeURIComponent(modelsUrl)}`),parse:r=>r.json()},
+  ];
+  let success = false;
+  for (const s of strategies) {
+    try {
+      const res = await Promise.race([s.fetch(), new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),9000))]);
+      if (!res.ok) throw new Error(res.status);
+      const data = await s.parse(res);
+      if (!Array.isArray(data?.data)) throw new Error('bad shape');
+      // For custom base URLs, don't filter by price (they might be paid)
+      const models = state.customBaseUrl ? (data.data||[]).sort((a,b)=>(a.name||'').localeCompare(b.name||'')) : parseFreeModels(data);
+      if (!models.length) throw new Error('no models');
+      state.models = models;
+      if (!state.models.find(m=>m.id===state.modelId)) { const fb=FALLBACK_MODELS.find(m=>m.id===state.modelId); if(fb)state.models.unshift(fb); }
+      updateModelDisplay(state.modelId);
+      if (!el.modelsModal?.classList.contains('hidden')) renderModelsList();
+      if (el.modelCountLabel) el.modelCountLabel.textContent = `${state.models.length} ${state.customBaseUrl?'':'free '}models`;
+      toast(`${state.models.length} models loaded`,'success');
+      success = true; break;
+    } catch(e) { console.warn('[VortexAI] model fetch failed:', e.message); }
+  }
+  if (!success) { if (!state.models.length) { state.models=[...FALLBACK_MODELS]; toast(`Offline — ${FALLBACK_MODELS.length} built-in models`,'error'); } else toast('Refresh failed. Using cached.','error'); updateModelDisplay(state.modelId); if (!el.modelsModal?.classList.contains('hidden')) renderModelsList(); if (el.modelCountLabel) el.modelCountLabel.textContent=`${state.models.length} models (offline)`; }
+  if (el.modelLoadingIcon) el.modelLoadingIcon.classList.add('hidden');
+  if (el.modelCpuIcon) el.modelCpuIcon.classList.remove('hidden');
+  if (el.currentModelDisplay) el.currentModelDisplay.classList.remove('scanning');
+  populateEnhancerModelSelect();
+};
+
+const updateModelDisplay = id => { const found=state.models.find(m=>m.id===id); if(el.currentModelDisplay)el.currentModelDisplay.textContent=state.customModelId?`⚙ ${state.customModelId}`:(found?found.name:id.split('/').pop()); updateTokenBar(); };
+const selectModel = (id,silent=false) => { state.modelId=id;localStorage.setItem('nx_model',id);updateModelDisplay(id);state.recentModels=[id,...state.recentModels.filter(r=>r!==id)].slice(0,5);localStorage.setItem('nx_recent_models',JSON.stringify(state.recentModels));renderModelBadges();if(!silent)closeAllModals();if(!silent)toast(`Model: ${id.split('/').pop()}`,'success'); };
+
+/* ── MODELS LIST ── */
+const sortModels = models => { if(state.currentSort==='ctx')return[...models].sort((a,b)=>(b.context_length||0)-(a.context_length||0));if(state.currentSort==='recent')return[...models].sort((a,b)=>{const ai=state.recentModels.indexOf(a.id),bi=state.recentModels.indexOf(b.id);if(ai<0&&bi<0)return(a.name||'').localeCompare(b.name||'');if(ai<0)return 1;if(bi<0)return -1;return ai-bi;});return[...models].sort((a,b)=>(a.name||'').localeCompare(b.name||'')); };
+const renderModelsList = (q='') => {
+  const query = q||el.modelSearchInput?.value||'';
+  if (!state.models.length) { if(el.modelsList)el.modelsList.innerHTML='<div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-desc2 shimmer"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer"></div><div class="model-shimmer-tag shimmer" style="width:48px"></div></div></div><div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:70%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer" style="width:65%"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-desc2 shimmer" style="width:55%"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer" style="width:72px"></div></div></div><div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:50%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer"></div></div></div><div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:62%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer" style="width:75%"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer" style="width:65px"></div></div></div>'; return; }
+  const filtered = sortModels(state.models.filter(m=>{const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();return txt.includes(query.toLowerCase())&&modelPassesFilter(m,state.currentFilter);}));
+  if (!filtered.length) { if(el.modelsList)el.modelsList.innerHTML=`<div class="col-span-2 text-center py-8 text-[#4b5563] text-xs">No models match</div>`; return; }
+  const frag = document.createDocumentFragment();
+  filtered.forEach(m => {
+    const tags=getModelTags(m),sel=m.id===state.modelId,fav=state.favModels.includes(m.id);
+    const ctx=m.context_length?(m.context_length>=1000?Math.round(m.context_length/1000)+'k':m.context_length)+' ctx':'';
+    const d=document.createElement('div');d.className=`model-card${sel?' selected':''}${fav?' fav':''}`;
+    d.innerHTML=`<div class="flex justify-between items-start gap-2 mb-1"><span class="font-bold text-xs text-white leading-tight" style="font-family:'Syne',sans-serif">${DOMPurify.sanitize(m.name||'')}${sel?'<span class="text-[#6c63ff] text-[9px] ml-1">✓</span>':''}</span><div class="flex items-center gap-1 shrink-0">${ctx?`<span class="text-[9px] text-[#4b5563] mono">${ctx}</span>`:''}<button class="fav-star${fav?' starred':''}" data-id="${m.id}">${fav?'★':'☆'}</button></div></div><div class="text-[9px] text-[#4b5563] mono mb-1.5 truncate">${DOMPurify.sanitize(m.id||'')}</div>${m.description?`<div class="text-[10px] text-[#6b7280] mb-1.5 line-clamp-2">${DOMPurify.sanitize(m.description.slice(0,80))}</div>`:''}<div class="flex flex-wrap gap-1">${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>`;
+    d.querySelector('.fav-star').addEventListener('click',ev=>{ev.stopPropagation();const id=ev.target.dataset.id;const idx=state.favModels.indexOf(id);if(idx<0)state.favModels.push(id);else state.favModels.splice(idx,1);localStorage.setItem('nx_fav_models',JSON.stringify(state.favModels));ev.target.textContent=state.favModels.includes(id)?'★':'☆';ev.target.classList.toggle('starred',state.favModels.includes(id));d.classList.toggle('fav',state.favModels.includes(id));renderModelBadges();populateEnhancerModelSelect();});
+    d.addEventListener('click',ev=>{if(ev.target.closest('.fav-star'))return;selectModel(m.id);});
+    frag.appendChild(d);
+  });
+  if(el.modelsList){el.modelsList.innerHTML='';el.modelsList.appendChild(frag);}
+};
+el.modelSearchInput?.addEventListener('input', e => renderModelsList(e.target.value));
+el.refreshModelsBtn?.addEventListener('click', fetchModels);
+document.querySelectorAll('.filter-pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('active'));p.classList.add('active');state.currentFilter=p.dataset.filter;renderModelsList();}));
+document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-sort]').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.currentSort=b.dataset.sort;renderModelsList();}));
+
+const renderModelBadges = () => {
+  if(!el.modelBadgeBar)return;el.modelBadgeBar.innerHTML='';
+  const favs=state.favModels.slice(0,3).map(id=>state.models.find(m=>m.id===id)).filter(Boolean);
+  const recents=state.recentModels.map(id=>state.models.find(m=>m.id===id)).filter(m=>m&&!favs.find(f=>f.id===m.id)).slice(0,3);
+  const all=[...favs,...recents];if(!all.length)return;
+  const lbl=document.createElement('span');lbl.className='section-label shrink-0 mt-0.5';lbl.textContent=favs.length?'Pinned:':'Recent:';
+  el.modelBadgeBar.appendChild(lbl);
+  all.forEach(m=>{const active=m.id===state.modelId,fav=state.favModels.includes(m.id);const btn=document.createElement('button');btn.className=`text-[9px] sm:text-[10px] px-2 py-1 rounded-lg border transition-colors mono shrink-0 ${active?'bg-[#6c63ff]/20 border-[#6c63ff]/50 text-[#a78bfa]':'bg-[#141720] border-[#1f2333] text-[#6b7280] hover:border-[#6c63ff]/50 hover:text-[#a78bfa]'}`;btn.textContent=(fav?'⭐ ':'')+m.name.split(' ').slice(0,3).join(' ');btn.title=m.id;btn.addEventListener('click',()=>{selectModel(m.id);renderModelBadges();});el.modelBadgeBar.appendChild(btn);});
+};
+
+/* ── CANVAS ── */
+const openCanvas = () => { if(state.canvasOpen)return;state.canvasOpen=true;el.canvasPanel?.classList.remove('hidden');el.canvasPanel?.classList.add('flex','flex-col');el.resizeHandle?.classList.remove('hidden');if(window.innerWidth<768)el.canvasPanel?.classList.add('canvas-mobile'); };
+const closeCanvas = () => { if(!state.canvasOpen)return;state.canvasOpen=false;el.canvasPanel?.classList.add('hidden');el.canvasPanel?.classList.remove('flex','flex-col','canvas-mobile');el.resizeHandle?.classList.add('hidden'); };
+const switchTab = tab => { state.canvasTab=tab;document.querySelectorAll('.canvas-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));el.canvasCodeTab?.classList.toggle('hidden',tab!=='code');el.canvasPreviewTab?.classList.toggle('hidden',tab!=='preview');if(el.canvasPreviewTab)el.canvasPreviewTab.classList.toggle('flex',tab==='preview');el.canvasEditorTab?.classList.toggle('hidden',tab!=='editor');if(el.canvasEditorTab)el.canvasEditorTab.classList.toggle('flex',tab==='editor');el.canvasDiffTab?.classList.toggle('hidden',tab!=='diff');if(el.canvasDiffTab)el.canvasDiffTab.classList.toggle('flex',tab==='diff');if(tab==='editor'&&state.canvasCode&&el.canvasEditor){el.canvasEditor.value=state.canvasCode;updateEditorInfo();}if(tab==='diff')renderDiff();if(tab==='preview'&&state.canvasCode)runPreview(state.canvasCode,state.canvasLang); };
+document.querySelectorAll('.canvas-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+
+const runPreview = (code,lang='html') => { if(!el.canvasIframe)return;let doc=code;if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>${code}<\/script></body></html>`;else if(lang==='css')doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${code}</style></head><body style="padding:1rem;background:#fff"><p style="color:#888;font-size:13px;font-family:sans-serif">CSS Preview</p></body></html>`;else if(!code.trim().startsWith('<!'))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:sans-serif;margin:0;padding:1rem}
+/* ════ SHIMMER / SKELETON SYSTEM ════ */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+@keyframes shimmerFade {
+  0%,100% { opacity:.5; }
+  50%      { opacity:1; }
+}
+.shimmer {
+  background: linear-gradient(90deg,
+    var(--c-surface2) 25%,
+    var(--c-border)   50%,
+    var(--c-surface2) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 6px;
+}
+/* Light-mode shimmer */
+body.light-mode .shimmer {
+  background: linear-gradient(90deg,#e8eaf2 25%,#d1d5e8 50%,#e8eaf2 75%);
+  background-size: 600px 100%;
+}
+
+/* ── Message shimmer (AI response loading) ── */
+.msg-shimmer-wrap {
+  display: flex; gap: 10px; padding: 6px 0; width: 100%;
+  animation: shimmerFade .8s ease-in-out 2;
+}
+.msg-shimmer-avatar {
+  width: 32px; height: 32px; min-width: 32px; border-radius: 10px;
+}
+.msg-shimmer-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+.msg-shimmer-name  { height: 10px; width: 80px; }
+.msg-shimmer-line  { height: 12px; border-radius: 6px; }
+.msg-shimmer-line.w30 { width: 30%; }
+.msg-shimmer-line.w55 { width: 55%; }
+.msg-shimmer-line.w75 { width: 75%; }
+.msg-shimmer-line.w90 { width: 90%; }
+.msg-shimmer-line.w100{ width:100%; }
+.msg-shimmer-line.w65 { width: 65%; }
+
+/* ── History shimmer ── */
+.history-shimmer { padding: 8px 10px; border-radius: 10px; display: flex; gap: 8px; align-items: flex-start; }
+.history-shimmer-icon { width: 14px; height: 14px; min-width: 14px; border-radius: 3px; margin-top: 2px; }
+.history-shimmer-body { flex:1; display:flex; flex-direction:column; gap:5px; }
+.history-shimmer-title { height: 10px; border-radius: 5px; width: 75%; }
+.history-shimmer-meta  { height: 8px;  border-radius: 4px; width: 45%; }
+
+/* ── Model card shimmer ── */
+.model-shimmer { border: 1px solid var(--c-border); border-radius: 10px; padding: 10px 12px; }
+.model-shimmer-header { display:flex; justify-content:space-between; margin-bottom:8px; }
+.model-shimmer-name   { height: 12px; width: 55%; border-radius: 5px; }
+.model-shimmer-ctx    { height: 10px; width: 35px; border-radius: 4px; }
+.model-shimmer-id     { height: 9px;  width: 80%; border-radius: 4px; margin-bottom: 8px; }
+.model-shimmer-desc1  { height: 9px;  width: 100%; border-radius: 4px; margin-bottom: 4px; }
+.model-shimmer-desc2  { height: 9px;  width: 70%;  border-radius: 4px; margin-bottom: 8px; }
+.model-shimmer-tags   { display:flex; gap:4px; }
+.model-shimmer-tag    { height: 16px; width: 60px; border-radius: 99px; }
+
+/* ── Canvas skeleton ── */
+#canvas-skeleton {
+  display: none; flex: 1; padding: 1.2rem 1.4rem;
+  flex-direction: column; gap: 10px; background: #0d1117;
+}
+#canvas-skeleton.active { display: flex; }
+.sk-line { height: 13px; border-radius: 4px; }
+/* canvas specific shimmer colors (dark bg) */
+#canvas-skeleton .shimmer {
+  background: linear-gradient(90deg, #161b22 25%, #21262d 50%, #161b22 75%);
+  background-size: 600px 100%;
+}
+
+/* ── Canvas stream pre ── */
+#canvas-stream-pre {
+  flex: 1; margin: 0; padding: 1rem; overflow: auto;
+  font-family: 'JetBrains Mono', monospace; font-size: .78em;
+  line-height: 1.6; color: #e6edf3; background: #0d1117;
+  white-space: pre; display: none;
+  border-top: 1px solid var(--c-border);
+}
+
+/* ── Thinking step shimmer (first few steps) ── */
+.ts-step-shimmer { display: flex; gap: 8px; padding: 6px 12px; align-items: center; }
+.ts-step-shimmer-icon { width: 14px; height: 14px; min-width: 14px; border-radius: 50%; }
+.ts-step-shimmer-text { height: 9px; width: 55%; border-radius: 4px; }
+
+/* ── Welcome card shimmer ── */
+.welcome-shimmer { display: flex; flex-direction: column; gap: 10px; padding: 1rem; }
+.ws-header { display: flex; gap: 10px; align-items: center; }
+.ws-avatar { width: 40px; height: 40px; border-radius: 12px; min-width: 40px; }
+.ws-title-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.ws-title  { height: 14px; width: 140px; border-radius: 5px; }
+.ws-sub    { height: 10px; width: 200px; border-radius: 4px; }
+.ws-body   { height: 10px; border-radius: 4px; }
+.ws-body.w80 { width: 80%; }
+.ws-body.w60 { width: 60%; }
+.ws-chips  { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ws-chip   { height: 32px; border-radius: 10px; }
+
+/* ── Header model shimmer ── */
+.model-btn-shimmer { height: 14px; border-radius: 5px; flex: 1; max-width: 140px; }
+
+/* ── Live canvas bar ── */
+#canvas-live-bar {
+  display: none; align-items: center; gap: 8px;
+  padding: 5px 12px;
+  background: linear-gradient(90deg, rgba(108,99,255,.07), rgba(108,99,255,.03));
+  border-bottom: 1px solid rgba(108,99,255,.18);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  color: var(--c-accent2);
+}
+#canvas-live-bar.active { display: flex; }
+#canvas-live-bar .live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c-accent);
+  animation: livePulse .85s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .35; transform: scale(.65); }
+}
+#canvas-live-bar .live-label { flex: 1; }
+#canvas-live-bar .live-chars { color: var(--c-muted); font-size: 9px; }
+
+/* ── Inline code shimmer (during stream, before highlight) ── */
+.code-shimmer-block {
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--c-border2); margin: .5em 0;
+}
+.code-shimmer-header {
+  height: 30px; background: #161b22;
+  border-bottom: 1px solid var(--c-border2);
+}
+.code-shimmer-body { padding: .7rem; background: #0d1117; display: flex; flex-direction: column; gap: 7px; }
+.code-shimmer-line { height: 11px; border-radius: 3px; }
+#canvas-skeleton .code-shimmer-line,
+.code-shimmer-body .shimmer {
+  background: linear-gradient(90deg, #161b22 25%, #21262d 50%, #161b22 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Auth status bar shimmer ── */
+#auth-status-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 10px; border: 1px solid;
+  font-size: 11px; transition: all .3s;
+}
+#auth-status-bar.authed  { background:rgba(34,197,94,.06); border-color:rgba(34,197,94,.25); color:#4ade80; }
+#auth-status-bar.unauthed{ background:rgba(234,179,8,.05); border-color:rgba(234,179,8,.2);  color:#fbbf24; }
+#auth-status-bar.anon    { background:rgba(107,114,128,.05); border-color:rgba(107,114,128,.2); color:#9ca3af; }
+.auth-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.auth-dot.green  { background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,.5); }
+.auth-dot.yellow { background:#eab308; box-shadow:0 0 6px rgba(234,179,8,.4); }
+.auth-dot.gray   { background:#6b7280; }
+
+/* ── Shimmer for enhancer loading ── */
+#enhancer-loading {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 1rem;
+}
+.enhancer-shimmer-row { height: 11px; border-radius: 5px; margin: 3px 0; }
+.enhancer-shimmer-row.w90 { width: 90%; }
+.enhancer-shimmer-row.w70 { width: 70%; }
+.enhancer-shimmer-row.w80 { width: 80%; }
+
+/* ── Pulse ring on send btn while generating ── */
+@keyframes sendPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(108,99,255,.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(108,99,255,0); }
+}
+#send-btn.generating { animation: sendPulse 1.4s ease-in-out infinite; }
+
+/* ── Shimmer on model display while scanning ── */
+@keyframes textShimmer {
+  0%   { opacity: .4; }
+  50%  { opacity: 1; }
+  100% { opacity: .4; }
+}
+#current-model-display.scanning { animation: textShimmer 1.2s ease-in-out infinite; }
+
+</style></head><body>${code}</body></html>`;el.canvasIframe.srcdoc=doc; };
 const showCanvasLiveBar = (on,chars=0) => { const bar=$('canvas-live-bar'),cc=$('live-chars-count');if(!bar)return;if(on){bar.classList.add('active');if(cc)cc.textContent=chars.toLocaleString()+' chars';}else bar.classList.remove('active'); };
 const showCanvasSkeleton = () => { const sk=$('canvas-skeleton'),sp=$('canvas-stream-pre'),pre=$('canvas-pre'),emp=$('canvas-empty');if(sk){sk.style.display='flex';sk.style.flexDirection='column';}if(sp)sp.style.display='none';if(pre)pre.classList.add('hidden');if(emp)emp.classList.add('hidden'); };
 const streamToCanvas = (code,lang) => { if(!state.autoCanvas||!code||code.length<2)return;if(!state.canvasOpen)openCanvas();const sp=$('canvas-stream-pre'),sk=$('canvas-skeleton'),pre=$('canvas-pre'),emp=$('canvas-empty');if(emp)emp.classList.add('hidden');if(sk)sk.style.display='none';if(pre)pre.classList.add('hidden');if(sp){sp.style.display='block';sp.textContent=code;sp.scrollTop=sp.scrollHeight;}if(state.canvasTab==='editor'&&el.canvasEditor)el.canvasEditor.value=code;if(el.canvasLangBadge){el.canvasLangBadge.textContent=lang||'code';el.canvasLangBadge.classList.toggle('hidden',!lang);}showCanvasLiveBar(true,code.length);if(/^(html|css)$/i.test(lang)&&state.canvasTab==='preview'){clearTimeout(window._previewTimer);window._previewTimer=setTimeout(()=>runPreview(code,lang),900);} };
@@ -1950,25 +3103,8 @@ const appendMsg=(role,content='',replay=false)=>{
 const parseAPIError=async res=>{let em=`API Error ${res.status}`;try{const ed=await res.json();const raw=ed?.error?.message||ed?.message||'';if(res.status===400)em=`Bad request: ${raw||'Check model or prompt'}`;else if(res.status===401)em='Invalid API key. Go to Settings to sign in or add a valid key.';else if(res.status===402)em='Insufficient credits. Top up at openrouter.ai/credits';else if(res.status===403)em='Access forbidden. Model may require approval.';else if(res.status===408||res.status===504)em='Request timeout. Try a shorter prompt or different model.';else if(res.status===429)em='Rate limited. Wait 30 seconds and retry.';else if(res.status===500)em=`Server error (500). Try a different model.`;else if(res.status===502||res.status===503)em=`Model unavailable (${res.status}). Switch to another model.`;else if(raw)em=raw;}catch{}return em;};
 
 /* ── SUBMIT / SEND ── */
-const getMsgsForAPI=()=>{
-  let msgs=[...state.messages];
-  if(msgs.length>state.ctxLimit){let t=msgs.slice(msgs.length-state.ctxLimit);if(t[0]?.role==='assistant')t=t.slice(1);msgs=t;}
-  // Inject image attachments into last user message as multimodal content
-  const imgs=state.attachments.filter(a=>a.type?.startsWith('image/'));
-  if(imgs.length&&msgs.length){
-    const lastUserIdx=[...msgs].reverse().findIndex(m=>m.role==='user');
-    if(lastUserIdx>=0){
-      const idx=msgs.length-1-lastUserIdx;
-      const orig=msgs[idx];
-      msgs[idx]={role:'user',content:[
-        ...imgs.map(img=>({type:'image_url',image_url:{url:img.dataUrl}})),
-        {type:'text',text:orig.content}
-      ]};
-    }
-  }
-  return msgs;
-};
-const buildSys=()=>{let s=CORE_SYS;if(state.customSys)s+=`\n\nUser instructions:\n${state.customSys}`;if(state.attachments.length){s+='\n\nAttached context:\n';state.attachments.forEach(a=>{if(!a.type?.startsWith('image/')){s+=`\n--- ${a.name} (${a.sizeLabel||''}) ---\n${a.content.slice(0,8000)}\n`;}});const imgs=state.attachments.filter(a=>a.type?.startsWith('image/'));if(imgs.length)s+=`\n[${imgs.length} image(s) attached and provided in messages]`;}return s;};
+const getMsgsForAPI=()=>{let msgs=[...state.messages];if(msgs.length>state.ctxLimit){let t=msgs.slice(msgs.length-state.ctxLimit);if(t[0]?.role==='assistant')t=t.slice(1);return t;}return msgs;};
+const buildSys=()=>{let s=CORE_SYS;if(state.customSys)s+=`\n\nUser instructions:\n${state.customSys}`;if(state.attachments.length){s+='\n\nAttached context:\n';state.attachments.forEach(a=>{s+=`\n--- ${a.name} ---\n${a.content.slice(0,8000)}\n`;});}return s;};
 /* ── MSG SHIMMER ── */
 const insertMsgShimmer = () => {
   const d = document.createElement('div');
@@ -2003,7 +3139,6 @@ const handleSubmit=async e=>{
   if(el.userInput){el.userInput.value='';el.userInput.style.height='auto';}
   if(el.charCount){el.charCount.textContent='0';el.charCount.className='';}
   appendMsg('user',prompt);state.messages.push({role:'user',content:prompt});
-  state.attachments=[];renderAttachBar();
   updateTokenBar();await sendToAPI();
 };
 
@@ -2081,104 +3216,9 @@ el.newChatBtn?.addEventListener('click',newChat);
 el.newChatSidebarBtn?.addEventListener('click',()=>{newChat();if(window.innerWidth<768)setSidebar(false);});
 
 /* ── FILE ATTACH ── */
-const FILE_ICONS = {
-  // Images
-  image: '🖼️',
-  // Code
-  js:'🟨', ts:'🔷', jsx:'⚛️', tsx:'⚛️', py:'🐍', html:'🌐', css:'🎨',
-  json:'📋', md:'📝', sh:'⚙️', sql:'🗄️', rs:'🦀', go:'🐹', java:'☕',
-  cpp:'⚙️', c:'⚙️', rb:'💎', php:'🐘', swift:'🍎', kt:'🟣',
-  // Docs
-  pdf:'📄', txt:'📃', csv:'📊', xml:'📑', yaml:'⚙️', yml:'⚙️',
-  log:'📋', toml:'⚙️', env:'🔒',
-};
-const getFileIcon = f => {
-  if(f.type?.startsWith('image/')) return FILE_ICONS.image;
-  const ext = f.name.split('.').pop()?.toLowerCase() || '';
-  return FILE_ICONS[ext] || '📎';
-};
-const formatFileSize = b => b < 1024 ? b+'B' : b < 1048576 ? (b/1024).toFixed(0)+'KB' : (b/1048576).toFixed(1)+'MB';
-
-const renderAttachBar = () => {
-  if(!el.attachBar) return;
-  el.attachBar.innerHTML = '';
-  if(!state.attachments.length) { el.attachBar.classList.remove('has-files'); return; }
-  el.attachBar.classList.add('has-files');
-  state.attachments.forEach((a,i) => {
-    const pill = document.createElement('span');
-    pill.className = 'attach-pill';
-    const isImg = a.type?.startsWith('image/');
-    const iconHtml = isImg
-      ? `<img class="pill-thumb" src="${a.dataUrl}" alt="${DOMPurify.sanitize(a.name)}">`
-      : `<div class="pill-icon">${a.icon||'📎'}</div>`;
-    pill.innerHTML = `${iconHtml}<div class="pill-info"><span class="pill-name">${DOMPurify.sanitize(a.name)}</span><span class="pill-meta">${a.sizeLabel||''}</span></div><button class="pill-rm" title="Remove">✕</button>`;
-    pill.querySelector('.pill-rm').addEventListener('click', () => { state.attachments.splice(i,1); renderAttachBar(); });
-    el.attachBar.appendChild(pill);
-  });
-};
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const processFiles = files => {
-  if(!files.length) return;
-  let done = 0, added = 0, skipped = 0;
-  const total = files.length;
-  [...files].forEach(f => {
-    if(f.size > MAX_FILE_SIZE) {
-      toast(`⚠ ${f.name}: ${formatFileSize(f.size)} exceeds 5MB limit`, 'error');
-      skipped++;
-      done++;
-      if(done === total) { renderAttachBar(); if(added) toast(`${added} file${added>1?'s':''} attached`, 'success'); }
-      return;
-    }
-    const icon = getFileIcon(f);
-    const sizeLabel = formatFileSize(f.size);
-    const reader = new FileReader();
-    if(f.type?.startsWith('image/')) {
-      reader.onload = ev => {
-        state.attachments.push({ name:f.name, type:f.type, icon, sizeLabel, dataUrl:ev.target.result, content:`[Image: ${f.name}]` });
-        added++; done++;
-        if(done === total) { renderAttachBar(); toast(`${added} file${added>1?'s':''} attached`, 'success'); }
-      };
-      reader.readAsDataURL(f);
-    } else {
-      reader.onload = ev => {
-        state.attachments.push({ name:f.name, type:f.type||'text/plain', icon, sizeLabel, content:ev.target.result });
-        added++; done++;
-        if(done === total) { renderAttachBar(); toast(`${added} file${added>1?'s':''} attached`, 'success'); }
-      };
-      reader.onerror = () => {
-        toast(`✕ Failed to read ${f.name}`, 'error'); skipped++; done++;
-        if(done === total && added) { renderAttachBar(); toast(`${added} file${added>1?'s':''} attached`, 'success'); }
-      };
-      reader.readAsText(f);
-    }
-  });
-  if(el.attachFileInput) el.attachFileInput.value = '';
-};
-
-el.attachBtn?.addEventListener('click', () => el.attachFileInput?.click());
-el.attachFileInput?.addEventListener('change', () => processFiles(el.attachFileInput.files));
-
-/* ── DRAG & DROP ── */
-const dragOverlay = document.getElementById('drag-overlay');
-let _dragCount = 0;
-document.addEventListener('dragenter', e => {
-  if(!e.dataTransfer?.types?.includes('Files')) return;
-  _dragCount++;
-  if(dragOverlay) dragOverlay.classList.add('active');
-});
-document.addEventListener('dragleave', () => {
-  _dragCount = Math.max(0, _dragCount - 1);
-  if(_dragCount === 0 && dragOverlay) dragOverlay.classList.remove('active');
-});
-document.addEventListener('dragover', e => { e.preventDefault(); });
-document.addEventListener('drop', e => {
-  e.preventDefault();
-  _dragCount = 0;
-  if(dragOverlay) dragOverlay.classList.remove('active');
-  const files = e.dataTransfer?.files;
-  if(files?.length) processFiles(files);
-});
+const renderAttachBar=()=>{if(!el.attachBar)return;el.attachBar.innerHTML='';if(!state.attachments.length){el.attachBar.classList.remove('has-files');return;}el.attachBar.classList.add('has-files');state.attachments.forEach((a,i)=>{const pill=document.createElement('span');pill.className='attach-pill';pill.innerHTML=`<svg class="w-3 h-3 text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span class="max-w-[90px] truncate text-[9px]">${DOMPurify.sanitize(a.name)}</span><button data-idx="${i}">✕</button>`;pill.querySelector('button').addEventListener('click',()=>{state.attachments.splice(i,1);renderAttachBar();});el.attachBar.appendChild(pill);});};
+el.attachBtn?.addEventListener('click',()=>el.attachFileInput?.click());
+el.attachFileInput?.addEventListener('change',()=>{const files=[...el.attachFileInput.files];if(!files.length)return;let done=0;files.forEach(f=>{if(f.size>512*1024){toast(`${f.name} too large`,'error');done++;if(done===files.length)renderAttachBar();return;}const reader=new FileReader();reader.onload=ev=>{state.attachments.push({name:f.name,content:ev.target.result});done++;if(done===files.length)renderAttachBar();};reader.readAsText(f);});el.attachFileInput.value='';toast(`${files.length} file(s) attached`,'success');});
 
 /* ── VOICE ── */
 const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
