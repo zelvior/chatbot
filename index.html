@@ -290,9 +290,10 @@ body.light-mode body::before{opacity:.05;}
 .enhancer-option:hover{border-color:var(--c-accent);background:rgba(108,99,255,.05);}
 .enhancer-option.selected{border-color:var(--c-accent);background:rgba(108,99,255,.1);}
 /* ── Enhance btn ── */
-#enhance-btn{padding:2px 10px;border-radius:8px;border:1px solid var(--c-border2);background:transparent;color:var(--c-muted);font-size:10px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap;}
-#enhance-btn:hover{border-color:var(--c-accent);color:var(--c-accent2);}
-#enhance-btn.loading{border-color:var(--c-accent);color:var(--c-accent2);pointer-events:none;}
+#enhance-btn{padding:2px 7px;border-radius:6px;border:1px solid var(--c-border2);background:rgba(108,99,255,.06);color:var(--c-muted);font-size:9px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:3px;white-space:nowrap;line-height:1.4;}
+#enhance-btn:hover{border-color:var(--c-accent);color:var(--c-accent2);background:rgba(108,99,255,.12);}
+#enhance-btn.loading{border-color:var(--c-accent);color:var(--c-accent2);pointer-events:none;opacity:.7;}
+#user-input{padding-bottom:28px!important;}
 /* ── Canvas loading skeleton ── */
 #canvas-skeleton{display:none;flex:1;padding:1.2rem;flex-direction:column;gap:10px;}
 #canvas-skeleton.active{display:flex;}
@@ -492,6 +493,12 @@ body.light-mode body::before{opacity:.05;}
             <textarea id="user-input" rows="1" spellcheck="true"
               class="w-full bg-transparent text-[#e2e4f0] placeholder-[#4b5563] px-3 sm:px-4 py-3 resize-none outline-none leading-relaxed text-sm"
               placeholder="Message VortexAI… (Shift+Enter for new line)"></textarea>
+            <div class="absolute bottom-1.5 right-2 flex items-center gap-1">
+              <button type="button" id="enhance-btn" title="✨ Enhance prompt with AI">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/></svg>
+                <span>Enhance</span>
+              </button>
+            </div>
           </div>
           <button type="button" id="attach-btn" title="Attach file (RAG)" class="p-2.5 sm:p-3 rounded-xl bg-[#141720] hover:bg-[#1f2333] text-[#6b7280] hover:text-[#a78bfa] border border-[#1f2333] transition-all shrink-0 active:scale-95">
             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
@@ -548,11 +555,18 @@ body.light-mode body::before{opacity:.05;}
     </div>
     <!-- Code tab -->
     <div id="canvas-code-tab" class="flex-1 flex flex-col overflow-hidden">
+      <div id="canvas-live-bar">
+        <div class="live-dot"></div>
+        <span class="live-label">Streaming code…</span>
+        <span id="live-chars-count" class="live-chars">0 chars</span>
+      </div>
       <div id="canvas-empty" class="flex-1 flex flex-col items-center justify-center text-[#374151] space-y-3">
         <svg class="w-10 h-10 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
         <p class="text-xs sm:text-sm">Code canvas ready</p>
         <p class="text-[10px] text-[#2a2f45]">Ask me to write code to get started</p>
       </div>
+      <div id="canvas-skeleton"><div class="sk-line" style="width:60%"></div><div class="sk-line" style="width:85%"></div><div class="sk-line" style="width:42%"></div><div class="sk-line" style="width:70%"></div><div class="sk-line" style="width:90%"></div><div class="sk-line" style="width:55%"></div><div class="sk-line" style="width:75%"></div><div class="sk-line" style="width:33%"></div></div>
+      <pre id="canvas-stream-pre"></pre>
       <pre id="canvas-pre" class="hidden flex-1 m-0 p-3 sm:p-5 overflow-auto text-xs sm:text-sm mono text-[#e6edf3] leading-relaxed" style="max-height:none"><code id="canvas-content" class="block"></code></pre>
     </div>
     <!-- Preview tab -->
@@ -841,6 +855,66 @@ body.light-mode body::before{opacity:.05;}
 
 <div id="toast-container"></div>
 <input type="file" id="import-history-file" class="hidden" accept=".json">
+
+<!-- PROMPT ENHANCER MODAL -->
+<div id="enhancer-modal-wrap">
+  <div id="enhancer-modal">
+    <div class="px-4 py-3 border-b border-[#1f2333] flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-2">
+        <span class="text-lg">✨</span>
+        <div>
+          <h2 class="font-black text-white text-sm" style="font-family:'Syne',sans-serif">Prompt Enhancer</h2>
+          <p class="text-[10px] text-[#6b7280]">Rewrite your message for maximum AI clarity</p>
+        </div>
+      </div>
+      <button id="enhancer-close" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-4 flex-1 overflow-y-auto space-y-3">
+      <div>
+        <p class="section-label mb-1.5">Enhancement Style</p>
+        <div class="grid grid-cols-2 gap-1.5" id="enhancer-style-grid">
+          <button class="enhancer-option selected" data-style="detailed">🔍 More Detailed<span class="block text-[9px] text-[#6b7280] mt-0.5 font-normal">Add context & specifics</span></button>
+          <button class="enhancer-option" data-style="concise">⚡ More Concise<span class="block text-[9px] text-[#6b7280] mt-0.5 font-normal">Clear & direct</span></button>
+          <button class="enhancer-option" data-style="technical">💻 Technical<span class="block text-[9px] text-[#6b7280] mt-0.5 font-normal">Developer-focused</span></button>
+          <button class="enhancer-option" data-style="creative">🎨 Creative<span class="block text-[9px] text-[#6b7280] mt-0.5 font-normal">Imaginative & open</span></button>
+          <button class="enhancer-option" data-style="stepbystep">📋 Step-by-Step<span class="block text-[9px] text-[#6b7280] mt-0.5 font-normal">Break into tasks</span></button>
+          <button class="enhancer-option" data-style="formal">🎩 Formal<span class="block text-[9px] text-[#6b7280] mt-0.5 font-normal">Professional tone</span></button>
+        </div>
+      </div>
+      <div>
+        <p class="section-label mb-1.5">Enhancement Model</p>
+        <div class="relative">
+          <select id="enhancer-model-select" class="w-full bg-[#07080d] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl px-3 py-2.5 text-white text-xs outline-none transition-colors appearance-none pr-8">
+            <option value="__current__">— Same as chat model —</option>
+          </select>
+          <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4b5563] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <p class="text-[9px] text-[#4b5563] mt-1">Uses your API key. Select any free model for enhancement.</p>
+      </div>
+      <div>
+        <p class="section-label mb-1.5">Original Prompt</p>
+        <div id="enhancer-original" class="bg-[#07080d] border border-[#1f2333] rounded-xl px-3 py-2.5 text-xs text-[#6b7280] mono leading-relaxed min-h-[48px]"></div>
+      </div>
+      <div id="enhancer-result-wrap" class="hidden">
+        <p class="section-label mb-1.5">Enhanced Prompt</p>
+        <textarea id="enhancer-result" rows="5" class="w-full bg-[#0f1a0f] border border-green-500/30 focus:border-green-500/60 rounded-xl px-3 py-2.5 text-xs text-[#c9d1d9] mono leading-relaxed outline-none resize-none transition-colors"></textarea>
+      </div>
+      <div id="enhancer-loading" class="hidden flex-col items-center gap-3 py-4">
+        <svg class="w-6 h-6 spin text-[#6c63ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <p class="text-xs text-[#6b7280]">Enhancing your prompt…</p>
+      </div>
+    </div>
+    <div class="px-4 py-3 border-t border-[#1f2333] flex gap-2 shrink-0">
+      <button id="enhancer-run-btn" class="flex-1 py-2.5 rounded-xl bg-[#6c63ff] hover:bg-[#5b52ee] text-white text-xs font-semibold transition-colors flex items-center justify-center gap-2" style="font-family:'Syne',sans-serif">
+        <span>✨</span><span>Enhance</span>
+      </button>
+      <button id="enhancer-use-btn" class="hidden flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-500 text-white text-xs font-semibold transition-colors" style="font-family:'Syne',sans-serif">✓ Use This</button>
+      <button id="enhancer-close2" class="px-4 py-2.5 rounded-xl border border-[#1f2333] text-[#6b7280] hover:text-white text-xs transition-colors">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
@@ -1555,12 +1629,61 @@ const updateCanvas=(code,lang='')=>{
   if(el.canvasEditor&&state.canvasTab==='editor'){el.canvasEditor.value=code;updateEditorInfo();}
 };
 
+/* ── Realtime Canvas Sync ── */
+let _lastStreamedLang='';let _isStreaming=false;
+const showCanvasSkeleton=()=>{
+  const sk=document.getElementById('canvas-skeleton');
+  const sp=document.getElementById('canvas-stream-pre');
+  const pre=document.getElementById('canvas-pre');
+  const emp=document.getElementById('canvas-empty');
+  if(sk){sk.style.display='flex';sk.style.flexDirection='column';}
+  if(sp)sp.style.display='none';
+  if(pre)pre.classList.add('hidden');
+  if(emp)emp.classList.add('hidden');
+};
+const hideCanvasSkeleton=()=>{const sk=document.getElementById('canvas-skeleton');if(sk)sk.style.display='none';};
+const showCanvasLiveBar=(on,chars=0)=>{
+  const bar=document.getElementById('canvas-live-bar');
+  const cc=document.getElementById('live-chars-count');
+  if(!bar)return;
+  if(on){bar.classList.add('active');if(cc)cc.textContent=chars+' chars';}
+  else bar.classList.remove('active');
+};
+const streamToCanvas=(code,lang)=>{
+  if(!state.autoCanvas||!code||code.length<4)return;
+  if(!state.canvasOpen)openCanvas();
+  const sp=document.getElementById('canvas-stream-pre');
+  const sk=document.getElementById('canvas-skeleton');
+  const pre=document.getElementById('canvas-pre');
+  const emp=document.getElementById('canvas-empty');
+  if(emp)emp.classList.add('hidden');
+  if(sk)sk.style.display='none';
+  if(pre)pre.classList.add('hidden');
+  if(sp){sp.style.display='block';sp.textContent=code;sp.scrollTop=sp.scrollHeight;}
+  if(state.canvasTab==='editor'&&el.canvasEditor)el.canvasEditor.value=code;
+  showCanvasLiveBar(true,code.length);
+  _lastStreamedLang=lang;
+  if(/^(html|css)$/i.test(lang)&&state.canvasTab==='preview'){clearTimeout(window._previewTimer);window._previewTimer=setTimeout(()=>runPreview(code,lang),800);}
+};
 const extractCode=text=>{
   if(!state.autoCanvas)return;
   const re=/```([\w-]*)\n([\s\S]*?)(?:```|$)/g;
   let m,last=null,lang='';
   while((m=re.exec(text))!==null){lang=m[1];last=m[2];}
-  if(last!==null){openCanvas();updateCanvas(last,lang);}
+  if(last!==null){
+    streamToCanvas(last,lang);
+    if(typeof _thinkBodyEl!=='undefined'&&_thinkBodyEl){
+      const step=detectStepFromChunk(last);
+      if(step)appendThinkStep(step.icon,step.label);
+    }
+  }
+};
+const finalizeCanvas=(code,lang)=>{
+  const sp=document.getElementById('canvas-stream-pre');
+  if(sp)sp.style.display='none';
+  showCanvasLiveBar(false);
+  if(code)updateCanvas(code,lang);
+  _lastStreamedLang='';
 };
 
 const renderDiff=()=>{
@@ -1717,14 +1840,67 @@ const appendMsg=(role,content='',replay=false)=>{
   }
 };
 
-const appendThinking=()=>{
-  const d=document.createElement('div');
-  d.id='thinking';d.className='msg-enter flex gap-2 sm:gap-3 py-1';
-  d.innerHTML=`<div class="avatar bg-gradient-to-br from-[#6c63ff]/30 to-[#a78bfa]/20 border border-[#6c63ff]/30 shrink-0">⚡</div>
-    <div class="flex items-center gap-2 py-1.5"><div class="thinking-dots"><span></span><span></span><span></span></div><span class="text-[10px] text-[#4b5563]">Thinking…</span></div>`;
-  el.chatInner.appendChild(d);scrollIfNeeded();return d;
+/* ── Thinking Steps (Gemini/Kimi style) ── */
+let _thinkSteps=[];let _thinkWrap=null;let _thinkBodyEl=null;let _thinkOpen=true;
+const STEP_PATTERNS=[
+  {re:/```([\w-]*)/,icon:'code',label:m=>`Writing \`${m[1]||'code'}\` block…`},
+  {re:/^#{1,3}\s+(.+)/m,icon:'📝',label:m=>`Structuring: ${m[1].slice(0,40)}`},
+  {re:/\b(import|require|from)\b/,icon:'📦',label:()=>'Importing dependencies…'},
+  {re:/\b(function|const|let|var|def|class|async)\b/,icon:'code',label:()=>'Writing logic…'},
+  {re:/\b(step|first|then|next|finally|1\.|2\.|3\.)/i,icon:'📋',label:()=>'Planning steps…'},
+  {re:/\b(explain|because|reason|note that)\b/i,icon:'💡',label:()=>'Explaining concept…'},
+  {re:/\b(error|fix|bug|debug|issue)\b/i,icon:'🔧',label:()=>'Analyzing the problem…'},
+  {re:/\b(example|for instance|e\.g\.)\b/i,icon:'🔍',label:()=>'Providing example…'},
+];
+const detectStepFromChunk=chunk=>{
+  for(const p of STEP_PATTERNS){const m=chunk.match(p.re);if(m)return{icon:p.icon,label:p.label(m)};}
+  return null;
 };
-const removeThinking=()=>{const t=document.getElementById('thinking');if(t)t.remove();};
+const appendThinkStep=(icon,label)=>{
+  if(!_thinkBodyEl)return;
+  const isSame=_thinkSteps.length&&_thinkSteps[_thinkSteps.length-1].label===label;
+  if(isSame)return;
+  _thinkSteps.push({icon,label});
+  const s=document.createElement('div');s.className='ts-step';
+  const ic=icon==='code'?'&lt;/&gt;':icon;
+  const cls=icon==='code'?'code':'thinking';
+  s.innerHTML=`<div class="ts-step-icon ${cls}">${ic}</div><span class="ts-step-text">${DOMPurify.sanitize(label)}</span>`;
+  _thinkBodyEl.appendChild(s);
+  _thinkBodyEl.scrollTop=_thinkBodyEl.scrollHeight;
+};
+const appendThinking=()=>{
+  _thinkSteps=[];_thinkOpen=true;
+  const wrap=document.createElement('div');wrap.id='thinking';wrap.className='msg-enter flex gap-2 sm:gap-3 py-0.5 w-full';
+  wrap.innerHTML=`<div class="avatar bg-gradient-to-br from-[#6c63ff]/30 to-[#a78bfa]/20 border border-[#6c63ff]/30 shrink-0">⚡</div>
+    <div class="flex-1 min-w-0">
+      <div id="thinking-steps-wrap">
+        <div id="thinking-steps-header">
+          <div class="ts-spinner" id="ts-spinner"></div>
+          <span class="ts-title">Thinking…</span>
+          <span class="ts-chevron open" id="ts-chevron">▾</span>
+        </div>
+        <div id="thinking-steps-body" class="open"></div>
+      </div>
+    </div>`;
+  el.chatInner.appendChild(wrap);scrollIfNeeded();
+  _thinkWrap=wrap;_thinkBodyEl=wrap.querySelector('#thinking-steps-body');
+  const hdr=wrap.querySelector('#thinking-steps-header');
+  hdr.addEventListener('click',()=>{
+    _thinkOpen=!_thinkOpen;
+    wrap.querySelector('#thinking-steps-body').classList.toggle('open',_thinkOpen);
+    wrap.querySelector('#ts-chevron').classList.toggle('open',_thinkOpen);
+  });
+  appendThinkStep('💭','Analyzing your request…');
+  return wrap;
+};
+const removeThinking=()=>{
+  const t=document.getElementById('thinking');
+  if(!t)return;
+  // finalize spinner
+  const sp=t.querySelector('#ts-spinner');if(sp){sp.classList.add('done');sp.innerHTML='✓';}
+  const ti=t.querySelector('.ts-title');if(ti)ti.textContent='Done thinking';
+  setTimeout(()=>{if(t.parentNode)t.remove();},800);
+};
 
 /* ── CONTEXT TRIM ── */
 const getMsgsForAPI=()=>{
@@ -1741,13 +1917,32 @@ const buildSys=()=>{
 
 /* ── STREAMING ── */
 let _buf='',_raf=null,_cEl=null;
-const schedFlush=cEl=>{_cEl=cEl;if(_raf)return;_raf=requestAnimationFrame(()=>{_raf=null;if(!_cEl)return;_cEl.innerHTML=DOMPurify.sanitize(mdParse(_buf));scrollIfNeeded();extractCode(_buf);});};
+let _lastChunkTime=0,_chunkCount=0;
+const schedFlush=cEl=>{
+  _cEl=cEl;
+  // detect thinking steps from rolling buffer
+  if(_buf&&_chunkCount%8===0&&typeof detectStepFromChunk==='function'){
+    const tail=_buf.slice(-120);
+    const step=detectStepFromChunk(tail);
+    if(step&&typeof appendThinkStep==='function')appendThinkStep(step.icon,step.label);
+  }
+  extractCode(_buf); // realtime canvas sync every chunk
+  if(_raf)return;
+  _raf=requestAnimationFrame(()=>{_raf=null;if(!_cEl)return;_cEl.innerHTML=DOMPurify.sanitize(mdParse(_buf));scrollIfNeeded();});
+};
 const flushFinal=cEl=>{
   if(_raf){cancelAnimationFrame(_raf);_raf=null;}
   if(!cEl)return;
   cEl.innerHTML=DOMPurify.sanitize(mdParse(_buf));
   cEl.querySelectorAll('pre code').forEach(b=>hljs.highlightElement(b));
-  scrollIfNeeded();extractCode(_buf);_buf='';_cEl=null;
+  scrollIfNeeded();
+  // finalize canvas with highlighted version
+  const re=/```([\w-]*)\n([\s\S]*?)(?:```|$)/g;
+  let m,last=null,lang='';
+  while((m=re.exec(_buf))!==null){lang=m[1];last=m[2];}
+  if(last!==null)finalizeCanvas(last,lang);
+  else showCanvasLiveBar(false);
+  _buf='';_cEl=null;_chunkCount=0;
 };
 
 const regenLast=async()=>{
@@ -1770,6 +1965,104 @@ const handleSubmit=async e=>{
   const prompt=el.userInput.value.trim();if(!prompt)return;
   const activeModel=state.models.find(m=>m.id===state.modelId);
   if(activeModel&&!isChatCapable(activeModel)){toast(`"${activeModel.name}" is not a chat model. Please select another.`,'error');openModal(el.modelsModal);return;}
+
+/* ── PROMPT ENHANCER ── */
+const ENHANCE_STYLES={
+  detailed:"Rewrite the following user prompt to be significantly more detailed, adding helpful context, constraints, edge cases, and expected output format. Keep the core intent intact but make it comprehensive for an AI to understand perfectly.",
+  concise:"Rewrite the following user prompt to be more concise and direct. Remove vague language and make the request crystal clear in as few words as possible.",
+  technical:"Rewrite the following user prompt with a technical developer-focused lens. Add specifics like language preferences, architecture considerations, edge cases, and formatting expectations.",
+  creative:"Rewrite the following user prompt in a way that opens up creative possibilities. Make it broader, more imaginative, and encourage the AI to explore novel approaches.",
+  stepbystep:"Rewrite the following user prompt to explicitly ask the AI to break the solution into clear numbered steps, explaining reasoning at each step.",
+  formal:"Rewrite the following user prompt in a professional, formal tone suitable for business or academic contexts. Polish the language and add appropriate structure.",
+};
+let enhancerStyle='detailed';
+let enhancerModelId='__current__';
+
+const openEnhancer=()=>{
+  const txt=el.userInput.value.trim();
+  if(!txt){toast('Type a prompt first','error');return;}
+  if(!state.apiKey){openModal(el.settingsModal);toast('Set your API key first','error');return;}
+  const wrap=document.getElementById('enhancer-modal-wrap');
+  const orig=document.getElementById('enhancer-original');
+  const res=document.getElementById('enhancer-result-wrap');
+  const resArea=document.getElementById('enhancer-result');
+  const loading=document.getElementById('enhancer-loading');
+  if(orig)orig.textContent=txt;
+  if(res)res.classList.add('hidden');
+  if(resArea)resArea.value='';
+  if(loading){loading.classList.add('hidden');loading.style.display='none';}
+  if(wrap)wrap.classList.add('open');
+  // populate model select
+  const sel=document.getElementById('enhancer-model-select');
+  if(sel&&state.models.length>1){
+    while(sel.options.length>1)sel.remove(1);
+    state.models.filter(m=>{const t=(m.name+m.id).toLowerCase();return!/embed|rerank|image.gen|tts/.test(t);}).slice(0,40).forEach(m=>{
+      const o=document.createElement('option');o.value=m.id;o.textContent=m.name;
+      if(m.id===enhancerModelId)o.selected=true;
+      sel.appendChild(o);
+    });
+  }
+};
+const closeEnhancer=()=>{const wrap=document.getElementById('enhancer-modal-wrap');if(wrap)wrap.classList.remove('open');};
+const runEnhancer=async()=>{
+  const orig=document.getElementById('enhancer-original');
+  const res=document.getElementById('enhancer-result-wrap');
+  const resArea=document.getElementById('enhancer-result');
+  const loading=document.getElementById('enhancer-loading');
+  const runBtn=document.getElementById('enhancer-run-btn');
+  const useBtn=document.getElementById('enhancer-use-btn');
+  const prompt=orig?.textContent?.trim();
+  if(!prompt)return;
+  const modelToUse=enhancerModelId==='__current__'?state.modelId:enhancerModelId;
+  const sysInstr=ENHANCE_STYLES[enhancerStyle]||ENHANCE_STYLES.detailed;
+  if(loading){loading.classList.remove('hidden');loading.style.display='flex';}
+  if(res)res.classList.add('hidden');
+  if(useBtn)useBtn.classList.add('hidden');
+  if(runBtn){runBtn.disabled=true;runBtn.innerHTML='<svg class="w-3.5 h-3.5 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>Enhancing…</span>';}
+  try{
+    const r=await fetch(API_URL,{method:'POST',
+      headers:{'Authorization':`Bearer ${state.apiKey}`,'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':'VortexAI'},
+      body:JSON.stringify({model:modelToUse,messages:[
+        {role:'system',content:sysInstr+'\n\nReturn ONLY the enhanced prompt. No preamble, no explanation, no quotes around it.'},
+        {role:'user',content:prompt}
+      ],stream:false,temperature:0.7,max_tokens:800})});
+    if(!r.ok){const ed=await r.json().catch(()=>{});throw new Error(ed?.error?.message||`API Error ${r.status}`);}
+    const data=await r.json();
+    const enhanced=data.choices?.[0]?.message?.content?.trim()||'';
+    if(!enhanced)throw new Error('Empty response from model');
+    if(resArea){resArea.value=enhanced;}
+    if(res)res.classList.remove('hidden');
+    if(useBtn)useBtn.classList.remove('hidden');
+    toast('Prompt enhanced!','success');
+  }catch(err){
+    toast('Enhance failed: '+err.message.slice(0,60),'error');
+  }finally{
+    if(loading){loading.classList.add('hidden');loading.style.display='none';}
+    if(runBtn){runBtn.disabled=false;runBtn.innerHTML='<span>✨</span><span>Enhance</span>';}
+  }
+};
+
+// Wire enhancer events
+document.getElementById('enhancer-close')?.addEventListener('click',closeEnhancer);
+document.getElementById('enhancer-close2')?.addEventListener('click',closeEnhancer);
+document.getElementById('enhancer-modal-wrap')?.addEventListener('click',e=>{if(e.target===e.currentTarget)closeEnhancer();});
+document.getElementById('enhancer-run-btn')?.addEventListener('click',runEnhancer);
+document.getElementById('enhancer-use-btn')?.addEventListener('click',()=>{
+  const resArea=document.getElementById('enhancer-result');
+  if(resArea?.value){el.userInput.value=resArea.value;el.userInput.dispatchEvent(new Event('input'));el.userInput.focus();closeEnhancer();toast('Enhanced prompt applied','success');}
+});
+document.getElementById('enhancer-style-grid')?.addEventListener('click',e=>{
+  const opt=e.target.closest('.enhancer-option');if(!opt)return;
+  document.querySelectorAll('.enhancer-option').forEach(o=>o.classList.remove('selected'));
+  opt.classList.add('selected');enhancerStyle=opt.dataset.style;
+});
+document.getElementById('enhancer-model-select')?.addEventListener('change',e=>{enhancerModelId=e.target.value;});
+// Enhance button in input bar
+document.getElementById('enhance-btn')?.addEventListener('click',openEnhancer);
+// CMD palette action
+CMD_ACTIONS.push({icon:'✨',label:'Enhance Prompt',kbd:'',action:()=>{closePalette();openEnhancer();}});
+
+
   if(!state.chatId)state.chatId=genId();
   el.userInput.value='';el.userInput.style.height='auto';el.charCount.textContent='0';el.charCount.className='';
   appendMsg('user',prompt);
@@ -1806,7 +2099,7 @@ const sendToAPI=async()=>{
       const lines=leftover.split('\n');leftover=lines.pop();
       for(const line of lines){
         if(!line.startsWith('data: ')||line.trim()==='data: [DONE]')continue;
-        try{const d=JSON.parse(line.slice(6));if(d.error)throw new Error(d.error.message||'Stream error');const delta=d.choices?.[0]?.delta?.content;if(!delta)continue;resp+=delta;_buf=resp;if(cEl)schedFlush(cEl);}catch(pe){if(pe.message?.includes('Stream'))throw pe;}
+        try{const d=JSON.parse(line.slice(6));if(d.error)throw new Error(d.error.message||'Stream error');const delta=d.choices?.[0]?.delta?.content;if(!delta)continue;resp+=delta;_buf=resp;_chunkCount++;if(_chunkCount===1&&state.autoCanvas&&/```/.test(resp)){openCanvas();showCanvasSkeleton();}if(cEl)schedFlush(cEl);}catch(pe){if(pe.message?.includes('Stream'))throw pe;}
       }
     }
     if(cEl)flushFinal(cEl);
