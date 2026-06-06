@@ -333,6 +333,100 @@ body.light-mode body::before{opacity:.05;}
 /* Msg timestamp */
 .msg-ts{font-size:8px;font-family:'JetBrains Mono',monospace;color:var(--c-muted);opacity:.5;}
 /* Import/export history */
+
+/* ── CHAT FOLDERS ── */
+.folder-header{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:8px;cursor:pointer;transition:background .12s;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;color:var(--c-muted);text-transform:uppercase;letter-spacing:.06em;user-select:none;}
+.folder-header:hover{background:var(--c-surface2);}
+.folder-header .folder-arrow{transition:transform .2s;font-size:8px;}
+.folder-header.open .folder-arrow{transform:rotate(90deg);}
+.folder-chats{display:none;padding-left:10px;}
+.folder-chats.open{display:block;}
+.folder-actions{display:none;gap:2px;margin-left:auto;}
+.folder-header:hover .folder-actions{display:flex;}
+#folder-bar{padding:4px 8px;border-bottom:1px solid var(--c-border);display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.folder-pill{font-size:9px;padding:2px 7px;border-radius:6px;border:1px solid var(--c-border2);background:var(--c-surface2);color:var(--c-muted);cursor:pointer;transition:all .12s;white-space:nowrap;}
+.folder-pill:hover{border-color:var(--c-accent);color:var(--c-accent2);}
+.folder-pill.active{background:rgba(108,99,255,.15);border-color:var(--c-accent);color:var(--c-accent2);}
+/* ── TEMPORARY CHAT ── */
+#temp-chat-banner{display:none;align-items:center;gap:6px;padding:5px 12px;background:rgba(249,115,22,.06);border-bottom:1px solid rgba(249,115,22,.2);font-size:10px;color:#fb923c;font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+#temp-chat-banner.active{display:flex;}
+.temp-icon{font-size:11px;}
+/* ── MULTI-MODEL COMPARE ── */
+#compare-modal .compare-model-slot{background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:10px;overflow:hidden;flex:1;min-width:0;display:flex;flex-direction:column;}
+#compare-modal .compare-model-header{padding:6px 10px;border-bottom:1px solid var(--c-border);display:flex;align-items:center;gap:6px;background:var(--c-surface);}
+#compare-modal .compare-model-body{flex:1;overflow-y:auto;padding:10px;font-size:12px;line-height:1.6;color:var(--c-text);}
+#compare-modal .compare-model-body.loading{display:flex;align-items:center;justify-content:center;color:var(--c-muted);}
+#compare-prompt{width:100%;background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:10px;padding:8px 12px;color:var(--c-text);font-size:13px;outline:none;resize:none;font-family:'Inter',sans-serif;}
+#compare-prompt:focus{border-color:rgba(108,99,255,.5);}
+.compare-sel{background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:8px;padding:5px 8px;color:var(--c-text);font-size:11px;outline:none;}
+/* ── XP / LEVELS / ACHIEVEMENTS ── */
+#xp-bar-wrap{background:var(--c-border2);height:4px;border-radius:99px;overflow:hidden;}
+#xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--c-accent),var(--c-accent2));border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.achievement-badge{display:flex;align-items:center;gap:8px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:10px;padding:8px 10px;transition:all .15s;}
+.achievement-badge.unlocked{border-color:rgba(234,179,8,.35);background:rgba(234,179,8,.04);}
+.achievement-badge .badge-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--c-surface2);filter:grayscale(1);transition:filter .3s;}
+.achievement-badge.unlocked .badge-icon{filter:none;}
+.achievement-badge .badge-name{font-size:11px;font-weight:700;font-family:'Syne',sans-serif;color:var(--c-text);}
+.achievement-badge .badge-desc{font-size:9px;color:var(--c-muted);}
+.achievement-badge .badge-check{margin-left:auto;font-size:12px;color:var(--c-yellow);display:none;}
+.achievement-badge.unlocked .badge-check{display:block;}
+#xp-level-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.3);border-radius:6px;padding:2px 7px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--c-accent2);}
+@keyframes levelUp{0%{transform:scale(1);}40%{transform:scale(1.15);}100%{transform:scale(1);}}
+.level-up-anim{animation:levelUp .4s ease-out;}
+/* ── KEYBOARD SHORTCUTS OVERLAY ── */
+#shortcuts-overlay{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);padding:1rem;}
+#shortcuts-overlay.open{display:flex;}
+#shortcuts-box{background:var(--c-surface);border:1px solid var(--c-border2);border-radius:20px;overflow:hidden;width:min(640px,96vw);max-height:88svh;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.7);animation:slideDown .2s ease-out;}
+.kbd-chip{display:inline-flex;align-items:center;gap:2px;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--c-surface2);border:1px solid var(--c-border2);padding:2px 6px;border-radius:5px;color:var(--c-text);}
+.shortcut-row{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;transition:background .1s;gap:8px;}
+.shortcut-row:hover{background:var(--c-surface2);}
+.shortcut-cat{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);padding:6px 16px 3px;font-family:'Syne',sans-serif;border-top:1px solid var(--c-border);margin-top:4px;}
+.shortcut-cat:first-child{border-top:none;margin-top:0;}
+/* ── CONSOLE PANEL ── */
+#console-panel{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#0a0b10;border-top:2px solid var(--c-border2);display:none;flex-direction:column;transition:height .25s cubic-bezier(.4,0,.2,1);}
+#console-panel.open{display:flex;}
+#console-header{display:flex;align-items:center;gap:8px;padding:5px 12px;background:var(--c-surface);border-bottom:1px solid var(--c-border);flex-shrink:0;cursor:ns-resize;user-select:none;}
+#console-output{flex:1;overflow-y:auto;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;min-height:0;}
+#console-input-row{display:flex;align-items:center;gap:6px;padding:5px 10px;border-top:1px solid var(--c-border);flex-shrink:0;}
+#console-input{flex:1;background:transparent;border:none;outline:none;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--c-text);}
+#console-input::placeholder{color:var(--c-muted);}
+.con-line{display:flex;gap:6px;margin:1px 0;align-items:flex-start;}
+.con-prefix{color:var(--c-muted);flex-shrink:0;font-size:10px;}
+.con-log{color:#e6edf3;}
+.con-warn{color:#fbbf24;}
+.con-error{color:#f87171;}
+.con-info{color:#67e8f9;}
+.con-cmd{color:var(--c-accent2);}
+.con-result{color:#4ade80;}
+/* ── MONACO EDITOR MODAL ── */
+#monaco-modal{position:fixed;inset:0;z-index:180;display:none;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);}
+#monaco-modal.open{display:flex;align-items:center;justify-content:center;padding:1rem;}
+#monaco-box{background:#1e1e1e;border:1px solid var(--c-border2);border-radius:16px;width:min(900px,96vw);height:min(680px,90svh);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.7);animation:slideDown .2s ease-out;}
+#monaco-header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#252526;border-bottom:1px solid #3c3c3c;flex-shrink:0;}
+#monaco-container{flex:1;min-height:0;position:relative;}
+#monaco-lang-sel{background:#3c3c3c;border:1px solid #555;border-radius:6px;padding:3px 7px;color:#ccc;font-size:11px;outline:none;}
+#monaco-footer{display:flex;align-items:center;gap:6px;padding:6px 12px;background:#252526;border-top:1px solid #3c3c3c;flex-shrink:0;font-size:10px;font-family:'JetBrains Mono',monospace;color:#858585;}
+/* ── WEB SEARCH TOGGLE ── */
+#web-search-indicator{display:none;align-items:center;gap:4px;font-size:9px;font-family:'JetBrains Mono',monospace;color:#67e8f9;padding:2px 7px;border-radius:5px;border:1px solid rgba(6,182,212,.25);background:rgba(6,182,212,.06);}
+#web-search-indicator.active{display:inline-flex;}
+#web-search-btn.active{color:#06b6d4!important;border-color:rgba(6,182,212,.4)!important;background:rgba(6,182,212,.08)!important;}
+/* When web search is on, show indicator in temp banner */
+#temp-chat-banner #web-search-indicator{display:none;}
+body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
+.web-result-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:8px;padding:8px 10px;margin:.3em 0;font-size:11px;}
+.web-result-card a{color:var(--c-accent2);text-decoration:underline;}
+.web-result-card .web-snippet{color:var(--c-muted);font-size:10px;margin-top:2px;}
+/* Responsive fixes */
+@media(max-width:480px){
+  #shortcuts-box{border-radius:14px;}
+  #monaco-box{border-radius:12px;}
+  #console-output{font-size:10px;}
+  .compare-sel{font-size:10px;}
+}
+@media(max-width:360px){
+  .achievement-badge .badge-name{font-size:10px;}
+  #xp-bar-wrap{height:3px;}
+}
 </style>
 </head>
 <body>
@@ -426,6 +520,15 @@ body.light-mode body::before{opacity:.05;}
     <button id="docs-btn-mobile" title="About" class="p-1.5 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors sm:hidden">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     </button>
+    <button id="web-search-btn" title="Web Search Toggle (Ctrl+Shift+W)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#06b6d4] hover:bg-[#141720] rounded-lg transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+    </button>
+    <button id="shortcuts-btn" title="Keyboard Shortcuts (Ctrl+Shift+K)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden sm:block">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+    </button>
+    <button id="achievements-btn" title="Achievements & XP (Ctrl+Shift+A)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-yellow-400 hover:bg-[#141720] rounded-lg transition-colors hidden sm:block">
+      🏆
+    </button>
     <button id="settings-btn" title="Settings" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
     </button>
@@ -441,6 +544,10 @@ body.light-mode body::before{opacity:.05;}
       <div class="flex items-center justify-between">
         <span class="section-label">Chat History</span>
         <div class="flex items-center gap-0.5">
+          <button id="temp-chat-btn" title="Temporary Chat (not saved)" class="p-1 text-[#4b5563] hover:text-[#f97316] rounded transition-colors" style="font-size:11px;">⏱</button>
+          <button id="compare-btn-sidebar" title="Multi-Model Compare" class="p-1 text-[#4b5563] hover:text-[#a78bfa] rounded transition-colors" style="font-size:11px;">⚖</button>
+          <button id="monaco-btn-sidebar" title="Monaco Editor (Ctrl+M)" class="p-1 text-[#4b5563] hover:text-[#569cd6] rounded transition-colors" style="font-size:11px;">📝</button>
+          <button id="console-btn-sidebar" title="Toggle Console (Ctrl+\`)" class="p-1 text-[#4b5563] hover:text-[#22c55e] rounded transition-colors" style="font-size:11px;">⌨</button>
           <button id="import-history-btn" title="Import chats from JSON" class="p-1 text-[#4b5563] hover:text-[#a78bfa] rounded transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           </button>
@@ -472,12 +579,24 @@ body.light-mode body::before{opacity:.05;}
         <div class="sb-stat"><span class="sb-stat-val" id="stat-chats">0</span><span class="sb-stat-lbl">Chats</span></div>
         <div class="sb-stat"><span class="sb-stat-val" id="stat-msgs">0</span><span class="sb-stat-lbl">Messages</span></div>
       </div>
+      <div class="flex items-center justify-between">
+        <div id="xp-level-badge" class="text-[9px]">LVL <span id="sb-xp-level">1</span></div>
+        <button id="achievements-btn-sb" class="text-[9px] text-[#4b5563] hover:text-yellow-400 transition-colors">🏆 Achievements</button>
+      </div>
+      <div id="xp-bar-wrap"><div id="xp-bar-fill" style="width:0%"></div></div>
       <div class="text-[9px] text-[#374151] text-center">Saved locally · Never synced</div>
     </div>
   </div>
 
   <!-- CHAT PANEL -->
   <div id="chat-panel" class="flex-1 flex flex-col h-full overflow-hidden bg-[var(--c-bg)]" style="min-width:0">
+    <!-- Temp Chat Banner -->
+    <div id="temp-chat-banner">
+      <span class="temp-icon">⏱</span>
+      <span class="flex-1 text-[10px]">Temporary chat — messages will NOT be saved</span>
+      <span id="web-search-indicator">🌐 Web Search ON</span>
+      <button id="temp-chat-exit" class="text-[9px] px-2 py-0.5 rounded border border-orange-500/30 text-orange-300 hover:bg-orange-500/10 transition-colors ml-1">Exit</button>
+    </div>
     <div id="sys-prompt-bar">
       <svg class="w-3.5 h-3.5 text-[#a78bfa] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
       <textarea id="sys-prompt-live" rows="2" class="flex-1 bg-transparent text-[#9ca3af] text-xs mono outline-none resize-none leading-relaxed placeholder-[#374151]" placeholder="System prompt… (defines AI personality and behavior)"></textarea>
@@ -1000,6 +1119,139 @@ body.light-mode body::before{opacity:.05;}
 </div>
 
 
+<!-- KEYBOARD SHORTCUTS OVERLAY -->
+<div id="shortcuts-overlay">
+  <div id="shortcuts-box">
+    <div class="px-4 py-3 border-b border-[#1f2333] flex justify-between items-center shrink-0">
+      <div class="flex items-center gap-2"><span class="text-lg">⌨️</span><h2 class="font-black text-white text-sm" style="font-family:'Syne',sans-serif">Keyboard Shortcuts</h2></div>
+      <button id="shortcuts-close" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto py-2">
+      <div class="shortcut-cat">Navigation</div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Command palette</span><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">P</span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Toggle sidebar</span><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">B</span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Focus input</span><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">/</span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Model picker</span><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">K</span></div>
+      <div class="shortcut-cat">Chat</div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">New chat</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">N</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Send message</span><span class="kbd-chip">Enter</span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">New line</span><span class="flex items-center gap-1"><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Enter</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Stop generation</span><span class="kbd-chip">Escape</span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Export chat</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">E</span></span></div>
+      <div class="shortcut-cat">Features</div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Monaco editor</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">M</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Toggle console</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">\`</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Web search</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">W</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Multi-model compare</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">C</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Keyboard shortcuts</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">K</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Achievements</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">A</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MULTI-MODEL COMPARE MODAL -->
+<div id="compare-modal" class="modal-box modal-lg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0e1018] border border-[#1f2333] rounded-2xl shadow-2xl overflow-hidden hidden z-[60] scale-95 opacity-0 transition-all duration-200 flex-col" style="width:min(900px,96vw);max-width:none;">
+  <div class="px-3 sm:px-4 py-3 border-b border-[#1f2333] flex justify-between items-center shrink-0 flex-wrap gap-2">
+    <div class="flex items-center gap-2"><span class="text-lg">⚖️</span><h2 class="font-black text-white text-sm" style="font-family:'Syne',sans-serif">Multi-Model Compare</h2></div>
+    <button class="close-modal-btn p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="p-3 sm:p-4 border-b border-[#1f2333] space-y-2 shrink-0">
+    <textarea id="compare-prompt" rows="3" placeholder="Enter prompt to compare across models…"></textarea>
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="flex items-center gap-2 flex-1 min-w-0 flex-wrap gap-y-1">
+        <label class="text-xs text-[#6b7280]">Model A:</label>
+        <select id="compare-model-a" class="compare-sel flex-1 min-w-[120px]"></select>
+        <label class="text-xs text-[#6b7280]">Model B:</label>
+        <select id="compare-model-b" class="compare-sel flex-1 min-w-[120px]"></select>
+      </div>
+      <button id="compare-run-btn" class="px-4 py-2 rounded-xl bg-[#6c63ff] hover:bg-[#5b52ee] text-white text-xs font-semibold transition-colors shrink-0" style="font-family:'Syne',sans-serif">⚡ Compare</button>
+    </div>
+  </div>
+  <div class="flex-1 overflow-hidden p-3 sm:p-4 flex flex-col sm:flex-row gap-3 min-h-0" style="max-height:45svh">
+    <div class="compare-model-slot" id="compare-slot-a">
+      <div class="compare-model-header"><span class="text-[10px] font-bold text-[#a78bfa]" style="font-family:'Syne',sans-serif">Model A</span><span id="compare-a-label" class="text-[9px] mono text-[#4b5563] truncate flex-1 ml-1"></span></div>
+      <div class="compare-model-body" id="compare-body-a"><span class="text-[#4b5563] text-xs">Run comparison to see results…</span></div>
+    </div>
+    <div class="compare-model-slot" id="compare-slot-b">
+      <div class="compare-model-header"><span class="text-[10px] font-bold text-[#a78bfa]" style="font-family:'Syne',sans-serif">Model B</span><span id="compare-b-label" class="text-[9px] mono text-[#4b5563] truncate flex-1 ml-1"></span></div>
+      <div class="compare-model-body" id="compare-body-b"><span class="text-[#4b5563] text-xs">Run comparison to see results…</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENTS MODAL -->
+<div id="achievements-modal" class="modal-box modal-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0e1018] border border-[#1f2333] rounded-2xl shadow-2xl overflow-hidden hidden z-[60] scale-95 opacity-0 transition-all duration-200 flex-col">
+  <div class="px-3 sm:px-4 py-3 border-b border-[#1f2333] flex justify-between items-center shrink-0">
+    <div class="flex items-center gap-2 min-w-0">
+      <span class="text-lg">🏆</span>
+      <div>
+        <h2 class="font-black text-white text-sm" style="font-family:'Syne',sans-serif">Achievements & XP</h2>
+        <div class="flex items-center gap-2 mt-0.5">
+          <div id="xp-level-badge">LVL <span id="xp-level-num">1</span></div>
+          <span id="xp-pts-label" class="text-[9px] mono text-[#4b5563]">0 / 100 XP</span>
+        </div>
+      </div>
+    </div>
+    <button class="close-modal-btn p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="p-3 border-b border-[#1f2333] shrink-0">
+    <div id="xp-bar-wrap"><div id="xp-bar-fill" style="width:0%"></div></div>
+  </div>
+  <div class="flex-1 overflow-y-auto p-3 sm:p-4">
+    <div id="achievements-list" class="space-y-2"></div>
+  </div>
+</div>
+
+<!-- MONACO EDITOR MODAL -->
+<div id="monaco-modal">
+  <div id="monaco-box">
+    <div id="monaco-header">
+      <svg class="w-4 h-4 text-[#569cd6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+      <span class="text-sm font-bold text-white" style="font-family:'Syne',sans-serif">Monaco Editor</span>
+      <select id="monaco-lang-sel">
+        <option value="javascript">JavaScript</option><option value="typescript">TypeScript</option>
+        <option value="html">HTML</option><option value="css">CSS</option>
+        <option value="python">Python</option><option value="json">JSON</option>
+        <option value="markdown">Markdown</option><option value="rust">Rust</option>
+        <option value="go">Go</option><option value="java">Java</option>
+        <option value="cpp">C++</option><option value="sql">SQL</option>
+        <option value="shell">Shell</option><option value="yaml">YAML</option>
+      </select>
+      <div class="flex items-center gap-1 ml-auto">
+        <button id="monaco-copy-btn" class="px-2.5 py-1 rounded-lg bg-[#3c3c3c] hover:bg-[#505050] text-[#ccc] text-xs transition-colors">Copy</button>
+        <button id="monaco-insert-btn" class="px-2.5 py-1 rounded-lg bg-[#6c63ff]/80 hover:bg-[#6c63ff] text-white text-xs transition-colors">Insert to Chat</button>
+        <button id="monaco-close" class="p-1.5 text-[#858585] hover:text-white hover:bg-[#3c3c3c] rounded-lg transition-colors ml-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+    </div>
+    <div id="monaco-container">
+      <textarea id="monaco-textarea" style="width:100%;height:100%;background:#1e1e1e;color:#d4d4d4;border:none;outline:none;resize:none;padding:12px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;tab-size:2;" placeholder="Start typing code…" spellcheck="false"></textarea>
+      <div id="monaco-editor-real" style="position:absolute;inset:0;display:none;"></div>
+    </div>
+    <div id="monaco-footer">
+      <span id="monaco-cursor-pos">Ln 1, Col 1</span>
+      <span class="ml-auto" id="monaco-char-count">0 chars</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONSOLE PANEL -->
+<div id="console-panel" style="height:220px;">
+  <div id="console-header">
+    <svg class="w-3.5 h-3.5 text-[#22c55e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    <span class="text-xs font-bold text-[#22c55e]" style="font-family:'JetBrains Mono',monospace">Console</span>
+    <div class="flex items-center gap-1 ml-auto">
+      <button id="console-clear-btn" class="text-[9px] px-2 py-0.5 rounded border border-[#1f2333] text-[#4b5563] hover:text-[#e2e4f0] transition-colors">Clear</button>
+      <button id="console-close-btn" class="p-1 text-[#4b5563] hover:text-white transition-colors"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+  </div>
+  <div id="console-output"></div>
+  <div id="console-input-row">
+    <span class="text-[#6c63ff] text-xs mono shrink-0">&gt;</span>
+    <input id="console-input" type="text" placeholder="Execute JavaScript…" spellcheck="false" autocomplete="off">
+    <button id="console-run-btn" class="px-2 py-0.5 rounded bg-[#6c63ff]/20 border border-[#6c63ff]/30 text-[#a78bfa] text-xs mono shrink-0">Run</button>
+  </div>
+</div>
+
 <script>
 /* ════════════════════════════════════════
    VortexAI v6.1 — by Zelvior, Pakistan
@@ -1070,6 +1322,10 @@ const state = {
   currentFilter: 'all', currentSort: 'name',
   diffSnapshot: '', pinnedMsgs: [],
   isListening: false, attachments: [], idb: null,
+  /* new features */
+  webSearch: localStorage.getItem('vx_websearch')==='1',
+  isTemp: false,
+  activeFolderFilter: null,
 };
 
 /* ── COMPUTED AUTH HELPERS ── */
@@ -1449,7 +1705,7 @@ el.userInput?.addEventListener('input', () => {
 });
 
 /* ── MODALS ── */
-const allModals = [el.modelsModal, el.settingsModal, el.docsModal, el.exportModal].filter(Boolean);
+const allModals = [el.modelsModal, el.settingsModal, el.docsModal, el.exportModal, $('compare-modal'), $('achievements-modal')].filter(Boolean);
 const openModal = mel => { if (!mel) return; el.modalOverlay?.classList.remove('hidden'); mel.classList.remove('hidden'); mel.classList.add('flex'); void mel.offsetWidth; el.modalOverlay?.classList.remove('opacity-0'); mel.classList.remove('opacity-0','scale-95'); };
 const closeAllModals = () => { el.modalOverlay?.classList.add('opacity-0'); allModals.forEach(m => m.classList.add('opacity-0','scale-95')); setTimeout(() => { el.modalOverlay?.classList.add('hidden'); allModals.forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); }); }, 200); };
 el.modalOverlay?.addEventListener('click', closeAllModals);
@@ -1504,19 +1760,32 @@ const idbDel = id => new Promise(res => { if (!state.idb) { res(); return; } con
 const idbClear = () => new Promise(res => { if (!state.idb) { res(); return; } const tx=state.idb.transaction('chats','readwrite'); tx.objectStore('chats').clear(); tx.oncomplete=()=>res(); tx.onerror=()=>res(); });
 
 /* ── HISTORY ── */
-const saveChat = async () => { if (!state.messages.length) return; const title=(state.messages[0]?.content||'New Chat').slice(0,55); await idbPut({id:state.chatId,title,messages:state.messages,modelId:state.modelId,ts:Date.now()}); renderHistory(); };
+const saveChat = async () => { if (!state.messages.length||state.isTemp) return; const title=(state.messages[0]?.content||'New Chat').slice(0,55); await idbPut({id:state.chatId,title,messages:state.messages,modelId:state.modelId,ts:Date.now()}); renderHistory(); };
 const renderHistory = async (q='') => {
   let hist = await idbAll();
   if (q) { const ql=q.toLowerCase(); hist=hist.filter(c=>c.title.toLowerCase().includes(ql)||c.messages.some(m=>m.content.toLowerCase().includes(ql))); }
+  // Folder filter
+  if(state.activeFolderFilter){const folders=getFolders();const f=folders.find(f=>f.id===state.activeFolderFilter);if(f)hist=hist.filter(c=>(f.chats||[]).includes(c.id));}
   if (el.statChats) el.statChats.textContent = hist.length;
   if (el.statMsgs) el.statMsgs.textContent = hist.reduce((s,c)=>s+c.messages.length,0);
-  if (!hist.length) { if (el.historyList) el.historyList.innerHTML=`<div class="text-center py-6 text-[#2a2f45] text-xs">${q?'No results':'No chats yet. Start a conversation!'}</div>`; return; }
+  renderFolderBar();
+  if (!hist.length) { if (el.historyList) el.historyList.innerHTML=`<div class="text-center py-6 text-[#2a2f45] text-xs">${q?'No results':state.activeFolderFilter?'No chats in this folder':'No chats yet. Start a conversation!'}</div>`; return; }
   const frag = document.createDocumentFragment();
   hist.forEach(chat => {
+    const folderOfChat=getChatFolder(chat.id);const fName=folderOfChat?getFolders().find(f=>f.id===folderOfChat)?.name:'';
     const row = document.createElement('button'); row.className=`history-item${chat.id===state.chatId?' active':''}`;
-    row.innerHTML=`<svg class="w-3 h-3 text-[#4b5563] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg><div class="flex-1 min-w-0 text-left"><div class="text-xs text-[#c9d1d9] truncate">${DOMPurify.sanitize(chat.title)}</div><div class="text-[9px] text-[#4b5563] mt-0.5">${new Date(chat.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})} · ${chat.messages.length} msgs</div></div><button class="del-btn p-0.5 text-[#374151] hover:text-red-400 rounded transition-colors shrink-0" data-id="${chat.id}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
-    row.addEventListener('click', ev => { if (ev.target.closest('.del-btn')) return; loadChat(chat.id); if (window.innerWidth<768) setSidebar(false); });
+    row.innerHTML=`<svg class="w-3 h-3 text-[#4b5563] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg><div class="flex-1 min-w-0 text-left"><div class="text-xs text-[#c9d1d9] truncate">${DOMPurify.sanitize(chat.title)}</div><div class="text-[9px] text-[#4b5563] mt-0.5">${new Date(chat.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})} · ${chat.messages.length} msgs${fName?` · 📁${DOMPurify.sanitize(fName.slice(0,8))}`:''}</div></div><div class="flex items-center gap-0.5 shrink-0"><button class="folder-mv-btn p-0.5 text-[#374151] hover:text-[#a78bfa] rounded transition-colors" title="Move to folder" data-id="${chat.id}"><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg></button><button class="del-btn p-0.5 text-[#374151] hover:text-red-400 rounded transition-colors" data-id="${chat.id}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>`;
+    row.addEventListener('click', ev => { if (ev.target.closest('.del-btn')||ev.target.closest('.folder-mv-btn')) return; loadChat(chat.id); if (window.innerWidth<768) setSidebar(false); });
     row.querySelector('.del-btn').addEventListener('click', async ev => { ev.stopPropagation(); await idbDel(chat.id); if (state.chatId===chat.id) newChat(); else renderHistory(el.historySearch?.value||''); });
+    row.querySelector('.folder-mv-btn').addEventListener('click', ev => {
+      ev.stopPropagation();
+      const folders=getFolders();if(!folders.length){toast('Create a folder first (Ctrl+P → New Folder)','info');return;}
+      const opts=folders.map(f=>`${f.name}: ${f.id}`).join('\n')+'none: (remove from folder)';
+      const choice=prompt(`Move to folder:\n${folders.map((f,i)=>`${i+1}. ${f.name}`).join('\n')}\n0. Remove from folder\n\nEnter number:`);
+      if(choice===null)return;const idx=parseInt(choice)-1;
+      if(idx===-1){moveChatToFolder(chat.id,null);return;}
+      if(folders[idx])moveChatToFolder(chat.id,folders[idx].id);
+    });
     frag.appendChild(row);
   });
   if (el.historyList) { el.historyList.innerHTML=''; el.historyList.appendChild(frag); }
@@ -1640,7 +1909,7 @@ const renderModelBadges = () => {
 };
 
 /* ── CANVAS ── */
-const openCanvas = () => { if(state.canvasOpen)return;state.canvasOpen=true;el.canvasPanel?.classList.remove('hidden');el.canvasPanel?.classList.add('flex','flex-col');el.resizeHandle?.classList.remove('hidden');if(window.innerWidth<768)el.canvasPanel?.classList.add('canvas-mobile'); };
+const openCanvas = () => { if(state.canvasOpen)return;state.canvasOpen=true;el.canvasPanel?.classList.remove('hidden');el.canvasPanel?.classList.add('flex','flex-col');el.resizeHandle?.classList.remove('hidden');if(window.innerWidth<768)el.canvasPanel?.classList.add('canvas-mobile');trackStat('canvasOpens'); };
 const closeCanvas = () => { if(!state.canvasOpen)return;state.canvasOpen=false;el.canvasPanel?.classList.add('hidden');el.canvasPanel?.classList.remove('flex','flex-col','canvas-mobile');el.resizeHandle?.classList.add('hidden'); };
 const switchTab = tab => { state.canvasTab=tab;document.querySelectorAll('.canvas-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));el.canvasCodeTab?.classList.toggle('hidden',tab!=='code');el.canvasPreviewTab?.classList.toggle('hidden',tab!=='preview');if(el.canvasPreviewTab)el.canvasPreviewTab.classList.toggle('flex',tab==='preview');el.canvasEditorTab?.classList.toggle('hidden',tab!=='editor');if(el.canvasEditorTab)el.canvasEditorTab.classList.toggle('flex',tab==='editor');el.canvasDiffTab?.classList.toggle('hidden',tab!=='diff');if(el.canvasDiffTab)el.canvasDiffTab.classList.toggle('flex',tab==='diff');if(tab==='editor'&&state.canvasCode&&el.canvasEditor){el.canvasEditor.value=state.canvasCode;updateEditorInfo();}if(tab==='diff')renderDiff();if(tab==='preview'&&state.canvasCode)runPreview(state.canvasCode,state.canvasLang); };
 document.querySelectorAll('.canvas-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
@@ -1967,6 +2236,7 @@ const handleSubmit=async e=>{
   if(el.userInput){el.userInput.value='';el.userInput.style.height='auto';}
   if(el.charCount){el.charCount.textContent='0';el.charCount.className='';}
   appendMsg('user',prompt);state.messages.push({role:'user',content:prompt});
+  trackStat('totalMessages');addXP(2);
   updateTokenBar();await sendToAPI();
 };
 
@@ -1986,7 +2256,7 @@ const sendToAPI=async()=>{
   const hdrs={'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME};
   if(key)hdrs['Authorization']=`Bearer ${key}`;
   try{
-    const res=await fetch(apiUrl,{method:'POST',headers:hdrs,body:JSON.stringify({model:effectiveModel,messages:[{role:'system',content:buildSys()},...getMsgsForAPI()],stream:true,temperature:state.temperature,max_tokens:state.maxTokens}),signal:state.abortCtrl.signal});
+    const res=await fetch(apiUrl,{method:'POST',headers:hdrs,body:JSON.stringify({model:effectiveModel,messages:[{role:'system',content:state.webSearch?buildWebSearchSys():buildSys()},...getMsgsForAPI()],stream:true,temperature:state.temperature,max_tokens:state.maxTokens}),signal:state.abortCtrl.signal});
     if(!res.ok){const em=await parseAPIError(res);throw new Error(em);}
     removeThinking();document.getElementById('msg-shimmer')?.remove();cEl=appendMsg('assistant','');
     if(cEl)cEl.classList.add('typing-cursor');
@@ -2039,7 +2309,7 @@ const CHIPS=['Ask anything','Write HTML/CSS/JS','Explain code','Build a componen
 const renderWelcome=()=>{const d=document.createElement('div');d.id='welcome';d.className='welcome-card rounded-2xl p-4 sm:p-5 msg-enter';d.innerHTML=`<div class="flex items-center gap-2.5 mb-3"><div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#6c63ff] to-[#a78bfa] flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-[#6c63ff]/30 shrink-0">⚡</div><div><h3 class="font-black text-white text-base sm:text-lg" style="font-family:'Syne',sans-serif">VortexAI <span class="text-[#6c63ff] text-sm">v6.1</span></h3><p class="text-[10px] sm:text-xs text-[#6b7280]">OpenRouter · Free Models · Zelvior · Pakistan</p></div></div><p class="text-xs sm:text-sm text-[#9ca3af] leading-relaxed mb-3"><strong class="text-white">Ctrl+P</strong> = command palette · <strong class="text-white">✨ Enhance</strong> = upgrade prompt · <strong class="text-white">Settings</strong> = sign in via OpenRouter.</p><div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">${CHIPS.map(t=>`<button class="prompt-chip">${t}</button>`).join('')}</div>`;d.querySelectorAll('.prompt-chip').forEach(b=>b.addEventListener('click',()=>{if(el.userInput){el.userInput.value=b.textContent.trim();el.userInput.dispatchEvent(new Event('input'));el.userInput.focus();}}));el.chatInner.appendChild(d);};
 
 /* ── NEW CHAT ── */
-const newChat=()=>{if(state.isGenerating){toast('Stop generation first','error');return;}state.messages=[];state.chatId=genId();if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();renderWelcome();renderHistory();updateTokenBar();el.userInput?.focus();};
+const newChat=()=>{if(state.isGenerating){toast('Stop generation first','error');return;}state.messages=[];state.chatId=genId();if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();renderWelcome();renderHistory();updateTokenBar();el.userInput?.focus();if(!state.isTemp){trackStat('totalChats');addXP(5);}};
 el.newChatBtn?.addEventListener('click',newChat);
 el.newChatSidebarBtn?.addEventListener('click',()=>{newChat();if(window.innerWidth<768)setSidebar(false);});
 
@@ -2050,7 +2320,7 @@ el.attachFileInput?.addEventListener('change',()=>{const files=[...el.attachFile
 
 /* ── VOICE ── */
 const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(SpeechRec&&el.voiceBtn){const rec=new SpeechRec();rec.continuous=false;rec.interimResults=true;rec.lang='en-US';let finalT='';rec.onresult=e=>{finalT='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)finalT+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}if(el.userInput){el.userInput.value=(finalT||interim).trim();el.userInput.dispatchEvent(new Event('input'));}};rec.onend=()=>{state.isListening=false;el.voiceBtn.classList.remove('listening');if(finalT.trim())toast('Voice captured','success');};rec.onerror=e=>{state.isListening=false;el.voiceBtn.classList.remove('listening');toast('Voice error: '+e.error,'error');};el.voiceBtn.addEventListener('click',()=>{if(state.isListening){rec.stop();return;}finalT='';state.isListening=true;el.voiceBtn.classList.add('listening');rec.start();});}else if(el.voiceBtn){el.voiceBtn.title='Voice not supported';el.voiceBtn.style.opacity='.4';el.voiceBtn.addEventListener('click',()=>toast('Voice input not supported','error'));}
+if(SpeechRec&&el.voiceBtn){const rec=new SpeechRec();rec.continuous=false;rec.interimResults=true;rec.lang='en-US';let finalT='';rec.onresult=e=>{finalT='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)finalT+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}if(el.userInput){el.userInput.value=(finalT||interim).trim();el.userInput.dispatchEvent(new Event('input'));}};rec.onend=()=>{state.isListening=false;el.voiceBtn.classList.remove('listening');if(finalT.trim())toast('Voice captured','success');};rec.onerror=e=>{state.isListening=false;el.voiceBtn.classList.remove('listening');toast('Voice error: '+e.error,'error');};el.voiceBtn.addEventListener('click',()=>{if(state.isListening){rec.stop();return;}finalT='';state.isListening=true;el.voiceBtn.classList.add('listening');rec.start();trackStat('voiceUses');});}else if(el.voiceBtn){el.voiceBtn.title='Voice not supported';el.voiceBtn.style.opacity='.4';el.voiceBtn.addEventListener('click',()=>toast('Voice input not supported','error'));}
 
 /* ── PROMPT ENHANCER ── */
 const ENHANCE_STYLES={
@@ -2081,7 +2351,7 @@ const runEnhancer=async()=>{
     const data=await r.json();const enhanced=data.choices?.[0]?.message?.content?.trim()||'';
     if(!enhanced)throw new Error('Empty response');
     if(resArea)resArea.value=enhanced;if(res)res.classList.remove('hidden');if(useBtn)useBtn.classList.remove('hidden');
-    toast('Prompt enhanced!','success');
+    toast('Prompt enhanced!','success');trackStat('enhancerUses');
   }catch(err){toast('Enhance failed: '+err.message.slice(0,70),'error');}
   finally{if(loading){loading.classList.add('hidden');loading.style.display='none';}if(runBtn){runBtn.disabled=false;runBtn.innerHTML='<span>✨</span><span>Enhance</span>';}}
 };
@@ -2114,6 +2384,14 @@ const CMD_ACTIONS=[
   {icon:'📡',label:'Export All History',kbd:'',action:()=>{closePalette();el.exportHistoryBtn?.click();}},
   {icon:'🔄',label:'Refresh Models',kbd:'',action:()=>{closePalette();fetchModels();}},
   {icon:'⚡',label:'OAuth Sign In',kbd:'',action:()=>{closePalette();openModal(el.settingsModal);setTimeout(startOAuth,300);}},
+  {icon:'⚖️',label:'Multi-Model Compare',kbd:'Ctrl+Shift+C',action:()=>{closePalette();openCompare();}},
+  {icon:'⌨️',label:'Keyboard Shortcuts',kbd:'Ctrl+Shift+K',action:()=>{closePalette();openShortcuts();}},
+  {icon:'🏆',label:'Achievements',kbd:'Ctrl+Shift+A',action:()=>{closePalette();openAchievements();}},
+  {icon:'📝',label:'Monaco Editor',kbd:'Ctrl+M',action:()=>{closePalette();openMonaco();}},
+  {icon:'⌨',label:'Toggle Console',kbd:'Ctrl+`',action:()=>{closePalette();toggleConsole();}},
+  {icon:'🌐',label:'Toggle Web Search',kbd:'Ctrl+Shift+W',action:()=>{closePalette();toggleWebSearch();}},
+  {icon:'📁',label:'New Folder',kbd:'',action:()=>{closePalette();createFolder();}},
+  {icon:'⏱',label:'Temporary Chat',kbd:'',action:()=>{closePalette();startTempChat();}},
 ];
 let _cmdItems=[],_cmdIdx=0;
 const openPalette=()=>{el.cmdPalette?.classList.add('open');if(el.cmdInput){el.cmdInput.value='';renderCmds('');}setTimeout(()=>el.cmdInput?.focus(),50);};
@@ -2134,16 +2412,229 @@ el.cmdInput?.addEventListener('keydown',e=>{const items=el.cmdResults?.querySele
 el.cmdPalette?.addEventListener('click',e=>{if(e.target===el.cmdPalette)closePalette();});
 el.cmdPaletteBtn?.addEventListener('click',openPalette);
 
+/* ── CHAT FOLDERS ── */
+const getFolders=()=>JSON.parse(localStorage.getItem('vx_folders')||'[]');
+const saveFolders=f=>localStorage.setItem('vx_folders',JSON.stringify(f));
+const getChatFolder=chatId=>{const f=getFolders();for(const folder of f){if(folder.chats?.includes(chatId))return folder.id;}return null;};
+
+const createFolder=()=>{const name=prompt('Folder name:','Untitled');if(!name?.trim())return;const folders=getFolders();const f={id:genId(),name:name.trim(),chats:[],collapsed:false};folders.push(f);saveFolders(folders);renderHistory();toast('Folder created','success');};
+
+const deleteFolder=id=>{const folders=getFolders().filter(f=>f.id!==id);saveFolders(folders);renderHistory();};
+
+const moveChatToFolder=(chatId,folderId)=>{const folders=getFolders();folders.forEach(f=>{f.chats=(f.chats||[]).filter(c=>c!==chatId);});if(folderId){const f=folders.find(f=>f.id===folderId);if(f)(f.chats=f.chats||[]).push(chatId);}saveFolders(folders);renderHistory();};
+
+// Inject folder UI into sidebar
+const renderFolderBar=()=>{
+  let bar=document.getElementById('folder-bar');
+  if(!bar){bar=document.createElement('div');bar.id='folder-bar';const hl=$('history-list');hl?.parentNode?.insertBefore(bar,hl);}
+  const folders=getFolders();
+  bar.innerHTML=`<button id="new-folder-btn" class="folder-pill" title="New folder">📁 +</button>${folders.map(f=>`<button class="folder-pill ${state.activeFolderFilter===f.id?'active':''}" data-fid="${f.id}">${DOMPurify.sanitize(f.name.slice(0,10))}</button>`).join('')}${folders.length?`<button class="folder-pill ${!state.activeFolderFilter?'active':''}" data-fid="">All</button>`:''}`;
+  bar.querySelector('#new-folder-btn')?.addEventListener('click',createFolder);
+  bar.querySelectorAll('[data-fid]').forEach(b=>b.addEventListener('click',()=>{state.activeFolderFilter=b.dataset.fid||null;renderFolderBar();renderHistory();}));
+};
+
+/* ── TEMPORARY CHAT ── */
+const startTempChat=()=>{
+  state.isTemp=true;newChat();
+  const banner=$('temp-chat-banner');if(banner)banner.classList.add('active');
+  toast('Temporary chat started — nothing will be saved','info');
+};
+const exitTempChat=()=>{state.isTemp=false;const banner=$('temp-chat-banner');if(banner)banner.classList.remove('active');newChat();};
+document.getElementById('temp-chat-exit')?.addEventListener('click',exitTempChat);
+document.getElementById('temp-chat-btn')?.addEventListener('click',startTempChat);
+
+/* ── WEB SEARCH ── */
+const toggleWebSearch=()=>{
+  state.webSearch=!state.webSearch;
+  localStorage.setItem('vx_websearch',state.webSearch?'1':'0');
+  const btn=document.getElementById('web-search-btn');
+  if(btn)btn.classList.toggle('active',state.webSearch);
+  document.body.classList.toggle('web-search-on',state.webSearch);
+  if(state.webSearch)trackStat('webSearches');
+  toast(state.webSearch?'🌐 Web search ON — AI will search when needed':'Web search OFF',state.webSearch?'success':'info');
+};
+document.getElementById('web-search-btn')?.addEventListener('click',toggleWebSearch);
+
+const buildWebSearchSys=()=>{
+  if(!state.webSearch)return buildSys();
+  return buildSys()+'\n\nWEB SEARCH MODE: You have access to a web search tool. When the user asks about current events, recent info, prices, weather, news, or anything that requires up-to-date data, start your response with [SEARCH: query] on its own line. Then provide your answer incorporating the search intent. Be transparent about needing current data.';
+};
+
+const processWebSearch=async(prompt)=>{
+  if(!state.webSearch)return null;
+  const needsSearch=/current|latest|today|now|recent|news|price|weather|2024|2025|who is|what is the|stock|score|live/i.test(prompt);
+  if(!needsSearch)return null;
+  const query=prompt.slice(0,120).replace(/[^\w\s]/g,' ').trim();
+  try{
+    const r=await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`,{signal:AbortSignal.timeout(3000)}).catch(()=>null);
+    if(!r||!r.ok)return null;
+    const d=await r.json();
+    const results=[];
+    if(d.AbstractText)results.push({title:d.Heading||'Result',snippet:d.AbstractText,url:d.AbstractURL||''});
+    (d.RelatedTopics||[]).slice(0,3).forEach(t=>{if(t.Text)results.push({title:t.Text.split(' - ')[0]||'',snippet:t.Text,url:t.FirstURL||''});});
+    return results.length?results:null;
+  }catch{return null;}
+};
+
+/* ── MULTI-MODEL COMPARE ── */
+const openCompare=()=>{
+  const modal=$('compare-modal');if(!modal)return;
+  populateCompareSels();openModal(modal);
+};
+const populateCompareSels=()=>{
+  const a=$('compare-model-a'),b=$('compare-model-b');
+  if(!a||!b)return;
+  const opts=state.models.slice(0,50).map(m=>`<option value="${m.id}">${DOMPurify.sanitize(m.name.slice(0,40))}</option>`).join('');
+  a.innerHTML=opts;b.innerHTML=opts;
+  if(state.models[0])a.value=state.models[0].id;
+  if(state.models[1])b.value=state.models[1].id;
+};
+const runCompare=async()=>{
+  const prompt=document.getElementById('compare-prompt')?.value?.trim();
+  if(!prompt){toast('Enter a prompt','error');return;}
+  const mA=document.getElementById('compare-model-a')?.value;
+  const mB=document.getElementById('compare-model-b')?.value;
+  if(!mA||!mB){toast('Select both models','error');return;}
+  const bodyA=document.getElementById('compare-body-a');
+  const bodyB=document.getElementById('compare-body-b');
+  document.getElementById('compare-a-label').textContent=mA.split('/').pop();
+  document.getElementById('compare-b-label').textContent=mB.split('/').pop();
+  if(bodyA){bodyA.innerHTML='<div class="thinking-dots"><span></span><span></span><span></span></div>';bodyA.classList.add('loading');}
+  if(bodyB){bodyB.innerHTML='<div class="thinking-dots"><span></span><span></span><span></span></div>';bodyB.classList.add('loading');}
+  const btn=$('compare-run-btn');if(btn){btn.disabled=true;btn.textContent='Running…';}
+  const call=async(modelId)=>{
+    const key=getActiveKey();
+    const hdrs={'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME+'-Compare'};
+    if(key)hdrs['Authorization']=`Bearer ${key}`;
+    const r=await fetch(getApiUrl(),{method:'POST',headers:hdrs,body:JSON.stringify({model:modelId,messages:[{role:'system',content:'You are a helpful assistant.'},{role:'user',content:prompt}],stream:false,max_tokens:1024})});
+    if(!r.ok)throw new Error(`${modelId}: HTTP ${r.status}`);
+    const d=await r.json();return d.choices?.[0]?.message?.content||'(empty response)';
+  };
+  const [ra,rb]=await Promise.allSettled([call(mA),call(mB)]);
+  if(bodyA){bodyA.classList.remove('loading');bodyA.innerHTML=ra.status==='fulfilled'?DOMPurify.sanitize(mdParse(ra.value)):`<span class="text-red-400 text-xs">Error: ${DOMPurify.sanitize(ra.reason?.message||'Failed')}</span>`;}
+  if(bodyB){bodyB.classList.remove('loading');bodyB.innerHTML=rb.status==='fulfilled'?DOMPurify.sanitize(mdParse(rb.value)):`<span class="text-red-400 text-xs">Error: ${DOMPurify.sanitize(rb.reason?.message||'Failed')}</span>`;}
+  if(btn){btn.disabled=false;btn.textContent='⚡ Compare';}
+};
+document.getElementById('compare-run-btn')?.addEventListener('click',runCompare);
+document.getElementById('compare-btn-sidebar')?.addEventListener('click',openCompare);
+
+/* ── XP / LEVELS / ACHIEVEMENTS ── */
+const ACHIEVEMENTS=[
+  {id:'first_msg',icon:'💬',name:'First Words',desc:'Send your first message',xp:10,check:s=>s.totalMessages>=1},
+  {id:'ten_msgs',icon:'📨',name:'Chatterbox',desc:'Send 10 messages',xp:25,check:s=>s.totalMessages>=10},
+  {id:'hundred_msgs',icon:'🔥',name:'Power User',desc:'Send 100 messages',xp:100,check:s=>s.totalMessages>=100},
+  {id:'first_chat',icon:'🆕',name:'New Beginnings',desc:'Create your first chat',xp:10,check:s=>s.totalChats>=1},
+  {id:'ten_chats',icon:'📚',name:'Collector',desc:'Create 10 chats',xp:50,check:s=>s.totalChats>=10},
+  {id:'model_switch',icon:'🤖',name:'Explorer',desc:'Try 3 different models',xp:30,check:s=>s.modelsUsed>=3},
+  {id:'canvas_user',icon:'🎨',name:'Canvas Master',desc:'Open canvas 5 times',xp:20,check:s=>s.canvasOpens>=5},
+  {id:'web_searcher',icon:'🌐',name:'Web Surfer',desc:'Use web search 3 times',xp:20,check:s=>s.webSearches>=3},
+  {id:'compare_user',icon:'⚖️',name:'Analyst',desc:'Run model comparison',xp:30,check:s=>s.compareRuns>=1},
+  {id:'folder_creator',icon:'📁',name:'Organizer',desc:'Create a folder',xp:15,check:s=>s.foldersCreated>=1},
+  {id:'voice_user',icon:'🎤',name:'Speaker',desc:'Use voice input',xp:15,check:s=>s.voiceUses>=1},
+  {id:'enhancer_user',icon:'✨',name:'Prompt Wizard',desc:'Enhance a prompt',xp:20,check:s=>s.enhancerUses>=1},
+  {id:'monaco_user',icon:'📝',name:'Code Editor',desc:'Open Monaco editor',xp:15,check:s=>s.monacoOpens>=1},
+  {id:'console_user',icon:'⌨️',name:'Developer',desc:'Use the console',xp:20,check:s=>s.consoleUses>=1},
+  {id:'night_owl',icon:'🦉',name:'Night Owl',desc:'Chat after midnight',xp:25,check:()=>new Date().getHours()<5},
+];
+const XP_PER_LEVEL=100;
+const getXPState=()=>JSON.parse(localStorage.getItem('vx_xp_state')||'{"xp":0,"unlocked":[],"stats":{"totalMessages":0,"totalChats":0,"modelsUsed":0,"canvasOpens":0,"webSearches":0,"compareRuns":0,"foldersCreated":0,"voiceUses":0,"enhancerUses":0,"monacoOpens":0,"consoleUses":0}}');
+const saveXPState=s=>localStorage.setItem('vx_xp_state',JSON.stringify(s));
+const addXP=(amount,reason='')=>{
+  const s=getXPState();const prevLevel=Math.floor(s.xp/XP_PER_LEVEL)+1;
+  s.xp+=amount;const newLevel=Math.floor(s.xp/XP_PER_LEVEL)+1;
+  saveXPState(s);updateXPUI();
+  if(newLevel>prevLevel){toast(`🎉 Level Up! You're now Level ${newLevel}!`,'success');const badge=$('xp-level-badge');badge?.classList.add('level-up-anim');setTimeout(()=>badge?.classList.remove('level-up-anim'),400);}
+  if(reason)toast(`+${amount} XP: ${reason}`,'info');
+};
+const trackStat=(stat,n=1)=>{const s=getXPState();s.stats=s.stats||{};s.stats[stat]=(s.stats[stat]||0)+n;saveXPState(s);checkAchievements();};
+const checkAchievements=()=>{
+  const s=getXPState();const stats=s.stats||{};
+  ACHIEVEMENTS.forEach(a=>{if(s.unlocked?.includes(a.id))return;if(a.check(stats)){s.unlocked=(s.unlocked||[]);s.unlocked.push(a.id);saveXPState(s);addXP(a.xp);toast(`🏆 Achievement: ${a.name} (+${a.xp} XP)!`,'success');}});
+};
+const updateXPUI=()=>{
+  const s=getXPState();const level=Math.floor(s.xp/XP_PER_LEVEL)+1;const xpInLevel=s.xp%XP_PER_LEVEL;const pct=Math.min(100,(xpInLevel/XP_PER_LEVEL)*100);
+  document.querySelectorAll('#xp-level-num,#sb-xp-level').forEach(el=>{if(el)el.textContent=level;});
+  const fill=$('xp-bar-fill');if(fill)fill.style.width=pct+'%';
+  const lbl=$('xp-pts-label');if(lbl)lbl.textContent=`${s.xp} XP · Level ${level}`;
+};
+const openAchievements=()=>{
+  const modal=$('achievements-modal');if(!modal)return;
+  const s=getXPState();const list=$('achievements-list');
+  if(list){list.innerHTML=ACHIEVEMENTS.map(a=>{const unlocked=s.unlocked?.includes(a.id);return`<div class="achievement-badge ${unlocked?'unlocked':''}"><div class="badge-icon">${a.icon}</div><div class="flex-1 min-w-0"><div class="badge-name">${a.name}</div><div class="badge-desc">${a.desc} · +${a.xp} XP</div></div><span class="badge-check">✓</span></div>`;}).join('');}
+  updateXPUI();openModal(modal);
+};
+document.getElementById('achievements-btn')?.addEventListener('click',openAchievements);
+document.getElementById('achievements-btn-sb')?.addEventListener('click',openAchievements);
+updateXPUI();
+
+/* ── KEYBOARD SHORTCUTS OVERLAY ── */
+const openShortcuts=()=>{const o=$('shortcuts-overlay');if(o)o.classList.add('open');};
+const closeShortcuts=()=>{const o=$('shortcuts-overlay');if(o)o.classList.remove('open');};
+document.getElementById('shortcuts-btn')?.addEventListener('click',openShortcuts);
+document.getElementById('shortcuts-close')?.addEventListener('click',closeShortcuts);
+document.getElementById('shortcuts-overlay')?.addEventListener('click',e=>{if(e.target===$('shortcuts-overlay'))closeShortcuts();});
+
+/* ── CONSOLE PANEL ── */
+let consoleOpen=false;
+const conOut=$('console-output');
+const logToConsole=(txt,cls='con-log')=>{if(!conOut)return;const line=document.createElement('div');line.className='con-line';line.innerHTML=`<span class="con-prefix">${cls==='con-cmd'?'>':`[${cls.replace('con-','')}]`}</span><span class="${cls}">${DOMPurify.sanitize(String(txt))}</span>`;conOut.appendChild(line);conOut.scrollTop=conOut.scrollHeight;};
+const toggleConsole=()=>{consoleOpen=!consoleOpen;const panel=$('console-panel');if(panel)panel.classList.toggle('open',consoleOpen);if(consoleOpen){logToConsole('VortexAI Console ready. Type JS expressions.','con-info');$('console-input')?.focus();trackStat('consoleUses');}};
+const runConsoleCmd=()=>{const inp=$('console-input');const cmd=inp?.value?.trim();if(!cmd)return;logToConsole(cmd,'con-cmd');inp.value='';try{const result=eval(cmd);if(result!==undefined)logToConsole(JSON.stringify(result,null,2),'con-result');}catch(e){logToConsole(e.message,'con-error');}};
+document.getElementById('console-close-btn')?.addEventListener('click',()=>{consoleOpen=false;$('console-panel')?.classList.remove('open');});
+document.getElementById('console-clear-btn')?.addEventListener('click',()=>{if(conOut)conOut.innerHTML='';});
+document.getElementById('console-run-btn')?.addEventListener('click',runConsoleCmd);
+document.getElementById('console-input')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runConsoleCmd();}});
+document.getElementById('console-btn-sidebar')?.addEventListener('click',toggleConsole);
+
+/* ── MONACO EDITOR ── */
+let monacoLoaded=false;let monacoEditorInstance=null;
+const openMonaco=()=>{
+  const modal=$('monaco-modal');if(!modal)return;
+  modal.classList.add('open');
+  trackStat('monacoOpens');
+  if(!monacoLoaded&&!document.getElementById('monaco-cdn')){
+    monacoLoaded=true;
+    const script=document.createElement('script');script.id='monaco-cdn';
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js';
+    script.onload=()=>{
+      window.require.config({paths:{vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs'}});
+      window.require(['vs/editor/editor.main'],()=>{
+        const container=$('monaco-editor-real');const textarea=$('monaco-textarea');
+        if(!container)return;
+        container.style.display='block';if(textarea)textarea.style.display='none';
+        monacoEditorInstance=monaco.editor.create(container,{value:textarea?.value||'',language:'javascript',theme:'vs-dark',fontSize:13,minimap:{enabled:window.innerWidth>600},wordWrap:'on',fontFamily:"'JetBrains Mono',monospace",lineHeight:22,scrollBeyondLastLine:false,automaticLayout:true});
+        monacoEditorInstance.onDidChangeCursorPosition(e=>{const pos=monacoEditorInstance.getPosition();const cur=$('monaco-cursor-pos');if(cur)cur.textContent=`Ln ${pos.lineNumber}, Col ${pos.column}`;});
+        monacoEditorInstance.onDidChangeModelContent(()=>{const cnt=$('monaco-char-count');if(cnt)cnt.textContent=monacoEditorInstance.getValue().length+' chars';});
+      });
+    };
+    document.head.appendChild(script);
+  }
+};
+const closeMonaco=()=>{$('monaco-modal')?.classList.remove('open');};
+document.getElementById('monaco-close')?.addEventListener('click',closeMonaco);
+document.getElementById('monaco-modal')?.addEventListener('click',e=>{if(e.target===$('monaco-modal'))closeMonaco();});
+document.getElementById('monaco-copy-btn')?.addEventListener('click',()=>{const val=monacoEditorInstance?monacoEditorInstance.getValue():$('monaco-textarea')?.value;if(val)navigator.clipboard.writeText(val).then(()=>toast('Copied','success'));});
+document.getElementById('monaco-insert-btn')?.addEventListener('click',()=>{const val=monacoEditorInstance?monacoEditorInstance.getValue():$('monaco-textarea')?.value;if(val&&el.userInput){el.userInput.value+='\n```\n'+val+'\n```';el.userInput.dispatchEvent(new Event('input'));closeMonaco();toast('Inserted into chat','success');}});
+document.getElementById('monaco-lang-sel')?.addEventListener('change',e=>{if(monacoEditorInstance)monaco.editor.setModelLanguage(monacoEditorInstance.getModel(),e.target.value);});
+document.getElementById('monaco-textarea')?.addEventListener('input',e=>{const cnt=$('monaco-char-count');if(cnt)cnt.textContent=e.target.value.length+' chars';});
+document.getElementById('monaco-btn-sidebar')?.addEventListener('click',openMonaco);
+
 /* ── KEYBOARD SHORTCUTS ── */
 document.addEventListener('keydown',e=>{
   const ctrl=e.ctrlKey||e.metaKey;
-  if(e.key==='Escape'){if(el.cmdPalette?.classList.contains('open')){closePalette();return;}if($('enhancer-modal-wrap')?.classList.contains('open')){closeEnhancer();return;}if(state.isGenerating){state.abortCtrl?.abort();return;}closeAllModals();}
+  if(e.key==='Escape'){if($('shortcuts-overlay')?.classList.contains('open')){closeShortcuts();return;}if($('monaco-modal')?.classList.contains('open')){closeMonaco();return;}if(el.cmdPalette?.classList.contains('open')){closePalette();return;}if($('enhancer-modal-wrap')?.classList.contains('open')){closeEnhancer();return;}if(state.isGenerating){state.abortCtrl?.abort();return;}closeAllModals();}
   if(ctrl&&e.key==='p'){e.preventDefault();openPalette();}
   if(ctrl&&e.key==='k'){e.preventDefault();openModal(el.modelsModal);renderModelsList();setTimeout(()=>el.modelSearchInput?.focus(),80);}
   if(ctrl&&e.key==='b'){e.preventDefault();setSidebar(!sidebarOpen);}
   if(ctrl&&e.shiftKey&&e.key==='N'){e.preventDefault();newChat();}
   if(ctrl&&e.key==='/'){e.preventDefault();el.userInput?.focus();}
   if(ctrl&&e.key==='e'){e.preventDefault();openModal(el.exportModal);}
+  if(ctrl&&e.key==='m'){e.preventDefault();openMonaco();}
+  if(ctrl&&e.key==='`'){e.preventDefault();toggleConsole();}
+  if(ctrl&&e.shiftKey&&e.key==='W'){e.preventDefault();toggleWebSearch();}
+  if(ctrl&&e.shiftKey&&e.key==='C'){e.preventDefault();openCompare();}
+  if(ctrl&&e.shiftKey&&e.key==='K'){e.preventDefault();openShortcuts();}
+  if(ctrl&&e.shiftKey&&e.key==='A'){e.preventDefault();openAchievements();}
 });
 
 /* ── BOOT ── */
@@ -2155,6 +2646,10 @@ renderModelBadges();
 updateTokenBar();
 setInterval(fetchModels, SCAN_INTERVAL);
 if (!isAuthenticated() && localStorage.getItem('nx_terms_v2')) setTimeout(() => openModal(el.settingsModal), 1000);
-openIDB().then(() => renderHistory());
+openIDB().then(() => { renderHistory(); renderFolderBar(); });
+// Init web search btn state
+if(state.webSearch){document.getElementById('web-search-btn')?.classList.add('active');document.body.classList.add('web-search-on');}
+// Init XP
+updateXPUI();checkAchievements();
 </script>
 </html>
