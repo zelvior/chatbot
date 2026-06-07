@@ -216,7 +216,51 @@ body.light-mode body::before{opacity:.05;}
 /* Fav star */
 .fav-star{color:var(--c-muted);transition:color .15s;cursor:pointer;font-size:12px;line-height:1;background:none;border:none;padding:0;}
 .fav-star.starred{color:#eab308;}
-/* Diff */
+/* ── ULTRA RESPONSIVE FIXES ── */
+/* Models modal full-height on mobile */
+@media(max-width:639px){
+  .modal-box{width:100%!important;max-width:100%!important;height:100svh!important;max-height:100svh!important;border-radius:0!important;top:0!important;left:0!important;transform:none!important;position:fixed!important;inset:0!important;}
+  #models-modal,#settings-modal,#docs-modal,#export-modal{border-radius:0!important;}
+  #canvas-panel{min-width:0!important;}
+  .modal-lg,.modal-md,.modal-sm{max-width:100%!important;}
+}
+/* Enhancer modal */
+#enhancer-modal-wrap{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s;}
+#enhancer-modal-wrap.open{opacity:1;pointer-events:auto;}
+#enhancer-modal{background:var(--c-surface);border:1px solid var(--c-border2);border-radius:20px 20px 0 0;width:100%;max-width:560px;max-height:92svh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+#enhancer-modal-wrap.open #enhancer-modal{transform:translateY(0);}
+@media(min-width:560px){
+  #enhancer-modal-wrap{align-items:center;}
+  #enhancer-modal{border-radius:20px;max-height:88svh;}
+}
+/* Input bar on small phones */
+@media(max-width:400px){
+  #input-bar{padding-left:.5rem!important;padding-right:.5rem!important;}
+  #attach-btn,#voice-btn{padding:.5rem!important;}
+  #send-btn{padding:.6rem!important;}
+}
+/* Model panel tabs responsive */
+@media(max-width:400px){
+  #panel-tab-free,#panel-tab-paid,#panel-tab-all{font-size:9px!important;padding:.35rem .25rem!important;}
+}
+/* Canvas panel mobile full screen */
+@media(max-width:767px){
+  #canvas-panel{min-width:0!important;width:100%!important;max-width:100%!important;}
+  .canvas-tab{padding:4px 8px!important;font-size:10px!important;}
+}
+/* Header overflow fix */
+@media(max-width:360px){
+  header{padding-left:.25rem!important;padding-right:.25rem!important;gap:.25rem!important;}
+  #open-models-btn{min-width:0!important;padding:.35rem .5rem!important;}
+}
+/* Compare modal columns on mobile */
+@media(max-width:639px){
+  #compare-cols{flex-direction:column!important;}
+}
+/* Filter pills no wrap */
+#filter-pills{scrollbar-width:none;}
+#filter-pills::-webkit-scrollbar{display:none;}
+
 .diff-add{background:rgba(34,197,94,.08);border-left:2px solid var(--c-green);display:block;padding:1px 8px;}
 .diff-del{background:rgba(239,68,68,.08);border-left:2px solid var(--c-red);display:block;padding:1px 8px;text-decoration:line-through;opacity:.6;}
 .diff-eq{display:block;padding:1px 8px;color:var(--c-muted);}
@@ -850,10 +894,14 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
       <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#4b5563]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
       <input id="model-search-input" type="text" placeholder="Search models…" class="w-full bg-[#141720] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-white placeholder-[#4b5563] outline-none transition-colors">
     </div>
+    <!-- Free / Paid panel tabs -->
+    <div class="flex gap-1.5">
+      <button id="panel-tab-free" class="flex-1 py-1.5 rounded-lg border text-xs font-bold transition-all bg-green-900/30 border-green-500/50 text-green-400" onclick="switchModelPanel('free')">🆓 Free Models</button>
+      <button id="panel-tab-paid" class="flex-1 py-1.5 rounded-lg border text-xs font-bold transition-all bg-[#141720] border-[#1f2333] text-[#6b7280]" onclick="switchModelPanel('paid')">💎 Paid Models</button>
+      <button id="panel-tab-all" class="flex-1 py-1.5 rounded-lg border text-xs font-bold transition-all bg-[#141720] border-[#1f2333] text-[#6b7280]" onclick="switchModelPanel('all')">🌐 All</button>
+    </div>
     <div id="filter-pills" class="flex gap-1 sm:gap-1.5 no-sb overflow-x-auto pb-0.5">
       <button class="filter-pill active" data-filter="all">All</button>
-      <button class="filter-pill" data-filter="free">🆓 Free</button>
-      <button class="filter-pill" data-filter="paid">💎 Paid</button>
       <button class="filter-pill" data-filter="favorites">⭐ Favorites</button>
       <button class="filter-pill" data-filter="text">💬 Text</button>
       <button class="filter-pill" data-filter="vision">👁 Vision</button>
@@ -1235,7 +1283,7 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
       <button id="compare-run-btn" class="px-4 py-2 rounded-xl bg-[#6c63ff] hover:bg-[#5b52ee] text-white text-xs font-semibold transition-colors shrink-0" style="font-family:'Syne',sans-serif">⚡ Compare</button>
     </div>
   </div>
-  <div class="flex-1 overflow-hidden p-3 sm:p-4 flex flex-col sm:flex-row gap-3 min-h-0" style="max-height:45svh">
+  <div id="compare-cols" class="flex-1 overflow-hidden p-3 sm:p-4 flex flex-col sm:flex-row gap-3 min-h-0" style="max-height:45svh">
     <div class="compare-model-slot" id="compare-slot-a">
       <div class="compare-model-header"><span class="text-[10px] font-bold text-[#a78bfa]" style="font-family:'Syne',sans-serif">Model A</span><span id="compare-a-label" class="text-[9px] mono text-[#4b5563] truncate flex-1 ml-1"></span></div>
       <div class="compare-model-body" id="compare-body-a"><span class="text-[#4b5563] text-xs">Run comparison to see results…</span></div>
@@ -1870,7 +1918,7 @@ el.userInput?.addEventListener('input', () => {
 
 /* ── MODALS ── */
 const allModals = [el.modelsModal, el.settingsModal, el.docsModal, el.exportModal, $('compare-modal'), $('achievements-modal')].filter(Boolean);
-const openModal = mel => { if (!mel) return; el.modalOverlay?.classList.remove('hidden'); mel.classList.remove('hidden'); mel.classList.add('flex'); void mel.offsetWidth; el.modalOverlay?.classList.remove('opacity-0'); mel.classList.remove('opacity-0','scale-95'); };
+const openModal = mel => { if (!mel) return; el.modalOverlay?.classList.remove('hidden'); mel.classList.remove('hidden'); mel.classList.add('flex'); void mel.offsetWidth; el.modalOverlay?.classList.remove('opacity-0'); mel.classList.remove('opacity-0','scale-95'); if(mel===el.modelsModal){switchModelPanel(_modelPanel||'free');} };
 const closeAllModals = () => { el.modalOverlay?.classList.add('opacity-0'); allModals.forEach(m => m.classList.add('opacity-0','scale-95')); setTimeout(() => { el.modalOverlay?.classList.add('hidden'); allModals.forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); }); }, 200); };
 el.modalOverlay?.addEventListener('click', closeAllModals);
 document.querySelectorAll('.close-modal-btn').forEach(b => b.addEventListener('click', closeAllModals));
@@ -2061,7 +2109,7 @@ const sortModels = models => { if(state.currentSort==='ctx')return[...models].so
 const renderModelsList = (q='') => {
   const query = q||el.modelSearchInput?.value||'';
   if (!state.models.length) { if(el.modelsList)el.modelsList.innerHTML='<div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-desc2 shimmer"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer"></div><div class="model-shimmer-tag shimmer" style="width:48px"></div></div></div><div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:70%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer" style="width:65%"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-desc2 shimmer" style="width:55%"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer" style="width:72px"></div></div></div><div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:50%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer"></div></div></div><div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:62%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer" style="width:75%"></div><div class="model-shimmer-desc1 shimmer"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer" style="width:65px"></div></div></div>'; return; }
-  const filtered = sortModels(state.models.filter(m=>{const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();return txt.includes(query.toLowerCase())&&modelPassesFilter(m,state.currentFilter);}));
+  const filtered = sortModels(state.models.filter(m=>{const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();const passesPanel=_modelPanel==='all'?true:_modelPanel==='free'?isFreeModel(m):!isFreeModel(m);return txt.includes(query.toLowerCase())&&modelPassesFilter(m,state.currentFilter)&&passesPanel;}));
   if (!filtered.length) { if(el.modelsList)el.modelsList.innerHTML=`<div class="col-span-2 text-center py-8 text-[#4b5563] text-xs">No models match</div>`; return; }
   const frag = document.createDocumentFragment();
   filtered.forEach(m => {
@@ -2081,6 +2129,16 @@ el.modelSearchInput?.addEventListener('input', e => renderModelsList(e.target.va
 el.refreshModelsBtn?.addEventListener('click', fetchModels);
 document.querySelectorAll('.filter-pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('active'));p.classList.add('active');state.currentFilter=p.dataset.filter;renderModelsList();}));
 document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-sort]').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.currentSort=b.dataset.sort;renderModelsList();}));
+
+/* Panel tabs: free / paid / all */
+let _modelPanel = 'free'; // default to free panel
+const switchModelPanel = panel => {
+  _modelPanel = panel;
+  const tabs = {free:$('panel-tab-free'),paid:$('panel-tab-paid'),all:$('panel-tab-all')};
+  Object.entries(tabs).forEach(([k,btn])=>{if(!btn)return;if(k===panel){btn.className='flex-1 py-1.5 rounded-lg border text-xs font-bold transition-all '+(k==='free'?'bg-green-900/30 border-green-500/50 text-green-400':k==='paid'?'bg-yellow-900/30 border-yellow-500/50 text-yellow-400':'bg-[#6c63ff]/20 border-[#6c63ff]/50 text-[#a78bfa]');}else{btn.className='flex-1 py-1.5 rounded-lg border text-xs font-bold transition-all bg-[#141720] border-[#1f2333] text-[#6b7280]';}});
+  renderModelsList();
+};
+window.switchModelPanel = switchModelPanel;
 
 const renderModelBadges = () => {
   if(!el.modelBadgeBar)return;el.modelBadgeBar.innerHTML='';
@@ -2277,7 +2335,7 @@ body.light-mode .shimmer {
 </style></head><body>${code}</body></html>`;el.canvasIframe.srcdoc=doc; };
 const showCanvasLiveBar = (on,chars=0) => { const bar=$('canvas-live-bar'),cc=$('live-chars-count');if(!bar)return;if(on){bar.classList.add('active');if(cc)cc.textContent=chars.toLocaleString()+' chars';}else bar.classList.remove('active'); };
 const showCanvasSkeleton = () => { const sk=$('canvas-skeleton'),sp=$('canvas-stream-pre'),pre=$('canvas-pre'),emp=$('canvas-empty');if(sk){sk.style.display='flex';sk.style.flexDirection='column';}if(sp)sp.style.display='none';if(pre)pre.classList.add('hidden');if(emp)emp.classList.add('hidden'); };
-const streamToCanvas = (code,lang) => { if(!state.autoCanvas||!code||code.length<2)return;if(!state.canvasOpen)openCanvas();const sp=$('canvas-stream-pre'),sk=$('canvas-skeleton'),pre=$('canvas-pre'),emp=$('canvas-empty');if(emp)emp.classList.add('hidden');if(sk)sk.style.display='none';if(pre)pre.classList.add('hidden');if(sp){sp.style.display='block';sp.textContent=code;sp.scrollTop=sp.scrollHeight;}if(state.canvasTab==='editor'&&el.canvasEditor)el.canvasEditor.value=code;if(el.canvasLangBadge){el.canvasLangBadge.textContent=lang||'code';el.canvasLangBadge.classList.toggle('hidden',!lang);}showCanvasLiveBar(true,code.length);if(/^(html|css)$/i.test(lang)&&state.canvasTab==='preview'){clearTimeout(window._previewTimer);window._previewTimer=setTimeout(()=>runPreview(code,lang),900);} };
+const streamToCanvas = (code,lang) => { if(!state.autoCanvas||!code||code.length<2)return;if(!state.canvasOpen){openCanvas();showCanvasSkeleton();}const sp=$('canvas-stream-pre'),sk=$('canvas-skeleton'),pre=$('canvas-pre'),emp=$('canvas-empty');if(emp)emp.classList.add('hidden');if(sk)sk.style.display='none';if(pre)pre.classList.add('hidden');if(sp){sp.style.display='block';sp.textContent=code;sp.scrollTop=sp.scrollHeight;}if(state.canvasTab==='editor'&&el.canvasEditor)el.canvasEditor.value=code;if(el.canvasLangBadge){el.canvasLangBadge.textContent=lang||'code';el.canvasLangBadge.classList.toggle('hidden',!lang);}showCanvasLiveBar(true,code.length);if(/^(html|css)$/i.test(lang)&&state.canvasTab==='preview'){clearTimeout(window._previewTimer);window._previewTimer=setTimeout(()=>runPreview(code,lang),900);} };
 const updateCanvas = (code,lang='') => { if(!code?.trim())return;state.canvasCode=code;state.canvasLang=lang;const sp=$('canvas-stream-pre');if(sp)sp.style.display='none';showCanvasLiveBar(false);const emp=$('canvas-empty'),pre=$('canvas-pre'),cnt=$('canvas-content'),badge=$('canvas-lang-badge');if(emp)emp.classList.add('hidden');if(pre){pre.classList.remove('hidden');pre.classList.add('flex-1');}if(badge){badge.textContent=lang||'code';badge.classList.toggle('hidden',!lang);}if(cnt){if(lang){try{const vl=hljs.getLanguage(lang)?lang:'plaintext';cnt.innerHTML=hljs.highlight(code,{language:vl}).value;}catch{cnt.textContent=code;}}else cnt.textContent=code;}const isWeb=/^(html|css|javascript|js|jsx|tsx|svg)$/i.test(lang);el.runCanvasBtn?.classList.toggle('hidden',!isWeb);el.openPreviewTabBtn?.classList.toggle('hidden',!isWeb);if(el.canvasEditor&&state.canvasTab==='editor'){el.canvasEditor.value=code;updateEditorInfo();} };
 const renderDiff = () => { if(!el.diffOutput)return;if(!state.diffSnapshot||!state.canvasCode){el.diffOutput.innerHTML='<span class="text-[#374151]">Click "Snapshot" to save code first.</span>';return;}const oldL=state.diffSnapshot.split('\n'),newL=state.canvasCode.split('\n');let html='';const max=Math.max(oldL.length,newL.length);for(let i=0;i<max;i++){const o=oldL[i],n=newL[i];if(o===n)html+=`<span class="diff-eq">${DOMPurify.sanitize(o??'')}</span>`;else{if(o!==undefined)html+=`<span class="diff-del">- ${DOMPurify.sanitize(o)}</span>`;if(n!==undefined)html+=`<span class="diff-add">+ ${DOMPurify.sanitize(n)}</span>`;}}el.diffOutput.innerHTML=html||'<span class="text-[#374151]">No differences.</span>'; };
 
@@ -2421,7 +2479,7 @@ const sendToAPI=async()=>{
   el.sendIcon?.classList.add('hidden');el.stopIcon?.classList.remove('hidden');
   el.sendBtn?.classList.add('generating');
   if(el.userInput)el.userInput.disabled=true;
-  if(state.autoCanvas){openCanvas();showCanvasSkeleton();}
+  // Canvas opens only when code is actually detected (in _extractAndStream/flushFinal)
   // Insert AI message shimmer placeholder before thinking steps
   const _shimmerWrap = insertMsgShimmer();
   appendThinking();
@@ -2507,7 +2565,7 @@ const ENHANCE_STYLES={
   stepbystep:'Rewrite to explicitly ask for numbered steps with reasoning at each step.',
   formal:'Rewrite in professional formal tone suitable for business or academic contexts.',
 };
-const populateEnhancerModelSelect=()=>{const sel=$('enhancer-model-select');if(!sel||!state.models.length)return;const curVal=sel.value||state.enhancerModel;while(sel.options.length>1)sel.remove(1);state.models.filter(m=>{const t=(m.name+m.id).toLowerCase();return!/embed|rerank|image.gen|tts\b/.test(t);}).slice(0,60).forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.name+(m.id===state.modelId?' ★':'')+' ('+(m.context_length>=1000?Math.round(m.context_length/1000)+'k':m.context_length||'?')+' ctx)';sel.appendChild(o);});if(curVal&&curVal!=='__current__'){const found=[...sel.options].find(o=>o.value===curVal);if(found)sel.value=curVal;}};
+const populateEnhancerModelSelect=()=>{const sel=$('enhancer-model-select');if(!sel||!state.models.length)return;const curVal=sel.value||state.enhancerModel;while(sel.options.length>1)sel.remove(1);const chatModels=state.models.filter(m=>{const t=(m.name+m.id).toLowerCase();return!/embed|rerank|image.gen|tts\b/.test(t);});const freeModels=chatModels.filter(m=>isFreeModel(m));const paidModels=chatModels.filter(m=>!isFreeModel(m));if(freeModels.length){const grp=document.createElement('optgroup');grp.label='🆓 Free Models';freeModels.slice(0,40).forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.name+(m.id===state.modelId?' ★':'')+' (free)';grp.appendChild(o);});sel.appendChild(grp);}if(paidModels.length){const grp=document.createElement('optgroup');grp.label='💎 Paid Models';paidModels.slice(0,40).forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.name+(m.id===state.modelId?' ★':'')+' ('+(m.context_length>=1000?Math.round(m.context_length/1000)+'k':m.context_length||'?')+' ctx)';grp.appendChild(o);});sel.appendChild(grp);}if(curVal&&curVal!=='__current__'){const found=[...sel.options].find(o=>o.value===curVal);if(found)sel.value=curVal;}};
 const openEnhancer=()=>{const txt=el.userInput?.value?.trim();if(!txt){toast('Type a prompt first','error');return;}const wrap=$('enhancer-modal-wrap');const orig=$('enhancer-original');const res=$('enhancer-result-wrap');const resArea=$('enhancer-result');const loading=$('enhancer-loading');if(orig)orig.textContent=txt;if(res)res.classList.add('hidden');if(resArea)resArea.value='';if(loading){loading.classList.add('hidden');loading.style.display='none';}const useBtn=$('enhancer-use-btn');if(useBtn)useBtn.classList.add('hidden');document.querySelectorAll('.enhancer-option').forEach(o=>o.classList.toggle('selected',o.dataset.style===state.enhancerStyle));populateEnhancerModelSelect();if(wrap)wrap.classList.add('open');};
 const closeEnhancer=()=>$('enhancer-modal-wrap')?.classList.remove('open');
 const runEnhancer=async()=>{
@@ -2522,7 +2580,7 @@ const runEnhancer=async()=>{
   try{
     const hdrs={'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME+'-Enhancer'};
     if(key)hdrs['Authorization']=`Bearer ${key}`;
-    const r=await fetch(getApiUrl(),{method:'POST',headers:hdrs,body:JSON.stringify({model:modelToUse,messages:[{role:'system',content:sysInstr},{role:'user',content:prompt}],stream:false,temperature:0.8,max_tokens:600})});
+    const r=await fetch(getApiUrl(),{method:'POST',headers:hdrs,body:JSON.stringify({model:modelToUse,messages:[{role:'user',content:`${sysInstr}\n\n---\nOriginal prompt:\n${prompt}\n---\n\nReturn ONLY the enhanced prompt text. No preamble, no explanation, no quotes.`}],stream:false,temperature:0.8,max_tokens:600})});
     if(!r.ok){const em=await parseAPIError(r);throw new Error(em);}
     const data=await r.json();const enhanced=data.choices?.[0]?.message?.content?.trim()||'';
     if(!enhanced)throw new Error('Empty response');
@@ -2639,10 +2697,19 @@ const openCompare=()=>{
 const populateCompareSels=()=>{
   const a=$('compare-model-a'),b=$('compare-model-b');
   if(!a||!b)return;
-  const opts=state.models.slice(0,50).map(m=>`<option value="${m.id}">${DOMPurify.sanitize(m.name.slice(0,40))}</option>`).join('');
-  a.innerHTML=opts;b.innerHTML=opts;
-  if(state.models[0])a.value=state.models[0].id;
-  if(state.models[1])b.value=state.models[1].id;
+  const chatModels=state.models.filter(m=>!/embed|rerank/.test((m.id+m.name).toLowerCase()));
+  const freeModels=chatModels.filter(m=>isFreeModel(m));
+  const paidModels=chatModels.filter(m=>!isFreeModel(m));
+  const buildOpts=()=>{
+    let html='';
+    if(freeModels.length){html+=`<optgroup label="🆓 Free Models">${freeModels.slice(0,60).map(m=>`<option value="${m.id}">${DOMPurify.sanitize(m.name.slice(0,40))} (free)</option>`).join('')}</optgroup>`;}
+    if(paidModels.length){html+=`<optgroup label="💎 Paid Models">${paidModels.slice(0,60).map(m=>`<option value="${m.id}">${DOMPurify.sanitize(m.name.slice(0,40))}</option>`).join('')}</optgroup>`;}
+    return html;
+  };
+  a.innerHTML=buildOpts();b.innerHTML=buildOpts();
+  if(freeModels[0])a.value=freeModels[0].id;
+  if(freeModels[1])b.value=freeModels[1].id;
+  else if(freeModels[0]&&paidModels[0])b.value=paidModels[0].id;
 };
 const runCompare=async()=>{
   const prompt=document.getElementById('compare-prompt')?.value?.trim();
