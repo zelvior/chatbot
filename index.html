@@ -398,6 +398,63 @@ body.light-mode body::before{opacity:.05;}
 .con-info{color:#67e8f9;}
 .con-cmd{color:var(--c-accent2);}
 .con-result{color:#4ade80;}
+/* ── XP STORE ── */
+#store-modal{position:fixed;inset:0;z-index:190;display:none;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);}
+#store-modal.open{display:flex;align-items:center;justify-content:center;padding:1rem;}
+#store-box{background:var(--c-surface);border:1px solid var(--c-border2);border-radius:22px;width:min(800px,96vw);max-height:90svh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.8);animation:slideDown .2s ease-out;}
+#store-header{background:linear-gradient(135deg,rgba(108,99,255,.15) 0%,rgba(167,139,250,.06) 100%);border-bottom:1px solid var(--c-border2);padding:16px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.store-balance-badge{display:flex;align-items:center;gap:6px;background:rgba(108,99,255,.18);border:1px solid rgba(108,99,255,.4);border-radius:10px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--c-accent2);margin-left:auto;}
+.store-balance-badge span.coin{font-size:16px;}
+.store-tabs{display:flex;gap:4px;padding:10px 16px;border-bottom:1px solid var(--c-border);background:var(--c-surface);flex-shrink:0;flex-wrap:wrap;}
+.store-tab{padding:6px 14px;border-radius:8px;border:1px solid transparent;font-size:11px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;transition:all .15s;color:var(--c-muted);}
+.store-tab.active{background:var(--c-accent);border-color:var(--c-accent);color:#fff;}
+.store-tab:hover:not(.active){border-color:var(--c-border2);color:var(--c-text);}
+#store-content{flex:1;overflow-y:auto;padding:16px;}
+.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+@media(max-width:480px){.store-grid{grid-template-columns:1fr 1fr;gap:8px;}}
+.store-item{background:var(--c-surface2);border:1px solid var(--c-border);border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .2s;position:relative;overflow:hidden;}
+.store-item:hover{border-color:var(--c-accent);box-shadow:0 0 20px rgba(108,99,255,.12);transform:translateY(-1px);}
+.store-item.owned{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.04);}
+.store-item.equipped{border-color:var(--c-accent);background:rgba(108,99,255,.08);box-shadow:0 0 0 2px var(--c-accent) inset;}
+.store-item.cant-afford{opacity:.55;}
+.store-item-icon{font-size:2.2rem;line-height:1;filter:drop-shadow(0 2px 8px rgba(108,99,255,.3));}
+.store-item-name{font-size:12px;font-weight:700;font-family:'Syne',sans-serif;color:var(--c-text);}
+.store-item-desc{font-size:10px;color:var(--c-muted);line-height:1.4;}
+.store-price{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--c-accent2);margin-top:2px;}
+.store-price.free-price{color:var(--c-green);}
+.store-buy-btn{width:100%;padding:6px 0;border-radius:8px;border:none;font-size:11px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;transition:all .15s;}
+.store-buy-btn.buy{background:var(--c-accent);color:#fff;}
+.store-buy-btn.buy:hover{background:#5b52ee;}
+.store-buy-btn.owned-btn{background:rgba(34,197,94,.12);color:var(--c-green);border:1px solid rgba(34,197,94,.3);cursor:default;}
+.store-buy-btn.equip{background:rgba(108,99,255,.15);color:var(--c-accent2);border:1px solid rgba(108,99,255,.3);}
+.store-buy-btn.equip:hover{background:rgba(108,99,255,.25);}
+.store-buy-btn.equipped-btn{background:rgba(108,99,255,.25);color:var(--c-accent2);border:1px solid var(--c-accent);cursor:default;}
+.store-item-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:5px;border:1px solid;}
+.store-item-badge.new-badge{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);color:#f87171;}
+.store-item-badge.hot-badge{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.4);color:#fb923c;}
+.store-item-badge.rare-badge{background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.4);color:#c4b5fd;}
+.store-item-badge.legendary-badge{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.4);color:#fbbf24;}
+/* Rank card */
+.rank-card{background:linear-gradient(135deg,var(--c-surface2),var(--c-surface));border:1px solid var(--c-border2);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:12px;position:relative;overflow:hidden;}
+.rank-card.current-rank{border-color:rgba(108,99,255,.5);box-shadow:0 0 30px rgba(108,99,255,.1);}
+.rank-icon-big{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.rank-progress-bar{height:6px;border-radius:99px;background:var(--c-border2);overflow:hidden;margin-top:6px;}
+.rank-progress-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+/* Tool badge display */
+.tool-badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.tool-badge-chip{display:inline-flex;align-items:center;gap:4px;background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:7px;padding:3px 8px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--c-text);}
+.tool-badge-chip.active-chip{background:rgba(108,99,255,.12);border-color:rgba(108,99,255,.4);color:var(--c-accent2);}
+/* Active cosmetic display area */
+#equipped-banner{display:none;align-items:center;gap:8px;padding:5px 12px;border-bottom:1px solid var(--c-border);background:linear-gradient(90deg,rgba(108,99,255,.06),rgba(108,99,255,.02));font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--c-accent2);flex-shrink:0;}
+#equipped-banner.visible{display:flex;}
+/* Store XP earn section */
+.earn-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--c-surface2);border:1px solid var(--c-border);border-radius:10px;margin-bottom:6px;}
+.earn-icon{width:34px;height:34px;border-radius:9px;background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.earn-xp-badge{margin-left:auto;font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--c-accent2);background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.25);padding:2px 7px;border-radius:5px;white-space:nowrap;}
+/* Purchase confirm modal */
+#purchase-confirm{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);}
+#purchase-confirm.open{display:flex;}
+#purchase-box{background:var(--c-surface);border:1px solid var(--c-border2);border-radius:18px;padding:24px;width:min(340px,90vw);text-align:center;animation:slideDown .15s ease-out;box-shadow:0 24px 60px rgba(0,0,0,.7);}
 /* ── MONACO EDITOR MODAL ── */
 #monaco-modal{position:fixed;inset:0;z-index:180;display:none;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);}
 #monaco-modal.open{display:flex;align-items:center;justify-content:center;padding:1rem;}
@@ -529,6 +586,9 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
     <button id="achievements-btn" title="Achievements & XP (Ctrl+Shift+A)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-yellow-400 hover:bg-[#141720] rounded-lg transition-colors hidden sm:block">
       🏆
     </button>
+    <button id="store-btn" title="XP Store (Ctrl+Shift+S)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden sm:block">
+      🛍️
+    </button>
     <button id="settings-btn" title="Settings" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
     </button>
@@ -580,10 +640,10 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
         <div class="sb-stat"><span class="sb-stat-val" id="stat-msgs">0</span><span class="sb-stat-lbl">Messages</span></div>
       </div>
       <div class="flex items-center justify-between">
-        <div id="xp-level-badge" class="text-[9px]">LVL <span id="sb-xp-level">1</span></div>
+        <div class="text-[9px] px-1.5 py-0.5 rounded border border-[#6c63ff]/30 bg-[#6c63ff]/10 text-[#a78bfa]" id="sb-xp-badge">LVL <span id="sb-xp-level">1</span></div>
         <button id="achievements-btn-sb" class="text-[9px] text-[#4b5563] hover:text-yellow-400 transition-colors">🏆 Achievements</button>
       </div>
-      <div id="xp-bar-wrap"><div id="xp-bar-fill" style="width:0%"></div></div>
+      <div id="sb-xp-bar-wrap" style="background:var(--c-border2);height:4px;border-radius:99px;overflow:hidden;"><div id="sb-xp-bar-fill" style="height:100%;background:linear-gradient(90deg,var(--c-accent),var(--c-accent2));border-radius:99px;width:0%;transition:width .6s;"></div></div>
       <div class="text-[9px] text-[#374151] text-center">Saved locally · Never synced</div>
     </div>
   </div>
@@ -597,7 +657,11 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
       <span id="web-search-indicator">🌐 Web Search ON</span>
       <button id="temp-chat-exit" class="text-[9px] px-2 py-0.5 rounded border border-orange-500/30 text-orange-300 hover:bg-orange-500/10 transition-colors ml-1">Exit</button>
     </div>
-    <div id="sys-prompt-bar">
+    <div id="equipped-banner">
+      <span id="equipped-badge-icon">⚡</span>
+      <span id="equipped-banner-text">Equipped cosmetic active</span>
+    </div>
+    <div id="sys-prompt-bar" class="border-t border-[#1f2333] bg-[#0a0b10] px-3 py-2 hidden items-start gap-2 shrink-0">
       <svg class="w-3.5 h-3.5 text-[#a78bfa] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
       <textarea id="sys-prompt-live" rows="2" class="flex-1 bg-transparent text-[#9ca3af] text-xs mono outline-none resize-none leading-relaxed placeholder-[#374151]" placeholder="System prompt… (defines AI personality and behavior)"></textarea>
       <button id="sys-prompt-close" class="p-1 text-[#4b5563] hover:text-white rounded transition-colors shrink-0">
@@ -768,7 +832,7 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
     <div class="min-w-0">
       <h2 class="text-sm sm:text-base font-black text-white flex items-center gap-1.5" style="font-family:'Syne',sans-serif">
         <svg class="w-4 h-4 text-[#6c63ff] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-        Free Models Library
+        Models Library
       </h2>
       <p id="model-count-label" class="text-[10px] text-[#6b7280] mt-0.5">Scanning…</p>
     </div>
@@ -788,6 +852,8 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
     </div>
     <div id="filter-pills" class="flex gap-1 sm:gap-1.5 no-sb overflow-x-auto pb-0.5">
       <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="free">🆓 Free</button>
+      <button class="filter-pill" data-filter="paid">💎 Paid</button>
       <button class="filter-pill" data-filter="favorites">⭐ Favorites</button>
       <button class="filter-pill" data-filter="text">💬 Text</button>
       <button class="filter-pill" data-filter="vision">👁 Vision</button>
@@ -814,6 +880,7 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
     <div class="model-shimmer"><div class="model-shimmer-header"><div class="model-shimmer-name shimmer" style="width:62%"></div><div class="model-shimmer-ctx shimmer"></div></div><div class="model-shimmer-id shimmer" style="width:75%"></div><div class="model-shimmer-desc1 shimmer" style="width:90%"></div><div class="model-shimmer-desc2 shimmer" style="width:48%"></div><div class="model-shimmer-tags"><div class="model-shimmer-tag shimmer" style="width:65px"></div></div></div>
 
   </div>
+</div>
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" class="modal-box modal-sm fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0e1018] border border-[#1f2333] rounded-2xl shadow-2xl overflow-hidden hidden z-[60] scale-95 opacity-0 transition-all duration-200 flex-col">
   <div class="px-3 sm:px-4 py-3 border-b border-[#1f2333] flex justify-between items-center shrink-0">
@@ -1145,6 +1212,7 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
       <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Multi-model compare</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">C</span></span></div>
       <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Keyboard shortcuts</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">K</span></span></div>
       <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">Achievements</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">A</span></span></div>
+      <div class="shortcut-row"><span class="text-xs text-[#9ca3af]">XP Store</span><span class="flex items-center gap-1"><span class="kbd-chip">Ctrl</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">Shift</span><span class="text-[#4b5563]">+</span><span class="kbd-chip">S</span></span></div>
     </div>
   </div>
 </div>
@@ -1189,6 +1257,7 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
         <div class="flex items-center gap-2 mt-0.5">
           <div id="xp-level-badge">LVL <span id="xp-level-num">1</span></div>
           <span id="xp-pts-label" class="text-[9px] mono text-[#4b5563]">0 / 100 XP</span>
+          <span id="achievements-rank-badge" class="text-[9px] mono text-[#eab308]"></span>
         </div>
       </div>
     </div>
@@ -1199,6 +1268,55 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
   </div>
   <div class="flex-1 overflow-y-auto p-3 sm:p-4">
     <div id="achievements-list" class="space-y-2"></div>
+  </div>
+</div>
+
+<!-- XP STORE MODAL -->
+<div id="store-modal">
+  <div id="store-box">
+    <div id="store-header">
+      <div class="w-10 h-10 rounded-xl bg-[#6c63ff]/20 flex items-center justify-center text-2xl shrink-0">🛍️</div>
+      <div>
+        <h2 class="font-black text-white text-base" style="font-family:'Syne',sans-serif">XP Store</h2>
+        <p class="text-[10px] text-[#6b7280]">Spend your hard-earned XP on cosmetics, themes & more</p>
+      </div>
+      <div class="store-balance-badge">
+        <span class="coin">⚡</span>
+        <span id="store-balance-display">0</span>
+        <span class="text-[10px] text-[#6b7280] font-normal ml-1">XP</span>
+      </div>
+      <button id="store-close" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors ml-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="store-tabs" id="store-tabs">
+      <button class="store-tab active" data-tab="themes">🎨 Themes</button>
+      <button class="store-tab" data-tab="badges">🏅 Badges</button>
+      <button class="store-tab" data-tab="cosmetics">✨ Cosmetics</button>
+      <button class="store-tab" data-tab="ranks">⭐ Ranks</button>
+      <button class="store-tab" data-tab="earn">📈 Earn XP</button>
+    </div>
+    <div id="store-content">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- PURCHASE CONFIRM -->
+<div id="purchase-confirm">
+  <div id="purchase-box">
+    <div id="purchase-icon" style="font-size:3rem;margin-bottom:10px">🛒</div>
+    <h3 id="purchase-name" class="font-black text-white text-base mb-1" style="font-family:'Syne',sans-serif">Item Name</h3>
+    <p id="purchase-desc" class="text-xs text-[#9ca3af] mb-4">Description</p>
+    <div class="flex items-center justify-center gap-2 mb-5">
+      <span class="text-[#6b7280] text-sm">Cost:</span>
+      <span id="purchase-cost" class="font-black text-[#a78bfa] text-lg font-mono">0 XP</span>
+    </div>
+    <div id="purchase-balance-check" class="text-xs mb-4 px-3 py-2 rounded-lg border"></div>
+    <div class="flex gap-2">
+      <button id="purchase-cancel-btn" class="flex-1 py-2.5 rounded-xl border border-[#1f2333] text-[#6b7280] hover:text-white text-xs font-semibold transition-colors">Cancel</button>
+      <button id="purchase-confirm-btn" class="flex-1 py-2.5 rounded-xl bg-[#6c63ff] hover:bg-[#5b52ee] text-white text-xs font-semibold transition-colors" style="font-family:'Syne',sans-serif">Confirm Purchase</button>
+    </div>
   </div>
 </div>
 
@@ -1411,6 +1529,52 @@ const genId = () => Date.now().toString(36) + Math.random().toString(36).slice(2
 const dlFile = (content, filename, mime) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content],{type:mime})); a.download = filename; a.click(); URL.revokeObjectURL(a.href); };
 const estimateTokens = t => Math.ceil((t||'').length / 3.8);
 const EXT_MAP = {js:'js',javascript:'js',jsx:'jsx',tsx:'tsx',ts:'ts',python:'py',py:'py',html:'html',css:'css',svg:'svg',json:'json',md:'md',sh:'sh',bash:'sh',c:'c',cpp:'cpp',java:'java',rs:'rs',go:'go',rb:'rb',php:'php'};
+
+/* ── XP CORE (early-declare so handleSubmit/newChat can call trackStat/addXP) ── */
+const XP_PER_LEVEL=100;
+const RANKS_EARLY=[
+  {id:'newcomer',  name:'Newcomer',    icon:'🌱', color:'#6b7280', minXP:0},
+  {id:'explorer',  name:'Explorer',    icon:'🔍', color:'#3b82f6', minXP:100},
+  {id:'apprentice',name:'Apprentice',  icon:'📚', color:'#8b5cf6', minXP:300},
+  {id:'skilled',   name:'Skilled',     icon:'⚡', color:'#6c63ff', minXP:600},
+  {id:'expert',    name:'Expert',      icon:'🎯', color:'#ec4899', minXP:1000},
+  {id:'master',    name:'Master',      icon:'🔥', color:'#f97316', minXP:2000},
+  {id:'grandmaster',name:'Grandmaster',icon:'💎', color:'#06b6d4', minXP:4000},
+  {id:'legend',    name:'Legend',      icon:'👑', color:'#eab308', minXP:8000},
+];
+const getRankEarly=(xp)=>{for(let i=RANKS_EARLY.length-1;i>=0;i--){if(xp>=RANKS_EARLY[i].minXP)return RANKS_EARLY[i];}return RANKS_EARLY[0];};
+const updateRankBadge=()=>{
+  const s=getXPState();
+  const rank=getRankEarly(s.xp);
+  const badge=document.getElementById('sb-xp-badge');
+  if(badge)badge.innerHTML=`${rank.icon} <span id="sb-xp-level">${Math.floor(s.xp/XP_PER_LEVEL)+1}</span>`;
+};
+const getXPState=()=>JSON.parse(localStorage.getItem('vx_xp_state')||'{"xp":0,"unlocked":[],"stats":{"totalMessages":0,"totalChats":0,"modelsUsed":0,"canvasOpens":0,"webSearches":0,"compareRuns":0,"foldersCreated":0,"voiceUses":0,"enhancerUses":0,"monacoOpens":0,"consoleUses":0}}');
+const saveXPState=s=>localStorage.setItem('vx_xp_state',JSON.stringify(s));
+const updateXPUI=()=>{
+  const s=getXPState();const level=Math.floor(s.xp/XP_PER_LEVEL)+1;const xpInLevel=s.xp%XP_PER_LEVEL;const pct=Math.min(100,(xpInLevel/XP_PER_LEVEL)*100);
+  document.querySelectorAll('#xp-level-num').forEach(el=>{if(el)el.textContent=level;});
+  const fill=$('xp-bar-fill');if(fill)fill.style.width=pct+'%';
+  const lbl=$('xp-pts-label');if(lbl)lbl.textContent=`${s.xp} XP · Level ${level}`;
+  const sbLevel=$('sb-xp-level');if(sbLevel)sbLevel.textContent=level;
+  const sbFill=$('sb-xp-bar-fill');if(sbFill)sbFill.style.width=pct+'%';
+  // Update store balance if open
+  const storeBal=$('store-balance-display');if(storeBal)storeBal.textContent=s.xp.toLocaleString();
+  // Update rank badge safely (function declared later in script)
+  if(typeof updateRankBadge==='function')updateRankBadge();
+};
+const addXP=(amount)=>{
+  const s=getXPState();const prevLevel=Math.floor(s.xp/XP_PER_LEVEL)+1;
+  s.xp+=amount;const newLevel=Math.floor(s.xp/XP_PER_LEVEL)+1;
+  saveXPState(s);updateXPUI();
+  if(newLevel>prevLevel){toast(`🎉 Level Up! You're now Level ${newLevel}!`,'success');}
+};
+const trackStat=(stat,n=1)=>{const s=getXPState();s.stats=s.stats||{};s.stats[stat]=(s.stats[stat]||0)+n;saveXPState(s);setTimeout(()=>checkAchievements(),0);};
+const checkAchievements=()=>{
+  if(typeof ACHIEVEMENTS==='undefined')return;
+  const s=getXPState();const stats=s.stats||{};
+  ACHIEVEMENTS.forEach(a=>{if(s.unlocked?.includes(a.id))return;if(a.check(stats)){s.unlocked=(s.unlocked||[]);s.unlocked.push(a.id);saveXPState(s);addXP(a.xp);toast(`🏆 Achievement: ${a.name} (+${a.xp} XP)!`,'success');}});
+};
 
 /* ── TOAST ── */
 const toast = (msg, type='info') => {
@@ -1759,6 +1923,22 @@ const idbPut = chat => new Promise(res => { if (!state.idb) { res(); return; } c
 const idbDel = id => new Promise(res => { if (!state.idb) { res(); return; } const tx=state.idb.transaction('chats','readwrite'); tx.objectStore('chats').delete(id); tx.oncomplete=()=>res(); tx.onerror=()=>res(); });
 const idbClear = () => new Promise(res => { if (!state.idb) { res(); return; } const tx=state.idb.transaction('chats','readwrite'); tx.objectStore('chats').clear(); tx.oncomplete=()=>res(); tx.onerror=()=>res(); });
 
+/* ── CHAT FOLDERS (must be before renderHistory) ── */
+const getFolders=()=>JSON.parse(localStorage.getItem('vx_folders')||'[]');
+const saveFolders=f=>localStorage.setItem('vx_folders',JSON.stringify(f));
+const getChatFolder=chatId=>{const f=getFolders();for(const folder of f){if(folder.chats?.includes(chatId))return folder.id;}return null;};
+const createFolder=()=>{const name=prompt('Folder name:','Untitled');if(!name?.trim())return;const folders=getFolders();const f={id:genId(),name:name.trim(),chats:[],collapsed:false};folders.push(f);saveFolders(folders);renderHistory();toast('Folder created','success');trackStat('foldersCreated');};
+const deleteFolder=id=>{const folders=getFolders().filter(f=>f.id!==id);saveFolders(folders);renderHistory();};
+const moveChatToFolder=(chatId,folderId)=>{const folders=getFolders();folders.forEach(f=>{f.chats=(f.chats||[]).filter(c=>c!==chatId);});if(folderId){const f=folders.find(f=>f.id===folderId);if(f)(f.chats=f.chats||[]).push(chatId);}saveFolders(folders);renderHistory();};
+const renderFolderBar=()=>{
+  let bar=document.getElementById('folder-bar');
+  if(!bar){bar=document.createElement('div');bar.id='folder-bar';const hl=$('history-list');hl?.parentNode?.insertBefore(bar,hl);}
+  const folders=getFolders();
+  bar.innerHTML=`<button id="new-folder-btn" class="folder-pill" title="New folder">📁 +</button>${folders.map(f=>`<button class="folder-pill ${state.activeFolderFilter===f.id?'active':''}" data-fid="${f.id}">${DOMPurify.sanitize(f.name.slice(0,10))}</button>`).join('')}${folders.length?`<button class="folder-pill ${!state.activeFolderFilter?'active':''}" data-fid="">All</button>`:''}`;
+  bar.querySelector('#new-folder-btn')?.addEventListener('click',createFolder);
+  bar.querySelectorAll('[data-fid]').forEach(b=>b.addEventListener('click',()=>{state.activeFolderFilter=b.dataset.fid||null;renderFolderBar();renderHistory();}));
+};
+
 /* ── HISTORY ── */
 const saveChat = async () => { if (!state.messages.length||state.isTemp) return; const title=(state.messages[0]?.content||'New Chat').slice(0,55); await idbPut({id:state.chatId,title,messages:state.messages,modelId:state.modelId,ts:Date.now()}); renderHistory(); };
 const renderHistory = async (q='') => {
@@ -1825,11 +2005,13 @@ const getModelTags = m => {
   if (tags.length===0) tags.push({label:'💬 Text',cls:'bg-[#1f2333] text-[#9ca3af] border-[#2a2f45]'});
   return tags;
 };
-const modelPassesFilter = (m,f) => { if(f==='all')return true;if(f==='favorites')return state.favModels.includes(m.id);const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();switch(f){case 'text':return!(/audio|vision|image.gen|embed|rerank/.test(txt));case 'vision':return/vision|vl\b|pixtral|llava|moondream|qvq/.test(txt);case 'uncensored':return/uncensored|dolphin|bagel|abliterat|noromaid/.test(txt);case 'coding':return/coder|codex|starcoder|devstral/.test(txt);case 'reasoning':return/qwq|deepseek.r|think|r1\b/.test(txt);case 'audio':return/audio|whisper|speech|tts/.test(txt);case 'image-gen':return/image.*gen|dall|flux|imagen/.test(txt);case 'large':return/70b|72b|90b|104b|180b|405b|671b/.test(txt);case 'small':return/1b|2b|3b|4b|7b|8b/.test(txt);default:return true;} };
+const modelPassesFilter = (m,f) => { if(f==='all')return true;if(f==='favorites')return state.favModels.includes(m.id);if(f==='free')return isFreeModel(m);if(f==='paid')return!isFreeModel(m);const txt=`${m.name} ${m.id} ${m.description||''}`.toLowerCase();switch(f){case 'text':return!(/audio|vision|image.gen|embed|rerank/.test(txt));case 'vision':return/vision|vl\b|pixtral|llava|moondream|qvq/.test(txt);case 'uncensored':return/uncensored|dolphin|bagel|abliterat|noromaid/.test(txt);case 'coding':return/coder|codex|starcoder|devstral/.test(txt);case 'reasoning':return/qwq|deepseek.r|think|r1\b/.test(txt);case 'audio':return/audio|whisper|speech|tts/.test(txt);case 'image-gen':return/image.*gen|dall|flux|imagen/.test(txt);case 'large':return/70b|72b|90b|104b|180b|405b|671b/.test(txt);case 'small':return/1b|2b|3b|4b|7b|8b/.test(txt);default:return true;} };
 const isChatCapable = m => { if (!m) return true; return !/embed|rerank/.test(`${m.id} ${m.name}`.toLowerCase()); };
 
 /* ── FETCH MODELS ── */
-const parseFreeModels = data => (data.data||[]).filter(m => { if(!m.pricing||KNOWN_DEAD.includes(m.id))return false; return parseFloat(String(m.pricing.prompt||'0'))===0&&parseFloat(String(m.pricing.completion||'0'))===0; }).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+const isFreeModel = m => { if(!m.pricing)return true; return parseFloat(String(m.pricing.prompt||'0'))===0&&parseFloat(String(m.pricing.completion||'0'))===0; };
+const parseAllModels = data => (data.data||[]).filter(m => m.id&&!KNOWN_DEAD.includes(m.id)).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+const parseFreeModels = data => parseAllModels(data).filter(m=>isFreeModel(m));
 
 const fetchModels = async () => {
   if (el.modelLoadingIcon) el.modelLoadingIcon.classList.remove('hidden');
@@ -1852,14 +2034,14 @@ const fetchModels = async () => {
       if (!res.ok) throw new Error(res.status);
       const data = await s.parse(res);
       if (!Array.isArray(data?.data)) throw new Error('bad shape');
-      // For custom base URLs, don't filter by price (they might be paid)
-      const models = state.customBaseUrl ? (data.data||[]).sort((a,b)=>(a.name||'').localeCompare(b.name||'')) : parseFreeModels(data);
+      // Fetch ALL models — user may have paid key; filter UI handles free/paid
+      const models = parseAllModels(data);
       if (!models.length) throw new Error('no models');
       state.models = models;
       if (!state.models.find(m=>m.id===state.modelId)) { const fb=FALLBACK_MODELS.find(m=>m.id===state.modelId); if(fb)state.models.unshift(fb); }
       updateModelDisplay(state.modelId);
       if (!el.modelsModal?.classList.contains('hidden')) renderModelsList();
-      if (el.modelCountLabel) el.modelCountLabel.textContent = `${state.models.length} ${state.customBaseUrl?'':'free '}models`;
+      if (el.modelCountLabel) {const freeCount=state.models.filter(isFreeModel).length;el.modelCountLabel.textContent=`${state.models.length} models · ${freeCount} free · ${state.models.length-freeCount} paid`;}
       toast(`${state.models.length} models loaded`,'success');
       success = true; break;
     } catch(e) { console.warn('[VortexAI] model fetch failed:', e.message); }
@@ -1872,7 +2054,7 @@ const fetchModels = async () => {
 };
 
 const updateModelDisplay = id => { const found=state.models.find(m=>m.id===id); if(el.currentModelDisplay)el.currentModelDisplay.textContent=state.customModelId?`⚙ ${state.customModelId}`:(found?found.name:id.split('/').pop()); updateTokenBar(); };
-const selectModel = (id,silent=false) => { state.modelId=id;localStorage.setItem('nx_model',id);updateModelDisplay(id);state.recentModels=[id,...state.recentModels.filter(r=>r!==id)].slice(0,5);localStorage.setItem('nx_recent_models',JSON.stringify(state.recentModels));renderModelBadges();if(!silent)closeAllModals();if(!silent)toast(`Model: ${id.split('/').pop()}`,'success'); };
+const selectModel = (id,silent=false) => { state.modelId=id;localStorage.setItem('nx_model',id);updateModelDisplay(id);state.recentModels=[id,...state.recentModels.filter(r=>r!==id)].slice(0,5);localStorage.setItem('nx_recent_models',JSON.stringify(state.recentModels));renderModelBadges();if(!silent){toast(`Model: ${id.split('/').pop()}`,'success');const s=getXPState();const usedSet=new Set(s.stats?.usedModelIds||[]);usedSet.add(id);const s2=getXPState();s2.stats=s2.stats||{};s2.stats.usedModelIds=[...usedSet];s2.stats.modelsUsed=usedSet.size;saveXPState(s2);} };
 
 /* ── MODELS LIST ── */
 const sortModels = models => { if(state.currentSort==='ctx')return[...models].sort((a,b)=>(b.context_length||0)-(a.context_length||0));if(state.currentSort==='recent')return[...models].sort((a,b)=>{const ai=state.recentModels.indexOf(a.id),bi=state.recentModels.indexOf(b.id);if(ai<0&&bi<0)return(a.name||'').localeCompare(b.name||'');if(ai<0)return 1;if(bi<0)return -1;return ai-bi;});return[...models].sort((a,b)=>(a.name||'').localeCompare(b.name||'')); };
@@ -1885,10 +2067,12 @@ const renderModelsList = (q='') => {
   filtered.forEach(m => {
     const tags=getModelTags(m),sel=m.id===state.modelId,fav=state.favModels.includes(m.id);
     const ctx=m.context_length?(m.context_length>=1000?Math.round(m.context_length/1000)+'k':m.context_length)+' ctx':'';
+    const free=isFreeModel(m);
+    const priceBadge=free?'<span class="tag bg-green-900/30 text-green-400 border-green-500/30">🆓 Free</span>':'<span class="tag bg-yellow-900/30 text-yellow-400 border-yellow-500/30">💎 Paid</span>';
     const d=document.createElement('div');d.className=`model-card${sel?' selected':''}${fav?' fav':''}`;
-    d.innerHTML=`<div class="flex justify-between items-start gap-2 mb-1"><span class="font-bold text-xs text-white leading-tight" style="font-family:'Syne',sans-serif">${DOMPurify.sanitize(m.name||'')}${sel?'<span class="text-[#6c63ff] text-[9px] ml-1">✓</span>':''}</span><div class="flex items-center gap-1 shrink-0">${ctx?`<span class="text-[9px] text-[#4b5563] mono">${ctx}</span>`:''}<button class="fav-star${fav?' starred':''}" data-id="${m.id}">${fav?'★':'☆'}</button></div></div><div class="text-[9px] text-[#4b5563] mono mb-1.5 truncate">${DOMPurify.sanitize(m.id||'')}</div>${m.description?`<div class="text-[10px] text-[#6b7280] mb-1.5 line-clamp-2">${DOMPurify.sanitize(m.description.slice(0,80))}</div>`:''}<div class="flex flex-wrap gap-1">${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>`;
+    d.innerHTML=`<div class="flex justify-between items-start gap-2 mb-1"><span class="font-bold text-xs text-white leading-tight" style="font-family:'Syne',sans-serif">${DOMPurify.sanitize(m.name||'')}${sel?'<span class="text-[#6c63ff] text-[9px] ml-1">✓</span>':''}</span><div class="flex items-center gap-1 shrink-0">${ctx?`<span class="text-[9px] text-[#4b5563] mono">${ctx}</span>`:''}<button class="fav-star${fav?' starred':''}" data-id="${m.id}">${fav?'★':'☆'}</button></div></div><div class="text-[9px] text-[#4b5563] mono mb-1.5 truncate">${DOMPurify.sanitize(m.id||'')}</div>${m.description?`<div class="text-[10px] text-[#6b7280] mb-1.5 line-clamp-2">${DOMPurify.sanitize(m.description.slice(0,80))}</div>`:''}<div class="flex flex-wrap gap-1">${priceBadge}${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>`;
     d.querySelector('.fav-star').addEventListener('click',ev=>{ev.stopPropagation();const id=ev.target.dataset.id;const idx=state.favModels.indexOf(id);if(idx<0)state.favModels.push(id);else state.favModels.splice(idx,1);localStorage.setItem('nx_fav_models',JSON.stringify(state.favModels));ev.target.textContent=state.favModels.includes(id)?'★':'☆';ev.target.classList.toggle('starred',state.favModels.includes(id));d.classList.toggle('fav',state.favModels.includes(id));renderModelBadges();populateEnhancerModelSelect();});
-    d.addEventListener('click',ev=>{if(ev.target.closest('.fav-star'))return;selectModel(m.id);});
+    d.addEventListener('click',ev=>{if(ev.target.closest('.fav-star'))return;selectModel(m.id);renderModelsList(el.modelSearchInput?.value||'');});
     frag.appendChild(d);
   });
   if(el.modelsList){el.modelsList.innerHTML='';el.modelsList.appendChild(frag);}
@@ -2060,14 +2244,6 @@ body.light-mode .shimmer {
 }
 
 /* ── Auth status bar shimmer ── */
-#auth-status-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 12px; border-radius: 10px; border: 1px solid;
-  font-size: 11px; transition: all .3s;
-}
-#auth-status-bar.authed  { background:rgba(34,197,94,.06); border-color:rgba(34,197,94,.25); color:#4ade80; }
-#auth-status-bar.unauthed{ background:rgba(234,179,8,.05); border-color:rgba(234,179,8,.2);  color:#fbbf24; }
-#auth-status-bar.anon    { background:rgba(107,114,128,.05); border-color:rgba(107,114,128,.2); color:#9ca3af; }
 .auth-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 .auth-dot.green  { background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,.5); }
 .auth-dot.yellow { background:#eab308; box-shadow:0 0 6px rgba(234,179,8,.4); }
@@ -2412,27 +2588,6 @@ el.cmdInput?.addEventListener('keydown',e=>{const items=el.cmdResults?.querySele
 el.cmdPalette?.addEventListener('click',e=>{if(e.target===el.cmdPalette)closePalette();});
 el.cmdPaletteBtn?.addEventListener('click',openPalette);
 
-/* ── CHAT FOLDERS ── */
-const getFolders=()=>JSON.parse(localStorage.getItem('vx_folders')||'[]');
-const saveFolders=f=>localStorage.setItem('vx_folders',JSON.stringify(f));
-const getChatFolder=chatId=>{const f=getFolders();for(const folder of f){if(folder.chats?.includes(chatId))return folder.id;}return null;};
-
-const createFolder=()=>{const name=prompt('Folder name:','Untitled');if(!name?.trim())return;const folders=getFolders();const f={id:genId(),name:name.trim(),chats:[],collapsed:false};folders.push(f);saveFolders(folders);renderHistory();toast('Folder created','success');};
-
-const deleteFolder=id=>{const folders=getFolders().filter(f=>f.id!==id);saveFolders(folders);renderHistory();};
-
-const moveChatToFolder=(chatId,folderId)=>{const folders=getFolders();folders.forEach(f=>{f.chats=(f.chats||[]).filter(c=>c!==chatId);});if(folderId){const f=folders.find(f=>f.id===folderId);if(f)(f.chats=f.chats||[]).push(chatId);}saveFolders(folders);renderHistory();};
-
-// Inject folder UI into sidebar
-const renderFolderBar=()=>{
-  let bar=document.getElementById('folder-bar');
-  if(!bar){bar=document.createElement('div');bar.id='folder-bar';const hl=$('history-list');hl?.parentNode?.insertBefore(bar,hl);}
-  const folders=getFolders();
-  bar.innerHTML=`<button id="new-folder-btn" class="folder-pill" title="New folder">📁 +</button>${folders.map(f=>`<button class="folder-pill ${state.activeFolderFilter===f.id?'active':''}" data-fid="${f.id}">${DOMPurify.sanitize(f.name.slice(0,10))}</button>`).join('')}${folders.length?`<button class="folder-pill ${!state.activeFolderFilter?'active':''}" data-fid="">All</button>`:''}`;
-  bar.querySelector('#new-folder-btn')?.addEventListener('click',createFolder);
-  bar.querySelectorAll('[data-fid]').forEach(b=>b.addEventListener('click',()=>{state.activeFolderFilter=b.dataset.fid||null;renderFolderBar();renderHistory();}));
-};
-
 /* ── TEMPORARY CHAT ── */
 const startTempChat=()=>{
   state.isTemp=true;newChat();
@@ -2514,11 +2669,12 @@ const runCompare=async()=>{
   if(bodyA){bodyA.classList.remove('loading');bodyA.innerHTML=ra.status==='fulfilled'?DOMPurify.sanitize(mdParse(ra.value)):`<span class="text-red-400 text-xs">Error: ${DOMPurify.sanitize(ra.reason?.message||'Failed')}</span>`;}
   if(bodyB){bodyB.classList.remove('loading');bodyB.innerHTML=rb.status==='fulfilled'?DOMPurify.sanitize(mdParse(rb.value)):`<span class="text-red-400 text-xs">Error: ${DOMPurify.sanitize(rb.reason?.message||'Failed')}</span>`;}
   if(btn){btn.disabled=false;btn.textContent='⚡ Compare';}
+  trackStat('compareRuns');
 };
 document.getElementById('compare-run-btn')?.addEventListener('click',runCompare);
 document.getElementById('compare-btn-sidebar')?.addEventListener('click',openCompare);
 
-/* ── XP / LEVELS / ACHIEVEMENTS ── */
+/* ── XP / LEVELS / ACHIEVEMENTS UI ── */
 const ACHIEVEMENTS=[
   {id:'first_msg',icon:'💬',name:'First Words',desc:'Send your first message',xp:10,check:s=>s.totalMessages>=1},
   {id:'ten_msgs',icon:'📨',name:'Chatterbox',desc:'Send 10 messages',xp:25,check:s=>s.totalMessages>=10},
@@ -2536,31 +2692,17 @@ const ACHIEVEMENTS=[
   {id:'console_user',icon:'⌨️',name:'Developer',desc:'Use the console',xp:20,check:s=>s.consoleUses>=1},
   {id:'night_owl',icon:'🦉',name:'Night Owl',desc:'Chat after midnight',xp:25,check:()=>new Date().getHours()<5},
 ];
-const XP_PER_LEVEL=100;
-const getXPState=()=>JSON.parse(localStorage.getItem('vx_xp_state')||'{"xp":0,"unlocked":[],"stats":{"totalMessages":0,"totalChats":0,"modelsUsed":0,"canvasOpens":0,"webSearches":0,"compareRuns":0,"foldersCreated":0,"voiceUses":0,"enhancerUses":0,"monacoOpens":0,"consoleUses":0}}');
-const saveXPState=s=>localStorage.setItem('vx_xp_state',JSON.stringify(s));
-const addXP=(amount,reason='')=>{
-  const s=getXPState();const prevLevel=Math.floor(s.xp/XP_PER_LEVEL)+1;
-  s.xp+=amount;const newLevel=Math.floor(s.xp/XP_PER_LEVEL)+1;
-  saveXPState(s);updateXPUI();
-  if(newLevel>prevLevel){toast(`🎉 Level Up! You're now Level ${newLevel}!`,'success');const badge=$('xp-level-badge');badge?.classList.add('level-up-anim');setTimeout(()=>badge?.classList.remove('level-up-anim'),400);}
-  if(reason)toast(`+${amount} XP: ${reason}`,'info');
-};
-const trackStat=(stat,n=1)=>{const s=getXPState();s.stats=s.stats||{};s.stats[stat]=(s.stats[stat]||0)+n;saveXPState(s);checkAchievements();};
-const checkAchievements=()=>{
-  const s=getXPState();const stats=s.stats||{};
-  ACHIEVEMENTS.forEach(a=>{if(s.unlocked?.includes(a.id))return;if(a.check(stats)){s.unlocked=(s.unlocked||[]);s.unlocked.push(a.id);saveXPState(s);addXP(a.xp);toast(`🏆 Achievement: ${a.name} (+${a.xp} XP)!`,'success');}});
-};
-const updateXPUI=()=>{
-  const s=getXPState();const level=Math.floor(s.xp/XP_PER_LEVEL)+1;const xpInLevel=s.xp%XP_PER_LEVEL;const pct=Math.min(100,(xpInLevel/XP_PER_LEVEL)*100);
-  document.querySelectorAll('#xp-level-num,#sb-xp-level').forEach(el=>{if(el)el.textContent=level;});
-  const fill=$('xp-bar-fill');if(fill)fill.style.width=pct+'%';
-  const lbl=$('xp-pts-label');if(lbl)lbl.textContent=`${s.xp} XP · Level ${level}`;
-};
 const openAchievements=()=>{
   const modal=$('achievements-modal');if(!modal)return;
   const s=getXPState();const list=$('achievements-list');
-  if(list){list.innerHTML=ACHIEVEMENTS.map(a=>{const unlocked=s.unlocked?.includes(a.id);return`<div class="achievement-badge ${unlocked?'unlocked':''}"><div class="badge-icon">${a.icon}</div><div class="flex-1 min-w-0"><div class="badge-name">${a.name}</div><div class="badge-desc">${a.desc} · +${a.xp} XP</div></div><span class="badge-check">✓</span></div>`;}).join('');}
+  if(list){
+    const rank=getCurrentRank(s.xp);
+    const earnedBadges=getEarnedToolBadges();
+    const rankBadgeEl=$('achievements-rank-badge');
+    if(rankBadgeEl)rankBadgeEl.textContent=`${rank.icon} ${rank.name}`;
+    const toolBadgesHTML=earnedBadges.length?`<div class="mt-3 mb-1"><p class="section-label mb-2">Tool Badges Earned</p><div class="tool-badge-row">${earnedBadges.map(b=>`<div class="tool-badge-chip active-chip" style="border-color:${b.color}44;background:${b.color}12;">${b.icon} ${b.name}</div>`).join('')}</div></div>`:''
+    list.innerHTML=toolBadgesHTML+ACHIEVEMENTS.map(a=>{const unlocked=s.unlocked?.includes(a.id);return`<div class="achievement-badge ${unlocked?'unlocked':''}"><div class="badge-icon">${a.icon}</div><div class="flex-1 min-w-0"><div class="badge-name">${a.name}</div><div class="badge-desc">${a.desc} · +${a.xp} XP</div></div><span class="badge-check">✓</span></div>`;}).join('');
+  }
   updateXPUI();openModal(modal);
 };
 document.getElementById('achievements-btn')?.addEventListener('click',openAchievements);
@@ -2635,9 +2777,521 @@ document.addEventListener('keydown',e=>{
   if(ctrl&&e.shiftKey&&e.key==='C'){e.preventDefault();openCompare();}
   if(ctrl&&e.shiftKey&&e.key==='K'){e.preventDefault();openShortcuts();}
   if(ctrl&&e.shiftKey&&e.key==='A'){e.preventDefault();openAchievements();}
+  if(ctrl&&e.shiftKey&&e.key==='S'){e.preventDefault();openStore();}
 });
 
-/* ── BOOT ── */
+/* ── RANKS SYSTEM ── */
+const RANKS = [
+  {id:'newcomer',  name:'Newcomer',    icon:'🌱', color:'#6b7280', minXP:0,    maxXP:99,   desc:'Just getting started'},
+  {id:'explorer',  name:'Explorer',    icon:'🔍', color:'#3b82f6', minXP:100,  maxXP:299,  desc:'Discovering VortexAI'},
+  {id:'apprentice',name:'Apprentice',  icon:'📚', color:'#8b5cf6', minXP:300,  maxXP:599,  desc:'Learning the ropes'},
+  {id:'skilled',   name:'Skilled',     icon:'⚡', color:'#6c63ff', minXP:600,  maxXP:999,  desc:'Getting proficient'},
+  {id:'expert',    name:'Expert',      icon:'🎯', color:'#ec4899', minXP:1000, maxXP:1999, desc:'Advanced user'},
+  {id:'master',    name:'Master',      icon:'🔥', color:'#f97316', minXP:2000, maxXP:3999, desc:'True power user'},
+  {id:'grandmaster',name:'Grandmaster',icon:'💎', color:'#06b6d4', minXP:4000, maxXP:7999, desc:'Elite tier'},
+  {id:'legend',    name:'Legend',      icon:'👑', color:'#eab308', minXP:8000, maxXP:Infinity,desc:'The pinnacle of VortexAI'},
+];
+
+const getCurrentRank = (xp) => {
+  const list = (typeof RANKS !== 'undefined') ? RANKS : RANKS_EARLY;
+  for(let i = list.length - 1; i >= 0; i--) {
+    if(xp >= list[i].minXP) return list[i];
+  }
+  return list[0];
+};
+
+/* ── TOOL BADGES (earned by usage stats) ── */
+const TOOL_BADGES = [
+  {id:'tb_chat',     icon:'💬', name:'Chatter',    stat:'totalMessages', threshold:10,  color:'#3b82f6'},
+  {id:'tb_power',    icon:'🔥', name:'Power Chat',  stat:'totalMessages', threshold:100, color:'#ef4444'},
+  {id:'tb_canvas',   icon:'🎨', name:'Canvas Pro',  stat:'canvasOpens',   threshold:10,  color:'#a78bfa'},
+  {id:'tb_websearch',icon:'🌐', name:'Web Surfer',  stat:'webSearches',   threshold:5,   color:'#06b6d4'},
+  {id:'tb_compare',  icon:'⚖️', name:'Analyst',     stat:'compareRuns',   threshold:3,   color:'#ec4899'},
+  {id:'tb_voice',    icon:'🎤', name:'Speaker',     stat:'voiceUses',     threshold:5,   color:'#22c55e'},
+  {id:'tb_enhance',  icon:'✨', name:'Wizard',      stat:'enhancerUses',  threshold:5,   color:'#eab308'},
+  {id:'tb_monaco',   icon:'📝', name:'Code Guru',   stat:'monacoOpens',   threshold:10,  color:'#569cd6'},
+  {id:'tb_console',  icon:'⌨️', name:'Dev',         stat:'consoleUses',   threshold:5,   color:'#22c55e'},
+  {id:'tb_models',   icon:'🤖', name:'Model Hopper',stat:'modelsUsed',    threshold:5,   color:'#f97316'},
+  {id:'tb_folders',  icon:'📁', name:'Organizer',   stat:'foldersCreated',threshold:3,   color:'#a78bfa'},
+];
+
+const getEarnedToolBadges = () => {
+  const s = getXPState();
+  const stats = s.stats || {};
+  return TOOL_BADGES.filter(b => (stats[b.stat] || 0) >= b.threshold);
+};
+
+/* ── XP STORE DATA ── */
+// Store uses a SIGNED state with a simple tamper-detection checksum
+const STORE_SALT = 'vortex_store_v1';
+const storeChecksum = (owned, equipped, xpSpent) => {
+  // Simple non-cryptographic integrity check (good enough for client-side cosmetics)
+  const str = STORE_SALT + JSON.stringify(owned) + JSON.stringify(equipped) + xpSpent;
+  let h = 5381;
+  for(let i = 0; i < str.length; i++) { h = ((h << 5) + h) ^ str.charCodeAt(i); h = h >>> 0; }
+  return (h ^ 0xDEADBEEF).toString(36);
+};
+const getStoreState = () => {
+  try {
+    const raw = localStorage.getItem('vx_store_v2');
+    if(!raw) return {owned:[], equipped:{}, xpSpent:0};
+    const d = JSON.parse(raw);
+    // Tamper detection
+    const expected = storeChecksum(d.owned||[], d.equipped||{}, d.xpSpent||0);
+    if(d._sig !== expected) {
+      console.warn('[VortexStore] Tamper detected — resetting store');
+      localStorage.removeItem('vx_store_v2');
+      return {owned:[], equipped:{}, xpSpent:0};
+    }
+    return {owned: d.owned||[], equipped: d.equipped||{}, xpSpent: d.xpSpent||0};
+  } catch { return {owned:[], equipped:{}, xpSpent:0}; }
+};
+const saveStoreState = (d) => {
+  // Validate types before saving
+  if(!Array.isArray(d.owned) || typeof d.equipped !== 'object' || typeof d.xpSpent !== 'number') {
+    console.error('[VortexStore] Invalid store state — abort save'); return;
+  }
+  d._sig = storeChecksum(d.owned, d.equipped, d.xpSpent);
+  localStorage.setItem('vx_store_v2', JSON.stringify(d));
+};
+
+// Atomic purchase — deducts XP and marks item owned atomically
+const purchaseItem = (itemId, cost) => {
+  // Re-read fresh state each time to prevent race conditions
+  const xpS = getXPState();
+  const storeS = getStoreState();
+  // Guard: already owned
+  if(storeS.owned.includes(itemId)) { toast('Already owned', 'error'); return false; }
+  // Guard: sufficient XP (re-check at purchase time, never trust cached value)
+  if(xpS.xp < cost) { toast('Not enough XP!', 'error'); return false; }
+  // Guard: cost must be positive
+  if(typeof cost !== 'number' || cost < 0 || !isFinite(cost)) { toast('Invalid cost', 'error'); return false; }
+  // Guard: item must exist in catalog
+  const allItems = getAllStoreItems();
+  const item = allItems.find(i => i.id === itemId);
+  if(!item) { toast('Item not found', 'error'); return false; }
+  // Guard: price matches catalog (prevent price manipulation via JS console)
+  if(item.cost !== cost) { toast('Price mismatch — tamper detected!', 'error'); return false; }
+  // Deduct XP
+  xpS.xp = Math.max(0, xpS.xp - cost);
+  saveXPState(xpS); updateXPUI();
+  // Record purchase
+  storeS.owned.push(itemId);
+  storeS.xpSpent = (storeS.xpSpent||0) + cost;
+  saveStoreState(storeS);
+  return true;
+};
+
+const equipItem = (category, itemId) => {
+  const storeS = getStoreState();
+  if(!storeS.owned.includes(itemId) && itemId !== 'default') { toast('Own this item first','error'); return; }
+  if(storeS.equipped[category] === itemId) {
+    // Unequip
+    delete storeS.equipped[category];
+  } else {
+    storeS.equipped[category] = itemId;
+  }
+  saveStoreState(storeS);
+  applyEquipped();
+  renderStoreTab(currentStoreTab);
+  updateStoreBanner();
+};
+
+// All items catalog (single source of truth — prevents price injection from UI)
+const getAllStoreItems = () => [
+  // === THEMES ===
+  {id:'theme_neon',      cat:'themes', name:'Neon Vortex',    icon:'🌈', desc:'Ultra-bright neon accents',    cost:150, badge:'hot',  applyFn: ()=>applyThemeItem('neon')},
+  {id:'theme_midnight',  cat:'themes', name:'Midnight Blue',  icon:'🌙', desc:'Deep oceanic blue tones',      cost:100, badge:'',     applyFn: ()=>applyThemeItem('midnight')},
+  {id:'theme_sakura',    cat:'themes', name:'Sakura Pink',    icon:'🌸', desc:'Soft cherry blossom pink',     cost:120, badge:'new',  applyFn: ()=>applyThemeItem('sakura')},
+  {id:'theme_forest',    cat:'themes', name:'Forest Green',   icon:'🌿', desc:'Calming deep forest green',    cost:100, badge:'',     applyFn: ()=>applyThemeItem('forest')},
+  {id:'theme_lava',      cat:'themes', name:'Lava Red',       icon:'🌋', desc:'Intense volcanic red energy',  cost:180, badge:'rare', applyFn: ()=>applyThemeItem('lava')},
+  {id:'theme_galaxy',    cat:'themes', name:'Galaxy',         icon:'🌌', desc:'Deep space purple & cyan',     cost:250, badge:'legendary', applyFn: ()=>applyThemeItem('galaxy')},
+  {id:'theme_gold',      cat:'themes', name:'Gold Prestige',  icon:'🥇', desc:'Luxurious golden accents',     cost:400, badge:'legendary', applyFn: ()=>applyThemeItem('gold')},
+  // === BADGES ===
+  {id:'badge_fire',      cat:'badges', name:'Fire Badge',     icon:'🔥', desc:'Show you\'re on fire',         cost:50,  badge:'',     applyFn: ()=>{}},
+  {id:'badge_diamond',   cat:'badges', name:'Diamond Badge',  icon:'💎', desc:'Precious & rare',              cost:200, badge:'rare', applyFn: ()=>{}},
+  {id:'badge_robot',     cat:'badges', name:'AI Pioneer',     icon:'🤖', desc:'Early adopter of AI tools',    cost:75,  badge:'',     applyFn: ()=>{}},
+  {id:'badge_wizard',    cat:'badges', name:'Prompt Wizard',  icon:'🧙', desc:'Master of the craft',          cost:150, badge:'hot',  applyFn: ()=>{}},
+  {id:'badge_rocket',    cat:'badges', name:'Launch Pad',     icon:'🚀', desc:'Always going further',         cost:80,  badge:'',     applyFn: ()=>{}},
+  {id:'badge_crown',     cat:'badges', name:'Royal Crown',    icon:'👑', desc:'Royalty of the community',     cost:500, badge:'legendary', applyFn: ()=>{}},
+  {id:'badge_lightning', cat:'badges', name:'Lightning Fast', icon:'⚡', desc:'Speed is your superpower',     cost:60,  badge:'',     applyFn: ()=>{}},
+  {id:'badge_star',      cat:'badges', name:'All-Star',       icon:'⭐', desc:'A true all-rounder',           cost:120, badge:'new',  applyFn: ()=>{}},
+  // === COSMETICS ===
+  {id:'cos_glowcursor',  cat:'cosmetics', name:'Glow Cursor', icon:'✨', desc:'Glowing send button effect',  cost:80,  badge:'new',  applyFn: ()=>applyCosmetic('glowcursor')},
+  {id:'cos_rainbowbar',  cat:'cosmetics', name:'Rainbow Bar', icon:'🌈', desc:'Rainbow XP progress bar',     cost:120, badge:'hot',  applyFn: ()=>applyCosmetic('rainbowbar')},
+  {id:'cos_particles',   cat:'cosmetics', name:'AI Particles',icon:'🔮', desc:'Floating particles on send',   cost:200, badge:'rare', applyFn: ()=>applyCosmetic('particles')},
+  {id:'cos_glassinput',  cat:'cosmetics', name:'Glass Input', icon:'🪟', desc:'Frosted glass input styling',  cost:150, badge:'',     applyFn: ()=>applyCosmetic('glassinput')},
+  {id:'cos_matrixbg',    cat:'cosmetics', name:'Matrix BG',   icon:'💻', desc:'Matrix rain background effect',cost:300, badge:'rare', applyFn: ()=>applyCosmetic('matrixbg')},
+  {id:'cos_neonborder',  cat:'cosmetics', name:'Neon Border', icon:'💡', desc:'Neon glow around chat input',  cost:100, badge:'',     applyFn: ()=>applyCosmetic('neonborder')},
+];
+
+let currentStoreTab = 'themes';
+let _pendingPurchase = null; // {itemId, cost, name, desc, icon}
+
+const openStore = () => {
+  const modal = $('store-modal');
+  if(!modal) return;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateStoreBalance();
+  renderStoreTab(currentStoreTab);
+};
+const closeStore = () => {
+  $('store-modal')?.classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+const updateStoreBalance = () => {
+  const s = getXPState();
+  const el = $('store-balance-display');
+  if(el) el.textContent = s.xp.toLocaleString();
+};
+
+const renderStoreTab = (tab) => {
+  currentStoreTab = tab;
+  // Update tab buttons
+  document.querySelectorAll('.store-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  const content = $('store-content');
+  if(!content) return;
+
+  if(tab === 'ranks') { renderRanksTab(content); return; }
+  if(tab === 'earn')  { renderEarnTab(content);  return; }
+
+  const items = getAllStoreItems().filter(i => i.cat === tab);
+  const storeS = getStoreState();
+  const xpS = getXPState();
+
+  const badgeHTML = (b) => {
+    if(!b) return '';
+    const cls = b==='new'?'new-badge':b==='hot'?'hot-badge':b==='rare'?'rare-badge':'legendary-badge';
+    return `<span class="store-item-badge ${cls}">${b.toUpperCase()}</span>`;
+  };
+
+  const priceHTML = (cost) => {
+    if(cost === 0) return `<div class="store-price free-price">FREE</div>`;
+    return `<div class="store-price">⚡ ${cost.toLocaleString()} XP</div>`;
+  };
+
+  const btnHTML = (item) => {
+    if(storeS.owned.includes(item.id)) {
+      const isEquipped = storeS.equipped[item.cat] === item.id;
+      if(item.cat === 'badges' || item.cat === 'cosmetics' || item.cat === 'themes') {
+        if(isEquipped) return `<button class="store-buy-btn equipped-btn" disabled>✓ Equipped</button>`;
+        return `<button class="store-buy-btn equip" onclick="equipItem('${item.cat}','${item.id}')">Equip</button>`;
+      }
+      return `<button class="store-buy-btn owned-btn" disabled>✓ Owned</button>`;
+    }
+    const canAfford = xpS.xp >= item.cost;
+    const cls = canAfford ? 'buy' : 'buy';
+    return `<button class="store-buy-btn ${cls}" ${!canAfford?'style="opacity:.5"':''} onclick="initPurchase('${item.id}',${item.cost})">${canAfford?'Buy':'Can\'t Afford'}</button>`;
+  };
+
+  const extraCls = (item) => {
+    if(storeS.owned.includes(item.id)) {
+      return storeS.equipped[item.cat] === item.id ? ' equipped' : ' owned';
+    }
+    return xpS.xp < item.cost ? ' cant-afford' : '';
+  };
+
+  content.innerHTML = `<div class="store-grid">${items.map(item => `
+    <div class="store-item${extraCls(item)}">
+      ${badgeHTML(item.badge)}
+      <div class="store-item-icon">${item.icon}</div>
+      <div class="store-item-name">${item.name}</div>
+      <div class="store-item-desc">${item.desc}</div>
+      ${priceHTML(item.cost)}
+      ${btnHTML(item)}
+    </div>
+  `).join('')}</div>`;
+};
+
+const renderRanksTab = (content) => {
+  const s = getXPState();
+  const currentRank = getCurrentRank(s.xp);
+  const earnedBadges = getEarnedToolBadges();
+
+  content.innerHTML = `
+    <div class="mb-4">
+      <p class="section-label mb-3">Your Current Rank</p>
+      <div class="rank-card current-rank">
+        <div class="rank-icon-big" style="background:${currentRank.color}22;border:1px solid ${currentRank.color}44;">${currentRank.icon}</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;color:${currentRank.color}">${currentRank.name}</div>
+          <div class="text-[11px] text-[#6b7280] mb-2">${currentRank.desc} · ${s.xp.toLocaleString()} XP</div>
+          ${currentRank.maxXP !== Infinity ? `
+            <div class="text-[10px] text-[#4b5563] mb-1">${(s.xp - currentRank.minXP).toLocaleString()} / ${(currentRank.maxXP - currentRank.minXP + 1).toLocaleString()} XP to next rank</div>
+            <div class="rank-progress-bar"><div class="rank-progress-fill" style="width:${Math.min(100,((s.xp-currentRank.minXP)/(currentRank.maxXP-currentRank.minXP+1))*100).toFixed(1)}%;background:${currentRank.color}"></div></div>
+          ` : `<div class="text-[10px] text-yellow-400 font-bold">MAX RANK ACHIEVED 👑</div>`}
+        </div>
+      </div>
+    </div>
+    <p class="section-label mb-3">All Ranks</p>
+    <div class="space-y-2 mb-5">
+      ${RANKS.map(r => {
+        const unlocked = s.xp >= r.minXP;
+        const isCurrent = r.id === currentRank.id;
+        return `<div class="rank-card${isCurrent?' current-rank':''}" style="opacity:${unlocked?1:.4}">
+          <div class="rank-icon-big" style="font-size:20px;width:40px;height:40px;background:${r.color}22;border:1px solid ${r.color}44;">${r.icon}</div>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-sm" style="color:${r.color};font-family:'Syne',sans-serif">${r.name}${isCurrent?' <span style="font-size:9px;background:rgba(108,99,255,.2);border:1px solid rgba(108,99,255,.4);padding:1px 5px;border-radius:4px;color:var(--c-accent2)">CURRENT</span>':''}</div>
+            <div class="text-[10px] text-[#6b7280]">${r.desc}</div>
+          </div>
+          <div class="text-[10px] font-mono text-[#4b5563]">${r.minXP >= 8000 ? '8000+' : r.minXP + '—' + r.maxXP} XP</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <p class="section-label mb-3">Tool Badges (Earned by Usage)</p>
+    <div class="tool-badge-row mb-2">
+      ${TOOL_BADGES.map(b => {
+        const earned = earnedBadges.find(e => e.id === b.id);
+        const stats = s.stats || {};
+        const progress = stats[b.stat] || 0;
+        return `<div class="tool-badge-chip${earned?' active-chip':''}" title="${b.name}: ${progress}/${b.threshold} ${b.stat}" style="${earned?`border-color:${b.color}44;background:${b.color}12;`:''}">
+          ${b.icon} ${b.name}${earned?'':` <span style="color:var(--c-muted);font-size:8px">${progress}/${b.threshold}</span>`}
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+};
+
+const renderEarnTab = (content) => {
+  const earnGuide = [
+    {icon:'💬', action:'Send a message',          xp:'+2 XP',  stat:'per message'},
+    {icon:'🆕', action:'Start a new chat',         xp:'+5 XP',  stat:'per chat'},
+    {icon:'🏆', action:'Unlock achievements',       xp:'10–100 XP', stat:'varies'},
+    {icon:'🎨', action:'Open the Canvas',           xp:'tracked', stat:'→ +20 XP achievement'},
+    {icon:'🌐', action:'Use web search',            xp:'tracked', stat:'→ +20 XP achievement'},
+    {icon:'⚖️', action:'Run model comparison',      xp:'tracked', stat:'→ +30 XP achievement'},
+    {icon:'✨', action:'Enhance a prompt',          xp:'tracked', stat:'→ +20 XP achievement'},
+    {icon:'🎤', action:'Use voice input',           xp:'tracked', stat:'→ +15 XP achievement'},
+    {icon:'📝', action:'Open Monaco editor',        xp:'tracked', stat:'→ +15 XP achievement'},
+    {icon:'⌨️', action:'Use the console',           xp:'tracked', stat:'→ +20 XP achievement'},
+    {icon:'🤖', action:'Try 3+ different models',   xp:'tracked', stat:'→ +30 XP achievement'},
+    {icon:'📁', action:'Create a folder',           xp:'tracked', stat:'→ +15 XP achievement'},
+    {icon:'🦉', action:'Chat after midnight',       xp:'+25 XP',  stat:'secret achievement'},
+  ];
+  const s = getXPState();
+  content.innerHTML = `
+    <div class="mb-4 p-3 rounded-xl border border-[#6c63ff]/30 bg-[#6c63ff]/05">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-lg">⚡</span>
+        <span class="font-bold text-white text-sm" style="font-family:'Syne',sans-serif">Total XP Earned: <span class="text-[#a78bfa]">${s.xp.toLocaleString()}</span></span>
+      </div>
+      <div class="text-[11px] text-[#6b7280]">Current Rank: <span style="color:${getCurrentRank(s.xp).color}">${getCurrentRank(s.xp).icon} ${getCurrentRank(s.xp).name}</span> · XP spent in store: ${(getStoreState().xpSpent||0).toLocaleString()}</div>
+    </div>
+    <p class="section-label mb-3">How to Earn XP</p>
+    ${earnGuide.map(e => `
+      <div class="earn-row">
+        <div class="earn-icon">${e.icon}</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-semibold text-[#e2e4f0]">${e.action}</div>
+          <div class="text-[10px] text-[#6b7280]">${e.stat}</div>
+        </div>
+        <div class="earn-xp-badge">${e.xp}</div>
+      </div>
+    `).join('')}
+  `;
+};
+
+// Purchase flow with server-side style validation
+const initPurchase = (itemId, cost) => {
+  const allItems = getAllStoreItems();
+  const item = allItems.find(i => i.id === itemId);
+  if(!item) { toast('Item not found', 'error'); return; }
+  // Verify cost matches catalog (prevent tampered DOM calls)
+  if(item.cost !== cost) { toast('Security error — price mismatch', 'error'); return; }
+
+  const xpS = getXPState();
+  _pendingPurchase = {itemId, cost, name: item.name, desc: item.desc, icon: item.icon};
+
+  const el_icon = $('purchase-icon');
+  const el_name = $('purchase-name');
+  const el_desc = $('purchase-desc');
+  const el_cost = $('purchase-cost');
+  const el_balance = $('purchase-balance-check');
+  const confirmBtn = $('purchase-confirm-btn');
+
+  if(el_icon) el_icon.textContent = item.icon;
+  if(el_name) el_name.textContent = item.name;
+  if(el_desc) el_desc.textContent = item.desc;
+  if(el_cost) el_cost.textContent = `${cost.toLocaleString()} XP`;
+
+  const canAfford = xpS.xp >= cost;
+  if(el_balance) {
+    if(canAfford) {
+      el_balance.className = 'text-xs mb-4 px-3 py-2 rounded-lg border border-green-500/30 bg-green-500/06 text-green-400';
+      el_balance.textContent = `✓ You have ${xpS.xp.toLocaleString()} XP. After purchase: ${(xpS.xp - cost).toLocaleString()} XP`;
+    } else {
+      el_balance.className = 'text-xs mb-4 px-3 py-2 rounded-lg border border-red-500/30 bg-red-500/06 text-red-400';
+      el_balance.textContent = `✕ Insufficient XP. You have ${xpS.xp.toLocaleString()} XP, need ${cost.toLocaleString()} XP`;
+    }
+  }
+  if(confirmBtn) {
+    confirmBtn.disabled = !canAfford;
+    confirmBtn.style.opacity = canAfford ? '1' : '.4';
+  }
+
+  $('purchase-confirm')?.classList.add('open');
+};
+
+const confirmPurchase = () => {
+  if(!_pendingPurchase) return;
+  const { itemId, cost } = _pendingPurchase;
+  const success = purchaseItem(itemId, cost);
+  if(success) {
+    toast(`🎉 Purchased: ${_pendingPurchase.name}!`, 'success');
+    closePurchaseConfirm();
+    updateStoreBalance();
+    renderStoreTab(currentStoreTab);
+    applyEquipped();
+  }
+  _pendingPurchase = null;
+};
+
+const closePurchaseConfirm = () => {
+  $('purchase-confirm')?.classList.remove('open');
+  _pendingPurchase = null;
+};
+
+// Apply theme cosmetic
+const applyThemeItem = (themeKey) => {
+  const map = {
+    neon:     {accent:'#00ff88', accent2:'#39ff14'},
+    midnight: {accent:'#1d6fb8', accent2:'#60a5fa'},
+    sakura:   {accent:'#e8609a', accent2:'#f9a8d4'},
+    forest:   {accent:'#16a34a', accent2:'#4ade80'},
+    lava:     {accent:'#dc2626', accent2:'#f87171'},
+    galaxy:   {accent:'#7c3aed', accent2:'#06b6d4'},
+    gold:     {accent:'#d97706', accent2:'#fcd34d'},
+  };
+  const t = map[themeKey];
+  if(!t) return;
+  document.documentElement.style.setProperty('--c-accent', t.accent);
+  document.documentElement.style.setProperty('--c-accent2', t.accent2);
+};
+
+// Apply cosmetic effects
+let _matrixInterval = null;
+const applyCosmetic = (key) => {
+  // Clean previous matrix
+  if(key !== 'matrixbg' && _matrixInterval) { clearInterval(_matrixInterval); _matrixInterval = null; }
+  if(key === 'glowcursor') {
+    const btn = $('send-btn');
+    if(btn) btn.style.boxShadow = '0 0 20px var(--c-accent), 0 0 40px var(--c-accent)';
+  }
+  if(key === 'rainbowbar') {
+    [$('xp-bar-fill'), $('sb-xp-bar-fill')].forEach(el => {
+      if(el) el.style.background = 'linear-gradient(90deg,#f00,#ff8800,#ff0,#0f0,#0ff,#00f,#f0f)';
+    });
+  }
+  if(key === 'glassinput') {
+    const inp = $('chat-form');
+    if(inp) inp.style.backdropFilter = 'blur(20px)';
+  }
+  if(key === 'neonborder') {
+    const form = document.querySelector('#chat-form .flex-1');
+    if(form) form.style.boxShadow = '0 0 15px rgba(108,99,255,.4), 0 0 30px rgba(108,99,255,.2)';
+  }
+  if(key === 'matrixbg') {
+    // Lightweight matrix rain on body pseudo
+    document.body.dataset.matrix = '1';
+    let matrixStyle = document.getElementById('matrix-style');
+    if(!matrixStyle) {
+      matrixStyle = document.createElement('style');
+      matrixStyle.id = 'matrix-style';
+      matrixStyle.textContent = `
+        body[data-matrix="1"]::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;
+          background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,70,.01) 2px,rgba(0,255,70,.01) 4px);
+          animation:matrixScroll 3s linear infinite;}
+        @keyframes matrixScroll{from{background-position:0 0;}to{background-position:0 80px;}}
+      `;
+      document.head.appendChild(matrixStyle);
+    }
+  }
+  if(key === 'particles') {
+    const sendBtn = $('send-btn');
+    if(sendBtn && !sendBtn._particlesAttached) {
+      sendBtn._particlesAttached = true;
+      sendBtn.addEventListener('click', () => {
+        for(let i = 0; i < 8; i++) {
+          const p = document.createElement('div');
+          p.style.cssText = `position:fixed;pointer-events:none;z-index:9999;font-size:${10+Math.random()*14}px;
+            left:${sendBtn.getBoundingClientRect().left + Math.random()*40}px;
+            top:${sendBtn.getBoundingClientRect().top}px;
+            animation:particleFly .8s ease-out forwards;`;
+          p.textContent = ['✨','⚡','🔮','💫','🌟'][Math.floor(Math.random()*5)];
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 900);
+        }
+      });
+      if(!document.getElementById('particle-style')) {
+        const ps = document.createElement('style');
+        ps.id = 'particle-style';
+        ps.textContent = `@keyframes particleFly{from{opacity:1;transform:translateY(0) scale(1);}to{opacity:0;transform:translateY(-80px) scale(.3);}}`;
+        document.head.appendChild(ps);
+      }
+    }
+  }
+};
+
+// Apply all equipped items on load
+const applyEquipped = () => {
+  const storeS = getStoreState();
+  // Theme
+  if(storeS.equipped.themes) {
+    const item = getAllStoreItems().find(i => i.id === storeS.equipped.themes);
+    if(item) item.applyFn();
+  }
+  // Cosmetics
+  if(storeS.equipped.cosmetics) {
+    const item = getAllStoreItems().find(i => i.id === storeS.equipped.cosmetics);
+    if(item) item.applyFn();
+  }
+  updateStoreBanner();
+};
+
+const updateStoreBanner = () => {
+  const storeS = getStoreState();
+  const banner = $('equipped-banner');
+  const bannerText = $('equipped-banner-text');
+  const bannerIcon = $('equipped-badge-icon');
+  if(!banner) return;
+  const equippedItems = Object.values(storeS.equipped);
+  if(equippedItems.length > 0) {
+    const names = equippedItems.map(id => {
+      const item = getAllStoreItems().find(i => i.id === id);
+      return item ? `${item.icon} ${item.name}` : '';
+    }).filter(Boolean);
+    if(bannerText) bannerText.textContent = 'Active: ' + names.join(' · ');
+    const rank = getCurrentRank(getXPState().xp);
+    if(bannerIcon) bannerIcon.textContent = rank.icon;
+    banner.classList.add('visible');
+  } else {
+    banner.classList.remove('visible');
+  }
+};
+
+// Wire store events
+document.getElementById('store-btn')?.addEventListener('click', openStore);
+document.getElementById('store-close')?.addEventListener('click', closeStore);
+$('store-modal')?.addEventListener('click', e => { if(e.target === $('store-modal')) closeStore(); });
+$('purchase-cancel-btn')?.addEventListener('click', closePurchaseConfirm);
+$('purchase-confirm-btn')?.addEventListener('click', confirmPurchase);
+$('purchase-confirm')?.addEventListener('click', e => { if(e.target === $('purchase-confirm')) closePurchaseConfirm(); });
+document.querySelectorAll('.store-tab').forEach(tab => {
+  tab.addEventListener('click', () => renderStoreTab(tab.dataset.tab));
+});
+
+// Add store to command palette
+CMD_ACTIONS.push({icon:'🛍️', label:'XP Store', kbd:'Ctrl+Shift+S', action:()=>{closePalette();openStore();}});
+
+// Apply equipped items on startup
+applyEquipped();
+updateStoreBanner();
+updateRankBadge();
+
+/* ── END STORE ── */
+
 checkOAuthCallback();
 state.chatId = genId();
 renderWelcome();
