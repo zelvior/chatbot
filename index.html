@@ -224,9 +224,7 @@ body.light-mode body::before{opacity:.05;}
 /* Preview iframe */
 #canvas-preview-wrap{flex:1;overflow:hidden;position:relative;}
 #canvas-preview-wrap iframe{width:100%;height:100%;border:none;background:#fff;}
-/* Sidebar overlay */
-#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:29;backdrop-filter:blur(2px);}
-#sidebar-overlay.active{display:block;}
+
 /* Msg actions */
 .msg-actions{display:none;gap:4px;margin-top:6px;flex-wrap:wrap;}
 .msg-row:hover .msg-actions{display:flex;}
@@ -1713,7 +1711,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
 </div>
 
 <!-- ══ CHAT SEARCH OVERLAY ══ -->
-<div id="chat-search-overlay" class="fixed top-0 left-0 right-0 z-[150] hidden transform -translate-y-full transition-transform duration-200" style="padding-top:env(safe-area-inset-top,0)">
+<div id="chat-search-overlay" class="fixed top-0 left-0 right-0 z-[150] transform -translate-y-full transition-transform duration-200" style="display:none;padding-top:env(safe-area-inset-top,0)">
   <div class="bg-[#0e1018] border-b border-[#1f2333] px-3 py-2 flex items-center gap-2 shadow-2xl">
     <svg class="w-4 h-4 text-[#4b5563] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
     <input id="chat-search-input" type="text" placeholder="Search in this conversation…" class="flex-1 bg-transparent text-white text-sm outline-none placeholder-[#4b5563]">
@@ -1730,31 +1728,6 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
     <span>Chats</span>
   </button>
-  <button class="mob-nav-btn" id="mob-personas-btn" title="Personas">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-    <span>Personas</span>
-  </button>
-  <button class="mob-nav-btn" id="mob-notes-btn" title="Quick Notes">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-    <span>Notes</span>
-  </button>
-  <button class="mob-nav-btn" id="mob-find-btn" title="Find">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
-    <span>Find</span>
-  </button>
-  <button class="mob-nav-btn" id="mob-stats-btn" title="Stats">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-    <span>Stats</span>
-  </button>
-  <button class="mob-nav-btn" id="mob-uic-btn" title="Customize">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-    <span>Layout</span>
-  </button>
-  <button class="mob-nav-btn" id="mob-settings-btn" title="Settings">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
-    <span>Settings</span>
-  </button>
-</nav>
   <button class="mob-nav-btn" id="mob-personas-btn" title="Personas">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     <span>Personas</span>
@@ -1977,6 +1950,60 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
   </div>
 </div>
 
+<style>
+/* ════ SHIMMER / SKELETON SYSTEM ════ */
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes shimmerFade{0%,100%{opacity:.5}50%{opacity:1}}
+.shimmer{background:linear-gradient(90deg,var(--c-surface2) 25%,var(--c-border) 50%,var(--c-surface2) 75%);background-size:600px 100%;animation:shimmer 1.6s ease-in-out infinite;border-radius:6px;}
+body.light-mode .shimmer{background:linear-gradient(90deg,#e8eaf2 25%,#d1d5e8 50%,#e8eaf2 75%);background-size:600px 100%;}
+.msg-shimmer-wrap{display:flex;gap:10px;padding:6px 0;width:100%;animation:shimmerFade .8s ease-in-out 2;}
+.msg-shimmer-avatar{width:32px;height:32px;min-width:32px;border-radius:10px;}
+.msg-shimmer-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding-top:4px;}
+.msg-shimmer-name{height:10px;width:80px;}
+.msg-shimmer-line{height:12px;border-radius:6px;}
+.msg-shimmer-line.w30{width:30%}.msg-shimmer-line.w55{width:55%}.msg-shimmer-line.w65{width:65%}.msg-shimmer-line.w75{width:75%}.msg-shimmer-line.w90{width:90%}.msg-shimmer-line.w100{width:100%}
+.history-shimmer{padding:8px 10px;border-radius:10px;display:flex;gap:8px;align-items:flex-start;}
+.history-shimmer-icon{width:14px;height:14px;min-width:14px;border-radius:3px;margin-top:2px;}
+.history-shimmer-body{flex:1;display:flex;flex-direction:column;gap:5px;}
+.history-shimmer-title{height:10px;border-radius:5px;width:75%;}
+.history-shimmer-meta{height:8px;border-radius:4px;width:45%;}
+.model-shimmer{border:1px solid var(--c-border);border-radius:10px;padding:10px 12px;}
+.model-shimmer-header{display:flex;justify-content:space-between;margin-bottom:8px;}
+.model-shimmer-name{height:12px;width:55%;border-radius:5px;}
+.model-shimmer-ctx{height:10px;width:35px;border-radius:4px;}
+.model-shimmer-id{height:9px;width:80%;border-radius:4px;margin-bottom:8px;}
+.model-shimmer-desc1{height:9px;width:100%;border-radius:4px;margin-bottom:4px;}
+.model-shimmer-desc2{height:9px;width:70%;border-radius:4px;margin-bottom:8px;}
+.model-shimmer-tags{display:flex;gap:4px;}
+.model-shimmer-tag{height:16px;width:60px;border-radius:99px;}
+.ts-step-shimmer{display:flex;gap:8px;padding:6px 12px;align-items:center;}
+.ts-step-shimmer-icon{width:14px;height:14px;min-width:14px;border-radius:50%;}
+.ts-step-shimmer-text{height:9px;width:55%;border-radius:4px;}
+.welcome-shimmer{display:flex;flex-direction:column;gap:10px;padding:1rem;}
+.ws-header{display:flex;gap:10px;align-items:center;}
+.ws-avatar{width:40px;height:40px;border-radius:12px;min-width:40px;}
+.ws-title-wrap{flex:1;display:flex;flex-direction:column;gap:6px;}
+.ws-title{height:14px;width:140px;border-radius:5px;}
+.ws-sub{height:10px;width:200px;border-radius:4px;}
+.ws-body{height:10px;border-radius:4px;}
+.ws-body.w80{width:80%}.ws-body.w60{width:60%}
+.ws-chips{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.ws-chip{height:32px;border-radius:10px;}
+.model-btn-shimmer{height:14px;border-radius:5px;flex:1;max-width:140px;}
+.code-shimmer-block{border-radius:8px;overflow:hidden;border:1px solid var(--c-border2);margin:.5em 0;}
+.code-shimmer-header{height:30px;background:#161b22;border-bottom:1px solid var(--c-border2);}
+.code-shimmer-body{padding:.7rem;background:#0d1117;display:flex;flex-direction:column;gap:7px;}
+.code-shimmer-line{height:11px;border-radius:3px;}
+#canvas-skeleton .code-shimmer-line,.code-shimmer-body .shimmer{background:linear-gradient(90deg,#161b22 25%,#21262d 50%,#161b22 75%);background-size:600px 100%;animation:shimmer 1.6s ease-in-out infinite;}
+#canvas-skeleton .shimmer{background:linear-gradient(90deg,#161b22 25%,#21262d 50%,#161b22 75%);background-size:600px 100%;}
+#enhancer-loading{display:flex;flex-direction:column;align-items:center;gap:3px;padding:1rem;}
+.enhancer-shimmer-row{height:11px;border-radius:5px;margin:3px 0;}
+.enhancer-shimmer-row.w90{width:90%}.enhancer-shimmer-row.w70{width:70%}.enhancer-shimmer-row.w80{width:80%}
+@keyframes sendPulse{0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,.5)}50%{box-shadow:0 0 0 6px rgba(108,99,255,0)}}
+.pill-send-btn.generating{animation:sendPulse 1.4s ease-in-out infinite;}
+@keyframes textShimmer{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+#current-model-display.scanning{animation:textShimmer 1.2s ease-in-out infinite;}
+</style>
 <script>
 /* ════════════════════════════════════════
    VortexAI v6.1 — by Zelvior, Pakistan
@@ -2840,183 +2867,8 @@ const closeCanvas = () => { if(!state.canvasOpen)return;state.canvasOpen=false;e
 const switchTab = tab => { state.canvasTab=tab;document.querySelectorAll('.canvas-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));el.canvasCodeTab?.classList.toggle('hidden',tab!=='code');el.canvasPreviewTab?.classList.toggle('hidden',tab!=='preview');if(el.canvasPreviewTab)el.canvasPreviewTab.classList.toggle('flex',tab==='preview');el.canvasEditorTab?.classList.toggle('hidden',tab!=='editor');if(el.canvasEditorTab)el.canvasEditorTab.classList.toggle('flex',tab==='editor');el.canvasDiffTab?.classList.toggle('hidden',tab!=='diff');if(el.canvasDiffTab)el.canvasDiffTab.classList.toggle('flex',tab==='diff');const trackerTab=$('canvas-tracker-tab');if(trackerTab)trackerTab.classList.toggle('hidden',tab!=='tracker');if(tab==='editor'&&state.canvasCode&&el.canvasEditor){el.canvasEditor.value=state.canvasCode;updateEditorInfo();}if(tab==='diff')renderDiff();if(tab==='preview'&&state.canvasCode)runPreview(state.canvasCode,state.canvasLang); };
 document.querySelectorAll('.canvas-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
-const runPreview = (code,lang='html') => { if(!el.canvasIframe)return;let doc=code;if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>${code}<\/script></body></html>`;else if(lang==='css')doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${code}</style></head><body style="padding:1rem;background:#fff"><p style="color:#888;font-size:13px;font-family:sans-serif">CSS Preview</p></body></html>`;else if(!code.trim().startsWith('<!'))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:sans-serif;margin:0;padding:1rem}
-/* ════ SHIMMER / SKELETON SYSTEM ════ */
-@keyframes shimmer {
-  0%   { background-position: -600px 0; }
-  100% { background-position:  600px 0; }
-}
-@keyframes shimmerFade {
-  0%,100% { opacity:.5; }
-  50%      { opacity:1; }
-}
-.shimmer {
-  background: linear-gradient(90deg,
-    var(--c-surface2) 25%,
-    var(--c-border)   50%,
-    var(--c-surface2) 75%
-  );
-  background-size: 600px 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-  border-radius: 6px;
-}
-/* Light-mode shimmer */
-body.light-mode .shimmer {
-  background: linear-gradient(90deg,#e8eaf2 25%,#d1d5e8 50%,#e8eaf2 75%);
-  background-size: 600px 100%;
-}
+const runPreview = (code,lang='html') => { if(!el.canvasIframe)return;let doc=code;if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>${code}<\/script></body></html>`;else if(lang==='css')doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${code}</style></head><body style="padding:1rem;background:#fff"><p style="color:#888;font-size:13px;font-family:sans-serif">CSS Preview</p></body></html>`;else if(!code.trim().startsWith('<!'))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:sans-serif;margin:0;padding:1rem}</style></head><body>${code}</body></html>`;el.canvasIframe.srcdoc=doc; };
 
-/* ── Message shimmer (AI response loading) ── */
-.msg-shimmer-wrap {
-  display: flex; gap: 10px; padding: 6px 0; width: 100%;
-  animation: shimmerFade .8s ease-in-out 2;
-}
-.msg-shimmer-avatar {
-  width: 32px; height: 32px; min-width: 32px; border-radius: 10px;
-}
-.msg-shimmer-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
-.msg-shimmer-name  { height: 10px; width: 80px; }
-.msg-shimmer-line  { height: 12px; border-radius: 6px; }
-.msg-shimmer-line.w30 { width: 30%; }
-.msg-shimmer-line.w55 { width: 55%; }
-.msg-shimmer-line.w75 { width: 75%; }
-.msg-shimmer-line.w90 { width: 90%; }
-.msg-shimmer-line.w100{ width:100%; }
-.msg-shimmer-line.w65 { width: 65%; }
-
-/* ── History shimmer ── */
-.history-shimmer { padding: 8px 10px; border-radius: 10px; display: flex; gap: 8px; align-items: flex-start; }
-.history-shimmer-icon { width: 14px; height: 14px; min-width: 14px; border-radius: 3px; margin-top: 2px; }
-.history-shimmer-body { flex:1; display:flex; flex-direction:column; gap:5px; }
-.history-shimmer-title { height: 10px; border-radius: 5px; width: 75%; }
-.history-shimmer-meta  { height: 8px;  border-radius: 4px; width: 45%; }
-
-/* ── Model card shimmer ── */
-.model-shimmer { border: 1px solid var(--c-border); border-radius: 10px; padding: 10px 12px; }
-.model-shimmer-header { display:flex; justify-content:space-between; margin-bottom:8px; }
-.model-shimmer-name   { height: 12px; width: 55%; border-radius: 5px; }
-.model-shimmer-ctx    { height: 10px; width: 35px; border-radius: 4px; }
-.model-shimmer-id     { height: 9px;  width: 80%; border-radius: 4px; margin-bottom: 8px; }
-.model-shimmer-desc1  { height: 9px;  width: 100%; border-radius: 4px; margin-bottom: 4px; }
-.model-shimmer-desc2  { height: 9px;  width: 70%;  border-radius: 4px; margin-bottom: 8px; }
-.model-shimmer-tags   { display:flex; gap:4px; }
-.model-shimmer-tag    { height: 16px; width: 60px; border-radius: 99px; }
-
-/* ── Canvas skeleton ── */
-#canvas-skeleton {
-  display: none; flex: 1; padding: 1.2rem 1.4rem;
-  flex-direction: column; gap: 10px; background: #0d1117;
-}
-#canvas-skeleton.active { display: flex; }
-.sk-line { height: 13px; border-radius: 4px; }
-/* canvas specific shimmer colors (dark bg) */
-#canvas-skeleton .shimmer {
-  background: linear-gradient(90deg, #161b22 25%, #21262d 50%, #161b22 75%);
-  background-size: 600px 100%;
-}
-
-/* ── Canvas stream pre ── */
-#canvas-stream-pre {
-  flex: 1; margin: 0; padding: 1rem; overflow: auto;
-  font-family: 'JetBrains Mono', monospace; font-size: .78em;
-  line-height: 1.6; color: #e6edf3; background: #0d1117;
-  white-space: pre; display: none;
-  border-top: 1px solid var(--c-border);
-}
-
-/* ── Thinking step shimmer (first few steps) ── */
-.ts-step-shimmer { display: flex; gap: 8px; padding: 6px 12px; align-items: center; }
-.ts-step-shimmer-icon { width: 14px; height: 14px; min-width: 14px; border-radius: 50%; }
-.ts-step-shimmer-text { height: 9px; width: 55%; border-radius: 4px; }
-
-/* ── Welcome card shimmer ── */
-.welcome-shimmer { display: flex; flex-direction: column; gap: 10px; padding: 1rem; }
-.ws-header { display: flex; gap: 10px; align-items: center; }
-.ws-avatar { width: 40px; height: 40px; border-radius: 12px; min-width: 40px; }
-.ws-title-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-.ws-title  { height: 14px; width: 140px; border-radius: 5px; }
-.ws-sub    { height: 10px; width: 200px; border-radius: 4px; }
-.ws-body   { height: 10px; border-radius: 4px; }
-.ws-body.w80 { width: 80%; }
-.ws-body.w60 { width: 60%; }
-.ws-chips  { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.ws-chip   { height: 32px; border-radius: 10px; }
-
-/* ── Header model shimmer ── */
-.model-btn-shimmer { height: 14px; border-radius: 5px; flex: 1; max-width: 140px; }
-
-/* ── Live canvas bar ── */
-#canvas-live-bar {
-  display: none; align-items: center; gap: 8px;
-  padding: 5px 12px;
-  background: linear-gradient(90deg, rgba(108,99,255,.07), rgba(108,99,255,.03));
-  border-bottom: 1px solid rgba(108,99,255,.18);
-  font-size: 10px; font-family: 'JetBrains Mono', monospace;
-  color: var(--c-accent2);
-}
-#canvas-live-bar.active { display: flex; }
-#canvas-live-bar .live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--c-accent);
-  animation: livePulse .85s ease-in-out infinite;
-}
-@keyframes livePulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: .35; transform: scale(.65); }
-}
-#canvas-live-bar .live-label { flex: 1; }
-#canvas-live-bar .live-chars { color: var(--c-muted); font-size: 9px; }
-
-/* ── Inline code shimmer (during stream, before highlight) ── */
-.code-shimmer-block {
-  border-radius: 8px; overflow: hidden;
-  border: 1px solid var(--c-border2); margin: .5em 0;
-}
-.code-shimmer-header {
-  height: 30px; background: #161b22;
-  border-bottom: 1px solid var(--c-border2);
-}
-.code-shimmer-body { padding: .7rem; background: #0d1117; display: flex; flex-direction: column; gap: 7px; }
-.code-shimmer-line { height: 11px; border-radius: 3px; }
-#canvas-skeleton .code-shimmer-line,
-.code-shimmer-body .shimmer {
-  background: linear-gradient(90deg, #161b22 25%, #21262d 50%, #161b22 75%);
-  background-size: 600px 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-}
-
-/* ── Auth status bar shimmer ── */
-.auth-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.auth-dot.green  { background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,.5); }
-.auth-dot.yellow { background:#eab308; box-shadow:0 0 6px rgba(234,179,8,.4); }
-.auth-dot.gray   { background:#6b7280; }
-
-/* ── Shimmer for enhancer loading ── */
-#enhancer-loading {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 1rem;
-}
-.enhancer-shimmer-row { height: 11px; border-radius: 5px; margin: 3px 0; }
-.enhancer-shimmer-row.w90 { width: 90%; }
-.enhancer-shimmer-row.w70 { width: 70%; }
-.enhancer-shimmer-row.w80 { width: 80%; }
-
-/* ── Pulse ring on send btn while generating ── */
-@keyframes sendPulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(108,99,255,.5); }
-  50%      { box-shadow: 0 0 0 6px rgba(108,99,255,0); }
-}
-.pill-send-btn.generating { animation: sendPulse 1.4s ease-in-out infinite; }
-
-/* ── Shimmer on model display while scanning ── */
-@keyframes textShimmer {
-  0%   { opacity: .4; }
-  50%  { opacity: 1; }
-  100% { opacity: .4; }
-}
-#current-model-display.scanning { animation: textShimmer 1.2s ease-in-out infinite; }
-
-</style></head><body>${code}</body></html>`;el.canvasIframe.srcdoc=doc; };
 const showCanvasLiveBar = (on,chars=0) => { const bar=$('canvas-live-bar'),cc=$('live-chars-count');if(!bar)return;if(on){bar.classList.add('active');if(cc)cc.textContent=chars.toLocaleString()+' chars';}else bar.classList.remove('active'); };
 const showCanvasSkeleton = () => { const sk=$('canvas-skeleton'),sp=$('canvas-stream-pre'),pre=$('canvas-pre'),emp=$('canvas-empty');if(sk){sk.style.display='flex';sk.style.flexDirection='column';}if(sp)sp.style.display='none';if(pre)pre.classList.add('hidden');if(emp)emp.classList.add('hidden'); };
 const streamToCanvas = (code,lang) => { if(!state.autoCanvas||!code||code.length<2)return;if(!state.canvasOpen){openCanvas();showCanvasSkeleton();}const sp=$('canvas-stream-pre'),sk=$('canvas-skeleton'),pre=$('canvas-pre'),emp=$('canvas-empty');if(emp)emp.classList.add('hidden');if(sk)sk.style.display='none';if(pre)pre.classList.add('hidden');if(sp){sp.style.display='block';sp.textContent=code;sp.scrollTop=sp.scrollHeight;}if(state.canvasTab==='editor'&&el.canvasEditor)el.canvasEditor.value=code;if(el.canvasLangBadge){el.canvasLangBadge.textContent=lang||'code';el.canvasLangBadge.classList.toggle('hidden',!lang);}showCanvasLiveBar(true,code.length);if(/^(html|css)$/i.test(lang)&&state.canvasTab==='preview'){clearTimeout(window._previewTimer);window._previewTimer=setTimeout(()=>runPreview(code,lang),900);} };
@@ -3276,7 +3128,7 @@ const CHIPS=['Ask anything','Write HTML/CSS/JS','Explain code','Build a componen
 const renderWelcome=()=>{const d=document.createElement('div');d.id='welcome';d.className='welcome-card rounded-2xl p-4 sm:p-5 msg-enter';d.innerHTML=`<div class="flex items-center gap-2.5 mb-3"><div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#6c63ff] to-[#a78bfa] flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-[#6c63ff]/30 shrink-0">⚡</div><div><h3 class="font-black text-white text-base sm:text-lg" style="font-family:'Syne',sans-serif">VortexAI <span class="text-[#6c63ff] text-sm">v6.1</span></h3><p class="text-[10px] sm:text-xs text-[#6b7280]">OpenRouter · Free Models · Zelvior · Pakistan</p></div></div><p class="text-xs sm:text-sm text-[#9ca3af] leading-relaxed mb-3"><strong class="text-white">Ctrl+P</strong> = command palette · <strong class="text-white">✨ Enhance</strong> = upgrade prompt · <strong class="text-white">Settings</strong> = sign in via OpenRouter.</p><div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">${CHIPS.map(t=>`<button class="prompt-chip">${t}</button>`).join('')}</div>`;d.querySelectorAll('.prompt-chip').forEach(b=>b.addEventListener('click',()=>{if(el.userInput){el.userInput.value=b.textContent.trim();el.userInput.dispatchEvent(new Event('input'));el.userInput.focus();}}));el.chatInner.appendChild(d);};
 
 /* ── NEW CHAT ── */
-const newChat=()=>{if(state.isGenerating){toast('Stop generation first','error');return;}state.messages=[];state.chatId=genId();if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();renderWelcome();renderHistory();updateTokenBar();el.userInput?.focus();if(!state.isTemp){trackStat('totalChats');addXP(5);}};
+const newChat=()=>{if(state.isGenerating){toast('Stop generation first','error');return;}state.messages=[];state.chatId=genId();if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();renderWelcome();renderHistory();updateTokenBar();el.userInput?.focus();_autoTitleDone=false;if(!state.isTemp){trackStat('totalChats');addXP(5);}};
 el.newChatBtn?.addEventListener('click',newChat);
 el.newChatSidebarBtn?.addEventListener('click',()=>{newChat();if(window.innerWidth<768)setSidebar(false);});
 
@@ -3990,6 +3842,8 @@ $('canvas-expand-btn')?.addEventListener('click', () => {
 });
 
 
+let currentStoreTab = 'themes';
+
 const openStore = () => {
   const modal = $('store-modal');
   if(!modal) return;
@@ -4156,6 +4010,7 @@ const renderEarnTab = (content) => {
 };
 
 // Purchase flow with server-side style validation
+let _pendingPurchase = null;
 const initPurchase = (itemId, cost) => {
   const allItems = getAllStoreItems();
   const item = allItems.find(i => i.id === itemId);
@@ -4469,6 +4324,7 @@ const _origAppendMsg = appendMsg;
 /* ══════════════════════════════════════════
    ── FEATURE: SMART REPLY SUGGESTIONS
 ══════════════════════════════════════════ */
+let _smartReplyAbort = null;
 const generateSmartReplies = async (lastAIContent) => {
   const bar = document.getElementById('smart-replies-bar');
   if (!bar || !lastAIContent || !isAuthenticated()) return;
@@ -4539,6 +4395,7 @@ let _searchHits = [], _searchIdx = 0;
 const openChatSearch = () => {
   const ov = document.getElementById('chat-search-overlay');
   if (!ov) return;
+  ov.classList.remove('hidden');
   ov.classList.add('open');
   ov.style.display = 'block';
   document.getElementById('chat-search-input')?.focus();
