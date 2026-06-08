@@ -762,14 +762,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
     <span class="text-sm font-black text-white hidden sm:block" style="font-family:'Syne',sans-serif;letter-spacing:-.02em">VortexAI</span>
     <span class="text-[9px] font-bold text-[#6b7280] bg-[#141720] px-1.5 py-0.5 rounded border border-[#1f2333] hidden lg:inline-block">v6.0</span>
   </div>
-  <button id="open-models-btn" title="Choose Model (Ctrl+K)" class="flex-1 min-w-0 flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-[#141720] hover:bg-[#1f2333] rounded-xl border border-[#1f2333] hover:border-[#2a2f45] transition-all text-left overflow-hidden shadow-sm">
-    <svg id="model-loading-icon" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#6c63ff] shrink-0 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-    <svg id="model-cpu-icon" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#6c63ff] shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke-width="2"/><rect x="9" y="9" width="6" height="6" stroke-width="2"/></svg>
-    <span id="current-model-display" class="text-xs sm:text-sm font-semibold text-[#e2e4f0] truncate flex-1" style="font-family:'Syne',sans-serif">Scanning…</span>
-    <div id="ctx-ring" class="ctx-ring hidden" title="Context usage"></div>
-    <svg class="w-3.5 h-3.5 text-[#6b7280] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-  </button>
-  <div class="flex items-center gap-0.5 shrink-0">
+  <div class="flex items-center gap-0.5 ml-auto shrink-0">
     <button id="new-chat-btn" title="New Chat (Ctrl+Shift+N)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
     </button>
@@ -987,6 +980,15 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
               class="pill-tool-btn flex items-center gap-1.5 px-2.5" aria-label="Enhance">
               <svg class="w-[15px] h-[15px] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
               <span class="text-[11px] font-semibold hidden sm:inline" style="font-family:'Syne',sans-serif">Enhance</span>
+            </button>
+            <!-- Model selector inline in pill -->
+            <button type="button" id="open-models-btn" title="Choose Model (Ctrl+K)"
+              class="flex items-center gap-1.5 px-2.5 py-1 bg-[#0e1018] hover:bg-[#1f2333] rounded-xl border border-[#2a2f45] hover:border-[#6c63ff]/40 transition-all min-w-0 overflow-hidden max-w-[200px] shrink-0">
+              <svg id="model-loading-icon" class="w-3 h-3 text-[#6c63ff] shrink-0 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <svg id="model-cpu-icon" class="w-3 h-3 text-[#6c63ff] shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke-width="2"/><rect x="9" y="9" width="6" height="6" stroke-width="2"/></svg>
+              <span id="current-model-display" class="text-[11px] font-semibold text-[#e2e4f0] truncate" style="font-family:'Syne',sans-serif;max-width:120px">Scanning…</span>
+              <div id="ctx-ring" class="ctx-ring hidden shrink-0" title="Context usage"></div>
+              <svg class="w-3 h-3 text-[#6b7280] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <!-- spacer -->
             <div class="flex-1"></div>
