@@ -1884,9 +1884,11 @@ const DEFAULT_MODELS_URL = 'https://openrouter.ai/api/v1/models';
 const OR_AUTH_URL = 'https://openrouter.ai/auth';
 const OR_OAUTH_CB = location.origin + location.pathname; // callback = same page
 const APP_NAME = 'VortexAI';
-const DEFAULT_MODEL = 'google/gemini-2.5-flash-lite-preview';
+const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
 const SCAN_INTERVAL = 6 * 60 * 1000;
 const KNOWN_DEAD = ['openrouter/quasar-alpha','liquid/lfm-40b:free','neversleep/llama-3-lumimaid-70b:free'];
+// Models that emit <think>…</think> reasoning tokens — these are handled by the stream parser's stripThinkBlocks()
+const THINKING_MODELS = ['google/gemini-2.5','deepseek/deepseek-r1','deepseek-r1','qwq','qwen/qwq'];
 
 const FALLBACK_MODELS = [
   {id:'google/gemini-2.5-flash-lite-preview',name:'Gemini 2.5 Flash Lite',description:'Google fast',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
@@ -2850,8 +2852,10 @@ const removeThinking=()=>{const t=document.getElementById('thinking');if(!t)retu
 
 /* ── STREAMING ── */
 let _buf='',_raf=null,_cEl=null,_chunkCount=0;
-const schedFlush=cEl=>{_cEl=cEl;_chunkCount++;if(_chunkCount%6===0){const tail=_buf.slice(-200);const step=detectStep(tail);if(step)appendThinkStep(step.icon,step.label);}_extractAndStream(_buf);if(_raf)return;_raf=requestAnimationFrame(()=>{_raf=null;if(!_cEl)return;_cEl.innerHTML=DOMPurify.sanitize(mdParse(_buf));scrollIfNeeded();});};
-const flushFinal=cEl=>{if(_raf){cancelAnimationFrame(_raf);_raf=null;}if(!cEl)return;cEl.innerHTML=DOMPurify.sanitize(mdParse(_buf));cEl.querySelectorAll('pre code').forEach(b=>hljs.highlightElement(b));scrollIfNeeded();const re=/```([\w-]*)\n([\s\S]*?)(?:```|$)/g;let m,last=null,lang='';while((m=re.exec(_buf))!==null){lang=m[1];last=m[2];}if(last!==null)updateCanvas(last,lang);else showCanvasLiveBar(false);_buf='';_cEl=null;_chunkCount=0;};
+const schedFlush=cEl=>{_cEl=cEl;_chunkCount++;if(_chunkCount%6===0){const tail=_buf.slice(-200);const step=detectStep(tail);if(step)appendThinkStep(step.icon,step.label);}_extractAndStream(_buf);if(_raf)return;_raf=requestAnimationFrame(()=>{_raf=null;if(!_cEl)return;const displayBuf=stripThinkBlocks?stripThinkBlocks(_buf):_buf;_cEl.innerHTML=DOMPurify.sanitize(mdParse(displayBuf));scrollIfNeeded();});};
+const stripThinkBlocks=txt=>{// Remove complete <think>…</think> blocks and any unclosed opening tag
+  return (txt||'').replace(/<think>[\s\S]*?<\/think>/g,'').replace(/<think>[\s\S]*/,'').trim();};
+const flushFinal=cEl=>{if(_raf){cancelAnimationFrame(_raf);_raf=null;}if(!cEl)return;_buf=stripThinkBlocks(_buf);cEl.innerHTML=DOMPurify.sanitize(mdParse(_buf));cEl.querySelectorAll('pre code').forEach(b=>hljs.highlightElement(b));scrollIfNeeded();const re=/```([\w-]*)\n([\s\S]*?)(?:```|$)/g;let m,last=null,lang='';while((m=re.exec(_buf))!==null){lang=m[1];last=m[2];}if(last!==null)updateCanvas(last,lang);else showCanvasLiveBar(false);_buf='';_cEl=null;_chunkCount=0;};
 const _extractAndStream=text=>{if(!state.autoCanvas)return;const re=/```([\w-]*)\n([\s\S]*?)(?:```|$)/g;let m,last=null,lang='';while((m=re.exec(text))!==null){lang=m[1];last=m[2];}if(last!==null)streamToCanvas(last,lang);};
 
 /* ── MESSAGES ── */
@@ -2950,6 +2954,8 @@ const sendToAPI=async()=>{
     if(cEl)cEl.classList.add('typing-cursor');
     const sk=$('canvas-skeleton');if(sk)sk.style.display='none';
     const reader=res.body.getReader(),dec=new TextDecoder('utf-8');let leftover='';
+    // Track whether we're inside a <think> block to strip reasoning tokens
+    let _inThink=false;
     while(true){
       const{done,value}=await reader.read();if(done)break;
       leftover+=dec.decode(value,{stream:true});
@@ -2959,12 +2965,35 @@ const sendToAPI=async()=>{
         try{
             const d=JSON.parse(line.slice(6));
             if(d.error){const em=d.error?.message||d.error?.code||'Stream error';throw new Error(em);}
-            const delta=d.choices?.[0]?.delta?.content??d.choices?.[0]?.text;
-            if(typeof delta!=='string'||!delta)continue;
-            resp+=delta;_buf=resp;if(cEl)schedFlush(cEl);
+            // OpenRouter may send role-only chunks, finish_reason chunks, or usage chunks — all have no content
+            const choice=d.choices?.[0];
+            if(!choice)continue;
+            // Handle both streaming (delta) and non-streaming (message) response shapes
+            const delta=choice.delta?.content??choice.message?.content??choice.text??null;
+            if(delta===null||delta===undefined||typeof delta!=='string'||delta==='')continue;
+            // Strip <think>...</think> reasoning blocks (DeepSeek R1, Gemini 2.5, etc.)
+            // These models emit thinking tokens that appear as garbled/nonsensical text
+            let clean='';
+            for(let i=0;i<delta.length;){
+              if(!_inThink){
+                const ts=delta.indexOf('<think>',i);
+                if(ts===-1){clean+=delta.slice(i);break;}
+                clean+=delta.slice(i,ts);_inThink=true;i=ts+7;
+              }else{
+                const te=delta.indexOf('</think>',i);
+                if(te===-1){i=delta.length;break;}// still inside think block
+                _inThink=false;i=te+8;
+              }
+            }
+            // Also strip leftover reasoning markers some models emit
+            clean=clean.replace(/^[\s\S]*?<\/think>/,'').replace(/<think>[\s\S]*/,'');
+            if(!clean)continue;
+            resp+=clean;_buf=resp;if(cEl)schedFlush(cEl);
           }catch(pe){
-            if(pe.message&&!/JSON|Unexpected|SyntaxError/.test(pe.constructor?.name||''))throw pe;
-            // silently skip malformed SSE chunks
+            // Only re-throw non-JSON-parse errors (actual API/stream errors)
+            // JSON SyntaxErrors from malformed SSE chunks are silently skipped
+            if(pe instanceof SyntaxError)continue;
+            throw pe;
           }
       }
     }
