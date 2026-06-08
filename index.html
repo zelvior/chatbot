@@ -574,40 +574,77 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
 .pill-send-btn.generating{background:rgba(239,68,68,.12);color:#f87171;box-shadow:0 0 0 2px rgba(239,68,68,.25);}
 .pb-safe{padding-bottom:calc(.75rem + env(safe-area-inset-bottom,0px));}
 @media(max-width:400px){.pill-tool-btn{width:30px;height:30px;}.pill-send-btn{width:34px;height:34px;}#enhance-btn.pill-tool-btn{padding:0 6px;}}
-/* ── MOBILE BOTTOM NAV ── */
+/* ── UI CUSTOMIZER ── */
+#ui-customizer.open{transform:translateX(0);}
+.uic-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:10px;cursor:pointer;transition:background .12s;user-select:none;}
+.uic-row:hover{background:var(--c-surface2);}
+.uic-label{font-size:11.5px;color:var(--c-text);font-weight:500;}
+.uic-toggle{appearance:none;-webkit-appearance:none;width:34px;height:19px;border-radius:99px;background:var(--c-border2);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.uic-toggle:checked{background:var(--c-accent);}
+.uic-toggle::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+.uic-toggle:checked::after{transform:translateX(15px);}
+/* Applied UIC states */
+body.uic-compact-msgs #chat-inner .msg-row{margin-bottom:0!important;}
+body.uic-compact-msgs .msg-row{gap:6px!important;}
+body.uic-hide-times .msg-time{display:none!important;}
+body.uic-hide-msg-actions .msg-actions{display:none!important;}
+body.uic-hide-welcome #welcome-screen{display:none!important;}
+body.uic-hide-char-count #char-count{display:none!important;}
+body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
+/* ── CANVAS ACTION BUTTONS ── */
+.canvas-action-btn{padding:5px;border-radius:8px;color:var(--c-muted);background:transparent;border:none;cursor:pointer;transition:all .13s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.canvas-action-btn:hover{background:var(--c-surface2);color:var(--c-text);}
+.canvas-action-btn:active{transform:scale(.9);}
+/* ── TRACKER TAB ── */
+.tracker-task{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:10px;border:1px solid var(--c-border);background:var(--c-surface2);transition:all .25s;}
+.tracker-task.active{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.04);}
+.tracker-task.done{border-color:rgba(34,197,94,.18);background:rgba(34,197,94,.04);}
+.tracker-task.error{border-color:rgba(239,68,68,.18);background:rgba(239,68,68,.04);}
+.tk-icon{width:14px;height:14px;flex-shrink:0;margin-top:1px;}
+.tracker-task.active .tk-icon{color:#f59e0b;animation:tkSpin .7s linear infinite;}
+.tracker-task.done .tk-icon{color:#22c55e;}
+.tracker-task.error .tk-icon{color:#ef4444;}
+.tracker-task.pending .tk-icon{color:var(--c-muted);}
+.tk-label{font-size:11px;font-weight:700;color:var(--c-text);font-family:'Syne',sans-serif;line-height:1.3;}
+.tk-sub{font-size:9px;color:var(--c-muted);font-family:'JetBrains Mono',monospace;margin-top:1px;}
+.tk-time{font-size:8px;color:var(--c-border2);font-family:'JetBrains Mono',monospace;margin-left:auto;padding-left:4px;white-space:nowrap;flex-shrink:0;}
+@keyframes tkSpin{to{transform:rotate(360deg);}}
+#tracker-pulse.active{background:#f59e0b;box-shadow:0 0 5px #f59e0b;animation:tpulse .9s ease-in-out infinite;}
+#tracker-pulse.done{background:#22c55e;}
+@keyframes tpulse{0%,100%{opacity:1}50%{opacity:.2}}
+/* ── CANVAS MOBILE ── */
+@media(max-width:767px){
+  #canvas-panel{position:fixed!important;inset:0!important;width:100%!important;max-width:100%!important;min-width:0!important;z-index:45;border-left:none!important;padding-bottom:env(safe-area-inset-bottom,0);}
+  #resize-handle{display:none!important;}
+}
+</style>
+<style>
 #mobile-bottom-nav{height:56px;}
 .mob-nav-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--c-muted);background:transparent;border:none;cursor:pointer;padding:4px 2px;border-radius:10px;transition:all .15s;flex:1;min-width:0;}
 .mob-nav-btn span{font-size:9px;font-weight:600;font-family:'Syne',sans-serif;letter-spacing:.01em;white-space:nowrap;}
 .mob-nav-btn:hover,.mob-nav-btn.active{color:var(--c-accent2);}
 .mob-nav-btn:active{transform:scale(.9);}
-/* push chat content up on mobile to avoid nav overlap */
 @media(max-width:639px){
   #chat-container{padding-bottom:72px!important;}
   #input-bar{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))!important;}
 }
-/* ── QUICK NOTES PANEL ── */
 #notes-panel.open{transform:translateX(0);}
 .note-card{background:var(--c-surface2);border:1px solid var(--c-border);border-radius:12px;padding:10px 12px;cursor:pointer;transition:border-color .15s;}
 .note-card:hover{border-color:rgba(234,179,8,.4);}
 .note-card-title{font-size:11px;font-weight:700;color:var(--c-text);font-family:'Syne',sans-serif;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .note-card-body{font-size:10px;color:var(--c-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .note-card-date{font-size:8px;color:var(--c-border2);font-family:'JetBrains Mono',monospace;margin-top:4px;}
-/* ── FOCUS TIMER ── */
 #focus-ring{transition:stroke-dashoffset 1s linear,stroke .3s;}
 .focus-mode-active #pill-bar{opacity:.4;pointer-events:none;}
 .focus-mode-active #user-input{pointer-events:none;}
-.focus-mode-active::before{content:'🎯 Focus Mode Active';position:fixed;top:52px;left:50%;transform:translateX(-50%);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#f87171;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;z-index:200;font-family:'Syne',sans-serif;letter-spacing:.05em;}
-/* ── TRANSLATE BUBBLE ── */
+.focus-mode-active::before{content:'Focus Mode Active';position:fixed;top:52px;left:50%;transform:translateX(-50%);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#f87171;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;z-index:200;font-family:'Syne',sans-serif;letter-spacing:.05em;}
 .translate-result{background:rgba(6,182,212,.05);border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:8px 10px;margin-top:6px;font-size:12px;color:var(--c-text);line-height:1.6;}
 .translate-result .tr-lang{font-size:9px;font-family:'JetBrains Mono',monospace;color:#06b6d4;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em;}
-/* ── SUMMARIZE BAR ── */
 #summarize-bar{background:linear-gradient(135deg,rgba(108,99,255,.06),rgba(167,139,250,.03));border-top:1px solid rgba(108,99,255,.15);padding:8px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .sum-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid var(--c-border2);border-radius:99px;font-size:11px;color:var(--c-muted);background:var(--c-surface2);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .sum-chip:hover{border-color:var(--c-accent);color:var(--c-accent2);}
-/* ── AUTO TITLE FLASH ── */
 @keyframes titleFlash{0%,100%{opacity:1}50%{opacity:.4}}
 .title-generating{animation:titleFlash .8s ease-in-out 3;}
-/* ── NOTES BTN header ── */
 #notes-header-btn{display:none;}
 @media(min-width:640px){#notes-header-btn{display:flex;}}
 </style>
@@ -727,6 +764,9 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
     </button>
     <button id="focus-btn" title="Focus Timer" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-red-400 hover:bg-[#141720] rounded-lg transition-colors hidden sm:flex items-center">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+    </button>
+    <button id="uic-open-btn" title="Customize UI (Ctrl+Shift+U)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden sm:flex items-center">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
     </button>
     <button id="settings-btn" title="Settings" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
@@ -912,35 +952,45 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
 
   <!-- CANVAS PANEL -->
   <div id="canvas-panel" class="hidden flex-col bg-[#0d1117] border-l border-[#1f2333] h-full overflow-hidden" style="width:46%;min-width:280px;max-width:58%">
-    <div class="flex items-center justify-between bg-[#0e1018] border-b border-[#1f2333] px-3 py-2 shrink-0">
-      <div class="flex items-center gap-1.5 min-w-0">
+    <!-- Header -->
+    <div class="flex items-center bg-[#0e1018] border-b border-[#1f2333] px-2 py-1.5 shrink-0 gap-1 min-w-0">
+      <!-- Title -->
+      <div class="flex items-center gap-1.5 min-w-0 shrink-0">
         <svg class="w-3.5 h-3.5 text-[#6c63ff] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-        <span class="text-xs sm:text-sm font-semibold text-[#e2e4f0] shrink-0" style="font-family:'Syne',sans-serif">Canvas</span>
-        <span id="canvas-lang-badge" class="hidden text-[9px] mono bg-[#141720] text-[#a78bfa] px-1.5 py-0.5 rounded border border-[#2a2f45] truncate max-w-[80px]"></span>
+        <span class="text-xs font-black text-[#e2e4f0] shrink-0" style="font-family:'Syne',sans-serif">Canvas</span>
+        <span id="canvas-lang-badge" class="hidden text-[9px] mono bg-[#141720] text-[#a78bfa] px-1.5 py-0.5 rounded border border-[#2a2f45] truncate max-w-[60px]"></span>
       </div>
-      <div class="flex items-center gap-0.5 mx-1 flex-wrap">
-        <button class="canvas-tab active" data-tab="code">Code</button>
-        <button class="canvas-tab" data-tab="editor">Edit</button>
-        <button class="canvas-tab" data-tab="preview">Preview</button>
-        <button class="canvas-tab" data-tab="diff">Diff</button>
+      <!-- Tabs — scrollable on mobile -->
+      <div class="flex items-center gap-0.5 mx-1 overflow-x-auto no-sb flex-1 min-w-0">
+        <button class="canvas-tab active whitespace-nowrap" data-tab="code">Code</button>
+        <button class="canvas-tab whitespace-nowrap" data-tab="editor">Edit</button>
+        <button class="canvas-tab whitespace-nowrap" data-tab="preview">Preview</button>
+        <button class="canvas-tab whitespace-nowrap" data-tab="diff">Diff</button>
+        <button class="canvas-tab whitespace-nowrap flex items-center gap-1" data-tab="tracker" id="tracker-tab-btn">
+          <span id="tracker-pulse" class="w-1.5 h-1.5 rounded-full bg-[#374151] inline-block shrink-0"></span>
+          Track
+        </button>
       </div>
+      <!-- Action buttons -->
       <div class="flex items-center gap-0.5 shrink-0">
-        <button id="copy-canvas-btn" title="Copy code" class="p-1 sm:p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors flex items-center gap-1 text-xs">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-          <span class="hidden md:inline">Copy</span>
+        <button id="copy-canvas-btn" title="Copy" class="canvas-action-btn">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
         </button>
-        <button id="download-canvas-btn" title="Download" class="p-1 sm:p-1.5 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors flex items-center gap-1 text-xs">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span class="hidden md:inline">Save</span>
+        <button id="download-canvas-btn" title="Download" class="canvas-action-btn">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
         </button>
-        <button id="run-canvas-btn" title="Run in Preview" class="p-1 sm:p-1.5 text-[#6b7280] hover:text-green-400 hover:bg-[#141720] rounded-lg transition-colors hidden">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <button id="run-canvas-btn" title="Run" class="canvas-action-btn text-green-400 hidden">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </button>
-        <button id="open-preview-tab-btn" title="Open in new tab" class="p-1 sm:p-1.5 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        <button id="open-preview-tab-btn" title="Open in new tab" class="canvas-action-btn hidden">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
         </button>
-        <button id="close-canvas-btn" title="Close Canvas" class="p-1 sm:p-1.5 text-[#6b7280] hover:text-red-400 hover:bg-[#141720] rounded-lg transition-colors">
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <!-- Mobile: expand/collapse -->
+        <button id="canvas-expand-btn" title="Expand" class="canvas-action-btn sm:hidden">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        </button>
+        <button id="close-canvas-btn" title="Close" class="canvas-action-btn hover:text-red-400">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
     </div>
@@ -951,23 +1001,23 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
         <span class="live-label">Streaming code…</span>
         <span id="live-chars-count" class="live-chars">0 chars</span>
       </div>
-      <div id="canvas-empty" class="flex-1 flex flex-col items-center justify-center text-[#374151] space-y-3">
-        <svg class="w-10 h-10 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-        <p class="text-xs sm:text-sm">Code canvas ready</p>
-        <p class="text-[10px] text-[#2a2f45]">Ask me to write code to get started</p>
+      <div id="canvas-empty" class="flex-1 flex flex-col items-center justify-center text-[#374151] space-y-3 p-4">
+        <svg class="w-10 h-10 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        <p class="text-xs sm:text-sm text-center">Code canvas ready</p>
+        <p class="text-[10px] text-[#2a2f45] text-center">Ask me to write code to see it appear here live</p>
       </div>
       <div id="canvas-skeleton"><div class="sk-line" style="width:60%"></div><div class="sk-line" style="width:85%"></div><div class="sk-line" style="width:42%"></div><div class="sk-line" style="width:70%"></div><div class="sk-line" style="width:90%"></div><div class="sk-line" style="width:55%"></div><div class="sk-line" style="width:75%"></div><div class="sk-line" style="width:33%"></div></div>
       <pre id="canvas-stream-pre"></pre>
-      <pre id="canvas-pre" class="hidden flex-1 m-0 p-3 sm:p-5 overflow-auto text-xs sm:text-sm mono text-[#e6edf3] leading-relaxed" style="max-height:none"><code id="canvas-content" class="block"></code></pre>
+      <pre id="canvas-pre" class="hidden flex-1 m-0 p-3 sm:p-4 overflow-auto text-xs sm:text-sm mono text-[#e6edf3] leading-relaxed" style="max-height:none"><code id="canvas-content" class="block"></code></pre>
     </div>
     <!-- Preview tab -->
     <div id="canvas-preview-tab" class="flex-1 hidden flex-col overflow-hidden">
       <div id="canvas-preview-wrap" class="flex-1">
         <iframe id="canvas-iframe" sandbox="allow-scripts allow-modals allow-forms allow-popups" title="Live Preview"></iframe>
       </div>
-      <div class="px-3 py-2 border-t border-[#1f2333] bg-[#0a0b10] flex items-center gap-2 shrink-0">
+      <div class="px-3 py-1.5 border-t border-[#1f2333] bg-[#0a0b10] flex items-center gap-2 shrink-0">
         <button id="refresh-preview-btn" class="flex items-center gap-1.5 text-[10px] text-[#6b7280] hover:text-white transition-colors">
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
           Refresh
         </button>
         <span class="text-[9px] text-[#2a2f45] ml-auto">Sandboxed iframe</span>
@@ -992,6 +1042,42 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
         <button id="diff-snap-btn" class="ml-auto sort-btn" style="color:var(--c-accent2)">📸 Snapshot</button>
       </div>
       <pre id="diff-output" class="flex-1 overflow-auto p-3 text-xs mono leading-relaxed"><span class="text-[#374151]">Click "Snapshot" to capture current code, then update canvas to see diff.</span></pre>
+    </div>
+    <!-- ══ TRACKER TAB ══ -->
+    <div id="canvas-tracker-tab" class="flex-1 hidden flex-col overflow-hidden bg-[#07080d]">
+      <div class="flex items-center justify-between px-3 py-2 border-b border-[#1f2333] shrink-0">
+        <div class="flex items-center gap-2">
+          <div id="tracker-status-dot" class="w-2 h-2 rounded-full bg-[#374151]"></div>
+          <span id="tracker-status-label" class="text-[10px] font-bold text-[#4b5563] uppercase tracking-wider" style="font-family:'Syne',sans-serif">Idle</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="tracker-elapsed" class="text-[9px] mono text-[#374151]"></span>
+          <button id="tracker-clear-btn" class="text-[9px] text-[#374151] hover:text-[#6b7280] transition-colors">Clear</button>
+        </div>
+      </div>
+      <!-- Progress bar -->
+      <div class="px-3 py-1.5 border-b border-[#1f2333]/60 shrink-0">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[9px] text-[#374151] mono" id="tracker-chars-label">0 chars</span>
+          <span class="text-[9px] text-[#374151] mono" id="tracker-speed-label">0 chars/s</span>
+        </div>
+        <div class="h-1 bg-[#141720] rounded-full overflow-hidden">
+          <div id="tracker-progress-bar" class="h-full rounded-full bg-[#6c63ff] transition-all duration-300" style="width:0%"></div>
+        </div>
+      </div>
+      <!-- Todo task list -->
+      <div id="tracker-list" class="flex-1 overflow-y-auto p-3 space-y-1.5">
+        <div class="flex flex-col items-center justify-center h-24 text-[#2a2f45] gap-2">
+          <svg class="w-7 h-7 opacity-30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <p class="text-[10px]">Generation tasks appear here live</p>
+        </div>
+      </div>
+      <!-- Stats footer -->
+      <div class="border-t border-[#1f2333] px-3 py-2 shrink-0 grid grid-cols-3 gap-2">
+        <div class="text-center"><div id="ts-blocks" class="text-sm font-black text-[#6c63ff]" style="font-family:'Syne',sans-serif">0</div><div class="text-[8px] text-[#374151] uppercase tracking-wide">Blocks</div></div>
+        <div class="text-center"><div id="ts-lines" class="text-sm font-black text-[#a78bfa]" style="font-family:'Syne',sans-serif">0</div><div class="text-[8px] text-[#374151] uppercase tracking-wide">Lines</div></div>
+        <div class="text-center"><div id="ts-tokens" class="text-sm font-black text-[#06b6d4]" style="font-family:'Syne',sans-serif">~0</div><div class="text-[8px] text-[#374151] uppercase tracking-wide">Tokens</div></div>
+      </div>
     </div>
   </div>
 
@@ -1471,6 +1557,7 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
       <button class="store-tab active" data-tab="themes">🎨 Themes</button>
       <button class="store-tab" data-tab="badges">🏅 Badges</button>
       <button class="store-tab" data-tab="cosmetics">✨ Cosmetics</button>
+      <button class="store-tab" data-tab="power">⚡ Power Tools</button>
       <button class="store-tab" data-tab="ranks">⭐ Ranks</button>
       <button class="store-tab" data-tab="earn">📈 Earn XP</button>
     </div>
@@ -1579,6 +1666,10 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
     <span>Stats</span>
   </button>
+  <button class="mob-nav-btn" id="mob-uic-btn" title="Customize">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+    <span>Layout</span>
+  </button>
   <button class="mob-nav-btn" id="mob-settings-btn" title="Settings">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
     <span>Settings</span>
@@ -1655,6 +1746,63 @@ body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
 
 <!-- ══ SUMMARIZER / TRANSLATE TOOLBAR (injected into chat) ══ -->
 <!-- rendered dynamically -->
+
+<!-- ══ UI CUSTOMIZER PANEL ══ -->
+<div id="ui-customizer" class="fixed right-0 top-0 bottom-0 z-[110] w-72 sm:w-80 bg-[#0e1018] border-l border-[#1f2333] flex flex-col shadow-2xl transform translate-x-full transition-transform duration-250 ease-out" style="padding-top:env(safe-area-inset-top,0)">
+  <div class="flex items-center justify-between px-4 py-3 border-b border-[#1f2333] shrink-0 bg-[#07080d]">
+    <div class="flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded-lg bg-[#6c63ff]/10 border border-[#6c63ff]/20 flex items-center justify-center">
+        <svg class="w-3.5 h-3.5 text-[#a78bfa]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+      </div>
+      <span class="font-black text-white text-sm" style="font-family:'Syne',sans-serif">Customize UI</span>
+    </div>
+    <button id="uic-close" class="p-1.5 text-[#6b7280] hover:text-white hover:bg-[#141720] rounded-lg transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-4 space-y-1.5">
+    <p class="text-[10px] text-[#374151] mb-3 leading-relaxed">Toggle UI elements on/off. Changes save instantly.</p>
+
+    <!-- section: bars & panels -->
+    <p class="text-[9px] font-bold text-[#4b5563] uppercase tracking-wider mb-1 px-1">Bars & Panels</p>
+    <label class="uic-row"><span class="uic-label">Mobile Bottom Nav</span><input type="checkbox" class="uic-toggle" data-uic="mobileNav" checked></label>
+    <label class="uic-row"><span class="uic-label">Token / Context Bar</span><input type="checkbox" class="uic-toggle" data-uic="tokenBar" checked></label>
+    <label class="uic-row"><span class="uic-label">Smart Reply Chips</span><input type="checkbox" class="uic-toggle" data-uic="smartReplies" checked></label>
+    <label class="uic-row"><span class="uic-label">AI Tools Bar (Summarize)</span><input type="checkbox" class="uic-toggle" data-uic="summarizeBar" checked></label>
+    <label class="uic-row"><span class="uic-label">Model Badge Strip</span><input type="checkbox" class="uic-toggle" data-uic="modelBadges" checked></label>
+
+    <!-- section: header buttons -->
+    <p class="text-[9px] font-bold text-[#4b5563] uppercase tracking-wider mt-3 mb-1 px-1">Header Buttons</p>
+    <label class="uic-row"><span class="uic-label">Find in Chat</span><input type="checkbox" class="uic-toggle" data-uic="findBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">Focus Timer</span><input type="checkbox" class="uic-toggle" data-uic="focusBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">Quick Notes</span><input type="checkbox" class="uic-toggle" data-uic="notesBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">Chat Analytics</span><input type="checkbox" class="uic-toggle" data-uic="statsBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">AI Personas</span><input type="checkbox" class="uic-toggle" data-uic="personasBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">TTS Button</span><input type="checkbox" class="uic-toggle" data-uic="ttsBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">Export Button</span><input type="checkbox" class="uic-toggle" data-uic="exportBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">Web Search Toggle</span><input type="checkbox" class="uic-toggle" data-uic="webSearchBtn" checked></label>
+    <label class="uic-row"><span class="uic-label">Command Palette Btn</span><input type="checkbox" class="uic-toggle" data-uic="cmdBtn" checked></label>
+
+    <!-- section: chat area -->
+    <p class="text-[9px] font-bold text-[#4b5563] uppercase tracking-wider mt-3 mb-1 px-1">Chat Area</p>
+    <label class="uic-row"><span class="uic-label">Compact Message Spacing</span><input type="checkbox" class="uic-toggle" data-uic="compactMsgs"></label>
+    <label class="uic-row"><span class="uic-label">Hide Timestamps</span><input type="checkbox" class="uic-toggle" data-uic="hideTimes"></label>
+    <label class="uic-row"><span class="uic-label">Hide Message Actions</span><input type="checkbox" class="uic-toggle" data-uic="hideMsgActions"></label>
+    <label class="uic-row"><span class="uic-label">Hide Welcome Screen</span><input type="checkbox" class="uic-toggle" data-uic="hideWelcome"></label>
+
+    <!-- section: input -->
+    <p class="text-[9px] font-bold text-[#4b5563] uppercase tracking-wider mt-3 mb-1 px-1">Input Area</p>
+    <label class="uic-row"><span class="uic-label">Show Char Count</span><input type="checkbox" class="uic-toggle" data-uic="showCharCount" checked></label>
+    <label class="uic-row"><span class="uic-label">Show "Enhance" Label</span><input type="checkbox" class="uic-toggle" data-uic="showEnhanceLabel" checked></label>
+
+    <div class="mt-4 pt-3 border-t border-[#1f2333]">
+      <button id="uic-reset" class="w-full py-2 rounded-xl border border-[#1f2333] text-[#6b7280] hover:text-white hover:border-[#2a2f45] text-xs transition-colors">
+        Reset to Defaults
+      </button>
+    </div>
+  </div>
+</div>
+<div id="uic-backdrop" class="fixed inset-0 z-[109] bg-black/40 backdrop-blur-sm hidden"></div>
 
 <!-- PURCHASE CONFIRM -->
 <div id="purchase-confirm">
@@ -2459,7 +2607,7 @@ const renderModelBadges = () => {
 /* ── CANVAS ── */
 const openCanvas = () => { if(state.canvasOpen)return;state.canvasOpen=true;el.canvasPanel?.classList.remove('hidden');el.canvasPanel?.classList.add('flex','flex-col');el.resizeHandle?.classList.remove('hidden');if(window.innerWidth<768)el.canvasPanel?.classList.add('canvas-mobile');trackStat('canvasOpens'); };
 const closeCanvas = () => { if(!state.canvasOpen)return;state.canvasOpen=false;el.canvasPanel?.classList.add('hidden');el.canvasPanel?.classList.remove('flex','flex-col','canvas-mobile');el.resizeHandle?.classList.add('hidden'); };
-const switchTab = tab => { state.canvasTab=tab;document.querySelectorAll('.canvas-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));el.canvasCodeTab?.classList.toggle('hidden',tab!=='code');el.canvasPreviewTab?.classList.toggle('hidden',tab!=='preview');if(el.canvasPreviewTab)el.canvasPreviewTab.classList.toggle('flex',tab==='preview');el.canvasEditorTab?.classList.toggle('hidden',tab!=='editor');if(el.canvasEditorTab)el.canvasEditorTab.classList.toggle('flex',tab==='editor');el.canvasDiffTab?.classList.toggle('hidden',tab!=='diff');if(el.canvasDiffTab)el.canvasDiffTab.classList.toggle('flex',tab==='diff');if(tab==='editor'&&state.canvasCode&&el.canvasEditor){el.canvasEditor.value=state.canvasCode;updateEditorInfo();}if(tab==='diff')renderDiff();if(tab==='preview'&&state.canvasCode)runPreview(state.canvasCode,state.canvasLang); };
+const switchTab = tab => { state.canvasTab=tab;document.querySelectorAll('.canvas-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));el.canvasCodeTab?.classList.toggle('hidden',tab!=='code');el.canvasPreviewTab?.classList.toggle('hidden',tab!=='preview');if(el.canvasPreviewTab)el.canvasPreviewTab.classList.toggle('flex',tab==='preview');el.canvasEditorTab?.classList.toggle('hidden',tab!=='editor');if(el.canvasEditorTab)el.canvasEditorTab.classList.toggle('flex',tab==='editor');el.canvasDiffTab?.classList.toggle('hidden',tab!=='diff');if(el.canvasDiffTab)el.canvasDiffTab.classList.toggle('flex',tab==='diff');const trackerTab=$('canvas-tracker-tab');if(trackerTab)trackerTab.classList.toggle('hidden',tab!=='tracker');if(tab==='editor'&&state.canvasCode&&el.canvasEditor){el.canvasEditor.value=state.canvasCode;updateEditorInfo();}if(tab==='diff')renderDiff();if(tab==='preview'&&state.canvasCode)runPreview(state.canvasCode,state.canvasLang); };
 document.querySelectorAll('.canvas-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
 const runPreview = (code,lang='html') => { if(!el.canvasIframe)return;let doc=code;if(/^(js|javascript|jsx)$/i.test(lang))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><script>${code}<\/script></body></html>`;else if(lang==='css')doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${code}</style></head><body style="padding:1rem;background:#fff"><p style="color:#888;font-size:13px;font-family:sans-serif">CSS Preview</p></body></html>`;else if(!code.trim().startsWith('<!'))doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:sans-serif;margin:0;padding:1rem}
@@ -3289,6 +3437,9 @@ const getAllStoreItems = () => [
   {id:'theme_lava',      cat:'themes', name:'Lava Red',       icon:'🌋', desc:'Intense volcanic red energy',  cost:180, badge:'rare', applyFn: ()=>applyThemeItem('lava')},
   {id:'theme_galaxy',    cat:'themes', name:'Galaxy',         icon:'🌌', desc:'Deep space purple & cyan',     cost:250, badge:'legendary', applyFn: ()=>applyThemeItem('galaxy')},
   {id:'theme_gold',      cat:'themes', name:'Gold Prestige',  icon:'🥇', desc:'Luxurious golden accents',     cost:400, badge:'legendary', applyFn: ()=>applyThemeItem('gold')},
+  {id:'theme_obsidian',  cat:'themes', name:'Obsidian',       icon:'🖤', desc:'Pure pitch-black minimal',     cost:80,  badge:'',     applyFn: ()=>applyThemeItem('obsidian')},
+  {id:'theme_arctic',    cat:'themes', name:'Arctic',         icon:'🧊', desc:'Icy light blues & whites',     cost:130, badge:'new',  applyFn: ()=>applyThemeItem('arctic')},
+  {id:'theme_sunset',    cat:'themes', name:'Sunset',         icon:'🌅', desc:'Warm amber & coral tones',     cost:160, badge:'hot',  applyFn: ()=>applyThemeItem('sunset')},
   // === BADGES ===
   {id:'badge_fire',      cat:'badges', name:'Fire Badge',     icon:'🔥', desc:'Show you\'re on fire',         cost:50,  badge:'',     applyFn: ()=>{}},
   {id:'badge_diamond',   cat:'badges', name:'Diamond Badge',  icon:'💎', desc:'Precious & rare',              cost:200, badge:'rare', applyFn: ()=>{}},
@@ -3298,6 +3449,9 @@ const getAllStoreItems = () => [
   {id:'badge_crown',     cat:'badges', name:'Royal Crown',    icon:'👑', desc:'Royalty of the community',     cost:500, badge:'legendary', applyFn: ()=>{}},
   {id:'badge_lightning', cat:'badges', name:'Lightning Fast', icon:'⚡', desc:'Speed is your superpower',     cost:60,  badge:'',     applyFn: ()=>{}},
   {id:'badge_star',      cat:'badges', name:'All-Star',       icon:'⭐', desc:'A true all-rounder',           cost:120, badge:'new',  applyFn: ()=>{}},
+  {id:'badge_brain',     cat:'badges', name:'Big Brain',      icon:'🧠', desc:'Thinks deeply about everything', cost:90, badge:'',    applyFn: ()=>{}},
+  {id:'badge_ghost',     cat:'badges', name:'Ghost Mode',     icon:'👻', desc:'Invisible but powerful',       cost:110, badge:'new',  applyFn: ()=>{}},
+  {id:'badge_alien',     cat:'badges', name:'Alien Mind',     icon:'👽', desc:'Thinks outside the universe',  cost:180, badge:'rare', applyFn: ()=>{}},
   // === COSMETICS ===
   {id:'cos_glowcursor',  cat:'cosmetics', name:'Glow Cursor', icon:'✨', desc:'Glowing send button effect',  cost:80,  badge:'new',  applyFn: ()=>applyCosmetic('glowcursor')},
   {id:'cos_rainbowbar',  cat:'cosmetics', name:'Rainbow Bar', icon:'🌈', desc:'Rainbow XP progress bar',     cost:120, badge:'hot',  applyFn: ()=>applyCosmetic('rainbowbar')},
@@ -3305,10 +3459,266 @@ const getAllStoreItems = () => [
   {id:'cos_glassinput',  cat:'cosmetics', name:'Glass Input', icon:'🪟', desc:'Frosted glass input styling',  cost:150, badge:'',     applyFn: ()=>applyCosmetic('glassinput')},
   {id:'cos_matrixbg',    cat:'cosmetics', name:'Matrix BG',   icon:'💻', desc:'Matrix rain background effect',cost:300, badge:'rare', applyFn: ()=>applyCosmetic('matrixbg')},
   {id:'cos_neonborder',  cat:'cosmetics', name:'Neon Border', icon:'💡', desc:'Neon glow around chat input',  cost:100, badge:'',     applyFn: ()=>applyCosmetic('neonborder')},
+  {id:'cos_typewriter',  cat:'cosmetics', name:'Typewriter',  icon:'⌨️', desc:'Typewriter sound on send',     cost:60,  badge:'new',  applyFn: ()=>applyCosmetic('typewriter')},
+  {id:'cos_confetti',    cat:'cosmetics', name:'Confetti',    icon:'🎊', desc:'Confetti burst on milestones', cost:90,  badge:'hot',  applyFn: ()=>applyCosmetic('confetti')},
+  {id:'cos_hologram',    cat:'cosmetics', name:'Hologram',    icon:'🔷', desc:'Holographic shimmer on msgs',  cost:250, badge:'rare', applyFn: ()=>applyCosmetic('hologram')},
+  // === POWER TOOLS (new tab) ===
+  {id:'pt_autoscroll',   cat:'power', name:'Smart Autoscroll', icon:'📜', desc:'Pause autoscroll when you scroll up, resume on new msg', cost:0,   badge:'new',  applyFn:()=>activatePowerTool('autoscroll')},
+  {id:'pt_codebeauty',   cat:'power', name:'Code Beautifier',  icon:'🎨', desc:'Auto-format code blocks on paste', cost:50,  badge:'',     applyFn:()=>activatePowerTool('codebeauty')},
+  {id:'pt_wordcount',    cat:'power', name:'Live Word Count',   icon:'📊', desc:'Word/char count shown while typing', cost:0,  badge:'free', applyFn:()=>activatePowerTool('wordcount')},
+  {id:'pt_autosave',     cat:'power', name:'Draft Autosave',    icon:'💾', desc:'Save draft every 30s if not sent', cost:0,   badge:'free', applyFn:()=>activatePowerTool('autosave')},
+  {id:'pt_focushighlight',cat:'power',name:'Message Spotlight', icon:'🔦', desc:'Dim all but the last AI message', cost:80,  badge:'new',  applyFn:()=>activatePowerTool('spotlight')},
+  {id:'pt_sidebar_hide', cat:'power', name:'Minimal Sidebar',   icon:'◀',  desc:'Auto-hide sidebar when chatting', cost:0,   badge:'free', applyFn:()=>activatePowerTool('hideSidebar')},
+  {id:'pt_timestamps',   cat:'power', name:'Relative Times',    icon:'🕐', desc:'Show "2 min ago" instead of time', cost:40,  badge:'',     applyFn:()=>activatePowerTool('relTimes')},
+  {id:'pt_copy_code',    cat:'power', name:'One-Click Copy',    icon:'⚡', desc:'Click any code block to instantly copy', cost:0, badge:'free',applyFn:()=>activatePowerTool('clickCopy')},
 ];
 
-let currentStoreTab = 'themes';
-let _pendingPurchase = null; // {itemId, cost, name, desc, icon}
+/* ── POWER TOOLS ACTIVATION ── */
+const activatePowerTool = (tool) => {
+  const key = 'vortex_pt_' + tool;
+  localStorage.setItem(key, '1');
+  toast(`Power Tool activated: ${tool}`, 'success');
+  applyAllPowerTools();
+};
+const isPowerToolActive = tool => {
+  const storeS = getStoreState();
+  const itemMap = { autoscroll:'pt_autoscroll', codebeauty:'pt_codebeauty', wordcount:'pt_wordcount', autosave:'pt_autosave', spotlight:'pt_focushighlight', hideSidebar:'pt_sidebar_hide', relTimes:'pt_timestamps', clickCopy:'pt_copy_code' };
+  return storeS.owned.includes(itemMap[tool] || '');
+};
+const applyAllPowerTools = () => {
+  // Click-to-copy code blocks
+  if (isPowerToolActive('clickCopy')) {
+    document.addEventListener('click', e => {
+      const code = e.target.closest('pre code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(() => toast('Code copied', 'success'));
+    });
+  }
+  // Draft autosave
+  if (isPowerToolActive('autosave')) {
+    setInterval(() => {
+      const val = el.userInput?.value?.trim();
+      if (val) localStorage.setItem('vortex_draft', val);
+    }, 30000);
+    const draft = localStorage.getItem('vortex_draft');
+    if (draft && el.userInput && !el.userInput.value) { el.userInput.value = draft; el.userInput.dispatchEvent(new Event('input')); }
+  }
+  // Word count
+  if (isPowerToolActive('wordcount')) {
+    el.userInput?.addEventListener('input', () => {
+      const cc = $('char-count');
+      if (cc) { const words = el.userInput.value.trim().split(/\s+/).filter(Boolean).length; cc.textContent = `${el.userInput.value.length}c ${words}w`; }
+    });
+  }
+};
+// Apply on load
+setTimeout(applyAllPowerTools, 500);
+
+/* ══════════════════════════════════════════
+   ── CANVAS TRACKER SYSTEM
+══════════════════════════════════════════ */
+const _tracker = {
+  tasks: [],         // [{id,label,sub,status,startMs,endMs}]
+  startMs: null,
+  chars: 0,
+  lines: 0,
+  blocks: 0,
+  tokens: 0,
+  lastCharTs: null,
+  speedSamples: [],
+  running: false,
+};
+
+const _tkIcons = {
+  pending: `<svg class="tk-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>`,
+  active:  `<svg class="tk-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>`,
+  done:    `<svg class="tk-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  error:   `<svg class="tk-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+};
+
+const trackerAddTask = (label, sub = '', status = 'pending') => {
+  const id = 'tk_' + Date.now() + Math.random();
+  _tracker.tasks.push({ id, label, sub, status, startMs: status === 'active' ? Date.now() : null, endMs: null });
+  renderTrackerList();
+  return id;
+};
+const trackerUpdateTask = (id, status, sub) => {
+  const t = _tracker.tasks.find(x => x.id === id);
+  if (!t) return;
+  t.status = status;
+  if (sub !== undefined) t.sub = sub;
+  if (status === 'active' && !t.startMs) t.startMs = Date.now();
+  if ((status === 'done' || status === 'error') && !t.endMs) t.endMs = Date.now();
+  renderTrackerList();
+};
+
+const renderTrackerList = () => {
+  const list = $('tracker-list');
+  if (!list) return;
+  if (!_tracker.tasks.length) {
+    list.innerHTML = `<div class="flex flex-col items-center justify-center h-24 text-[#2a2f45] gap-2">
+      <svg class="w-7 h-7 opacity-30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <p class="text-[10px]">Generation tasks appear here live</p>
+    </div>`;
+    return;
+  }
+  list.innerHTML = _tracker.tasks.map(t => {
+    const elapsed = t.endMs ? `${((t.endMs - t.startMs) / 1000).toFixed(1)}s` : t.startMs ? `${((Date.now() - t.startMs) / 1000).toFixed(1)}s` : '';
+    return `<div class="tracker-task ${t.status}">
+      ${_tkIcons[t.status] || _tkIcons.pending}
+      <div class="min-w-0 flex-1">
+        <div class="tk-label">${DOMPurify.sanitize(t.label)}</div>
+        ${t.sub ? `<div class="tk-sub">${DOMPurify.sanitize(t.sub)}</div>` : ''}
+      </div>
+      ${elapsed ? `<div class="tk-time">${elapsed}</div>` : ''}
+    </div>`;
+  }).join('');
+  list.scrollTop = list.scrollHeight;
+};
+
+const trackerUpdateStats = (code) => {
+  _tracker.chars = code.length;
+  _tracker.lines = code.split('\n').length;
+  _tracker.tokens = Math.round(code.length / 3.8);
+  const blockMatches = code.match(/```/g);
+  _tracker.blocks = blockMatches ? Math.floor(blockMatches.length / 2) : 0;
+  // speed sampling
+  const now = Date.now();
+  if (_tracker.lastCharTs) {
+    const dt = (now - _tracker.lastCharTs) / 1000;
+    if (dt > 0) _tracker.speedSamples.push(Math.round((_tracker.chars) / ((_tracker.startMs ? now - _tracker.startMs : 1) / 1000)));
+    if (_tracker.speedSamples.length > 8) _tracker.speedSamples.shift();
+  }
+  _tracker.lastCharTs = now;
+  // Update DOM
+  const el_b = $('ts-blocks'), el_l = $('ts-lines'), el_t = $('ts-tokens');
+  if (el_b) el_b.textContent = _tracker.blocks;
+  if (el_l) el_l.textContent = _tracker.lines;
+  if (el_t) el_t.textContent = '~' + _tracker.tokens;
+  const cc = $('tracker-chars-label');
+  if (cc) cc.textContent = _tracker.chars.toLocaleString() + ' chars';
+  const speed = _tracker.speedSamples.length ? _tracker.speedSamples[_tracker.speedSamples.length - 1] : 0;
+  const sc = $('tracker-speed-label');
+  if (sc) sc.textContent = speed + ' ch/s';
+  // Progress bar (estimate ~2000 chars as "full")
+  const pct = Math.min(100, Math.round((_tracker.chars / 2000) * 100));
+  const pb = $('tracker-progress-bar');
+  if (pb) pb.style.width = pct + '%';
+};
+
+const trackerStart = () => {
+  _tracker.tasks = [];
+  _tracker.chars = 0; _tracker.lines = 0; _tracker.blocks = 0; _tracker.tokens = 0;
+  _tracker.speedSamples = [];
+  _tracker.startMs = Date.now();
+  _tracker.running = true;
+  // Set pulse active
+  const dot = $('tracker-pulse'), sdot = $('tracker-status-dot'), slbl = $('tracker-status-label');
+  if (dot) { dot.className = 'w-1.5 h-1.5 rounded-full bg-[#374151] inline-block shrink-0 active'; }
+  if (sdot) sdot.className = 'w-2 h-2 rounded-full bg-yellow-400 animate-pulse';
+  if (slbl) slbl.textContent = 'Generating…';
+  // Seed tasks
+  const reqId = trackerAddTask('Request sent', 'Waiting for model…', 'active');
+  setTimeout(() => { trackerUpdateTask(reqId, 'done', 'Connected'); }, 600);
+  const parseId = trackerAddTask('Parsing response', '', 'pending');
+  setTimeout(() => { trackerUpdateTask(parseId, 'active', 'Streaming tokens…'); }, 700);
+  _tracker._parseTaskId = parseId;
+  renderTrackerList();
+};
+
+const trackerUpdate = (code, lang) => {
+  if (!_tracker.running) return;
+  trackerUpdateStats(code);
+  if (_tracker._parseTaskId) trackerUpdateTask(_tracker._parseTaskId, 'active', `${code.length} chars · ${lang || 'code'}`);
+  // Detect sections in code
+  const fnCount = (code.match(/function\s+\w+|const\s+\w+\s*=\s*(async\s+)?\(/g) || []).length;
+  if (fnCount > 0 && !_tracker._fnTaskId) {
+    _tracker._fnTaskId = trackerAddTask('Generating functions', `${fnCount} detected`, 'active');
+  } else if (_tracker._fnTaskId && fnCount > 0) {
+    trackerUpdateTask(_tracker._fnTaskId, 'active', `${fnCount} functions`);
+  }
+  // Detect imports
+  const importCount = (code.match(/^import\s|^const\s.*require/gm) || []).length;
+  if (importCount > 0 && !_tracker._importTaskId) {
+    _tracker._importTaskId = trackerAddTask('Writing imports', `${importCount} imports`, 'active');
+  }
+  // Elapsed
+  const el_e = $('tracker-elapsed');
+  if (el_e && _tracker.startMs) el_e.textContent = ((Date.now() - _tracker.startMs) / 1000).toFixed(1) + 's';
+};
+
+const trackerComplete = (code, lang) => {
+  _tracker.running = false;
+  trackerUpdateStats(code);
+  if (_tracker._parseTaskId) trackerUpdateTask(_tracker._parseTaskId, 'done', `${code.length} chars`);
+  if (_tracker._fnTaskId) trackerUpdateTask(_tracker._fnTaskId, 'done');
+  if (_tracker._importTaskId) trackerUpdateTask(_tracker._importTaskId, 'done');
+  // Final task
+  trackerAddTask('Code ready', `${_tracker.lines} lines · ~${_tracker.tokens} tokens · ${lang || 'code'}`, 'done');
+  const dot = $('tracker-pulse'), sdot = $('tracker-status-dot'), slbl = $('tracker-status-label');
+  if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#374151] inline-block shrink-0 done';
+  if (sdot) sdot.className = 'w-2 h-2 rounded-full bg-green-400';
+  if (slbl) slbl.textContent = 'Complete';
+};
+
+$('tracker-clear-btn')?.addEventListener('click', () => {
+  _tracker.tasks = []; _tracker.chars = 0; _tracker.lines = 0; _tracker.blocks = 0; _tracker.tokens = 0;
+  _tracker.speedSamples = []; delete _tracker._fnTaskId; delete _tracker._importTaskId; delete _tracker._parseTaskId;
+  renderTrackerList();
+  const pb = $('tracker-progress-bar'); if (pb) pb.style.width = '0%';
+  const dot = $('tracker-pulse'); if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#374151] inline-block shrink-0';
+  const sdot = $('tracker-status-dot'); if (sdot) sdot.className = 'w-2 h-2 rounded-full bg-[#374151]';
+  const slbl = $('tracker-status-label'); if (slbl) slbl.textContent = 'Idle';
+});
+
+/* Hook tracker into streamToCanvas + flushFinal */
+const _origStreamToCanvas = streamToCanvas;
+// Wrap by overriding the global (since streamToCanvas is a const, patch via closure on sendToAPI)
+// Instead, patch via MutationObserver on canvas-stream-pre
+(() => {
+  const pre = $('canvas-stream-pre');
+  if (!pre) return;
+  let _lastLen = 0;
+  const obs = new MutationObserver(() => {
+    const code = pre.textContent || '';
+    if (code.length !== _lastLen) {
+      _lastLen = code.length;
+      // detect lang from badge
+      const lang = $('canvas-lang-badge')?.textContent || '';
+      if (!_tracker.running && code.length > 10) trackerStart();
+      trackerUpdate(code, lang);
+    }
+  });
+  obs.observe(pre, { characterData: true, childList: true, subtree: true });
+})();
+
+/* Hook tracker complete on flushFinal by watching canvas-pre appearing */
+(() => {
+  const panel = $('canvas-panel');
+  if (!panel) return;
+  const obs = new MutationObserver(() => {
+    const pre = $('canvas-pre');
+    if (pre && !pre.classList.contains('hidden') && _tracker.running) {
+      const code = $('canvas-content')?.textContent || '';
+      const lang = $('canvas-lang-badge')?.textContent || '';
+      trackerComplete(code, lang);
+    }
+  });
+  obs.observe(panel, { attributes: true, childList: true, subtree: true, attributeFilter: ['class'] });
+})();
+
+/* Canvas expand button — toggle fullscreen on mobile */
+$('canvas-expand-btn')?.addEventListener('click', () => {
+  const panel = $('canvas-panel');
+  if (!panel) return;
+  if (panel.classList.contains('canvas-mobile')) {
+    // shrink back — close canvas on mobile
+    closeCanvas();
+  } else {
+    panel.classList.add('canvas-mobile');
+  }
+});
+
 
 const openStore = () => {
   const modal = $('store-modal');
@@ -4144,12 +4554,13 @@ document.querySelectorAll('#stats-modal .close-modal-btn, #personas-modal .close
 
 /* ── MOBILE BOTTOM NAV WIRING (deferred until functions are defined) ── */
 const _wireMobileNav = () => {
-  document.getElementById('mob-store-btn')?.addEventListener('click', () => openModal($('store-modal')));
+  document.getElementById('mob-store-btn')?.addEventListener('click', () => openStore());
   document.getElementById('mob-personas-btn')?.addEventListener('click', () => { renderPersonasGrid(); openModal(document.getElementById('personas-modal')); });
   document.getElementById('mob-notes-btn')?.addEventListener('click', openNotesPanel);
   document.getElementById('mob-find-btn')?.addEventListener('click', openChatSearch);
   document.getElementById('mob-stats-btn')?.addEventListener('click', openChatStats);
   document.getElementById('mob-settings-btn')?.addEventListener('click', () => openModal(el.settingsModal));
+  document.getElementById('mob-uic-btn')?.addEventListener('click', () => openUIC());
 };
 
 /* ══════════════════════════════════════════
@@ -4411,7 +4822,116 @@ _wireMobileNav();
 document.addEventListener('keydown', e => {
   if (e.ctrlKey && e.shiftKey && e.key === 'T') { e.preventDefault(); updateFocusRing(); openModal($('focus-modal')); }
   if (e.ctrlKey && e.shiftKey && e.key === 'O') { e.preventDefault(); openNotesPanel(); }
+  if (e.ctrlKey && e.shiftKey && e.key === 'U') { e.preventDefault(); openUIC(); }
 });
+
+/* ══════════════════════════════════════════
+   ── UI CUSTOMIZER
+══════════════════════════════════════════ */
+const UIC_DEFAULTS = {
+  mobileNav:       { default: true,  apply: v => { const n=$('mobile-bottom-nav'); if(n) n.style.display=v?'':'none'; document.getElementById('chat-container')?.style.setProperty('padding-bottom', v?'':'0'); } },
+  tokenBar:        { default: true,  apply: v => { const b=$('token-bar'); if(b) b.style.display=v?'':'none'; } },
+  smartReplies:    { default: true,  apply: v => { const b=$('smart-replies-bar'); if(b) b.dataset.uicDisabled=v?'':'1'; if(!v) b?.classList.remove('visible'); } },
+  summarizeBar:    { default: true,  apply: v => { const b=$('summarize-bar'); if(b) b.dataset.uicDisabled=v?'':'1'; if(!v) b?.classList.add('hidden'); } },
+  modelBadges:     { default: true,  apply: v => { const b=$('model-badge-bar'); if(b) b.style.display=v?'':'none'; } },
+  findBtn:         { default: true,  apply: v => { const b=$('chat-find-btn'); if(b) b.style.display=v?'':'none'; } },
+  focusBtn:        { default: true,  apply: v => { const b=$('focus-btn'); if(b) b.style.display=v?'':'none'; } },
+  notesBtn:        { default: true,  apply: v => { const b=$('notes-header-btn'); if(b) b.style.display=v?'':'none'; } },
+  statsBtn:        { default: true,  apply: v => { const b=$('chat-stats-btn'); if(b) b.style.display=v?'':'none'; } },
+  personasBtn:     { default: true,  apply: v => { const b=$('personas-btn'); if(b) b.style.display=v?'':'none'; } },
+  ttsBtn:          { default: true,  apply: v => { const b=$('tts-btn'); if(b) b.style.display=v?'':'none'; } },
+  exportBtn:       { default: true,  apply: v => { const b=$('export-chat-btn'); if(b) b.style.display=v?'':'none'; } },
+  webSearchBtn:    { default: true,  apply: v => { const b=$('web-search-btn'); if(b) b.style.display=v?'':'none'; } },
+  cmdBtn:          { default: true,  apply: v => { const b=$('cmd-palette-btn'); if(b) b.style.display=v?'':'none'; } },
+  compactMsgs:     { default: false, apply: v => document.body.classList.toggle('uic-compact-msgs', v) },
+  hideTimes:       { default: false, apply: v => document.body.classList.toggle('uic-hide-times', v) },
+  hideMsgActions:  { default: false, apply: v => document.body.classList.toggle('uic-hide-msg-actions', v) },
+  hideWelcome:     { default: false, apply: v => document.body.classList.toggle('uic-hide-welcome', v) },
+  showCharCount:   { default: true,  apply: v => document.body.classList.toggle('uic-hide-char-count', !v) },
+  showEnhanceLabel:{ default: true,  apply: v => document.body.classList.toggle('uic-hide-enhance-label', !v) },
+};
+
+const getUICPrefs = () => { try { return JSON.parse(localStorage.getItem('vortex_uic') || '{}'); } catch { return {}; } };
+const saveUICPrefs = p => localStorage.setItem('vortex_uic', JSON.stringify(p));
+
+const applyUICPrefs = () => {
+  const prefs = getUICPrefs();
+  Object.entries(UIC_DEFAULTS).forEach(([key, cfg]) => {
+    const val = prefs.hasOwnProperty(key) ? prefs[key] : cfg.default;
+    cfg.apply(val);
+  });
+};
+
+const syncUICCheckboxes = () => {
+  const prefs = getUICPrefs();
+  document.querySelectorAll('.uic-toggle').forEach(cb => {
+    const key = cb.dataset.uic;
+    if (!key || !UIC_DEFAULTS[key]) return;
+    cb.checked = prefs.hasOwnProperty(key) ? prefs[key] : UIC_DEFAULTS[key].default;
+  });
+};
+
+const openUIC = () => {
+  syncUICCheckboxes();
+  $('ui-customizer')?.classList.add('open');
+  $('uic-backdrop')?.classList.remove('hidden');
+};
+const closeUIC = () => {
+  $('ui-customizer')?.classList.remove('open');
+  $('uic-backdrop')?.classList.add('hidden');
+};
+
+document.querySelectorAll('.uic-toggle').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const key = cb.dataset.uic;
+    if (!key || !UIC_DEFAULTS[key]) return;
+    const prefs = getUICPrefs();
+    prefs[key] = cb.checked;
+    saveUICPrefs(prefs);
+    UIC_DEFAULTS[key].apply(cb.checked);
+    // special: if hiding mobile nav on mobile, adjust padding immediately
+    if (key === 'mobileNav') {
+      const main = document.getElementById('chat-container');
+      if (main) main.style.paddingBottom = cb.checked ? '' : '0';
+    }
+  });
+});
+
+$('uic-close')?.addEventListener('click', closeUIC);
+$('uic-backdrop')?.addEventListener('click', closeUIC);
+$('uic-open-btn')?.addEventListener('click', openUIC);
+document.getElementById('mob-uic-btn')?.addEventListener('click', openUIC);
+
+$('uic-reset')?.addEventListener('click', () => {
+  localStorage.removeItem('vortex_uic');
+  syncUICCheckboxes();
+  applyUICPrefs();
+  toast('UI reset to defaults', 'success');
+});
+
+// Apply saved prefs on load
+applyUICPrefs();
+
+// Override showSummarizeBar to respect UIC
+const _origShowSummarizeBar = showSummarizeBar;
+// patch: only show if not uic-disabled
+const _patchedShowSummarizeBar = () => {
+  const bar = $('summarize-bar');
+  if (bar?.dataset.uicDisabled === '1') return;
+  _origShowSummarizeBar();
+};
+
+// Override generateSmartReplies to respect UIC disable
+const _srBar = $('smart-replies-bar');
+if (_srBar) {
+  const _origAddVisible = _srBar.classList.add.bind(_srBar.classList);
+  // Intercept via MutationObserver on smart-replies-bar classList
+  const _srObs = new MutationObserver(() => {
+    if (_srBar.dataset.uicDisabled === '1') _srBar.classList.remove('visible');
+  });
+  _srObs.observe(_srBar, { attributes: true, attributeFilter: ['class'] });
+}
+
 
 
 </script>
