@@ -143,7 +143,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* Input */
 #user-input{field-sizing:content;max-height:120px;min-height:44px;}
 @media(min-width:640px){#user-input{max-height:160px;}}
-/* Filter pills */
 .filter-pill{cursor:pointer;padding:3px 9px;border-radius:99px;border:1px solid var(--c-border2);font-size:10px;font-weight:600;font-family:'Syne',sans-serif;transition:all .15s;color:var(--c-muted);white-space:nowrap;}
 @media(min-width:480px){.filter-pill{padding:4px 12px;font-size:11px;}}
 .filter-pill.active{background:var(--c-accent);border-color:var(--c-accent);color:#fff;}
@@ -217,7 +216,7 @@ body.light-mode .ai-msg{border-color:var(--c-accent);}
 body.light-mode .prose{color:#1a1d2e;}
 body.light-mode .prose pre{background:#1e2030!important;}
 body.light-mode .user-bubble{background:#e0e2f5;border-color:#c4c8e0;color:#1a1d2e;}
-body.light-mode body::before{opacity:.05;}
+body.light-mode::before{opacity:.05;}
 /* Resize handle */
 #resize-handle{width:4px;background:transparent;cursor:col-resize;transition:background .15s;flex-shrink:0;position:relative;z-index:5;user-select:none;}
 #resize-handle:hover,#resize-handle.dragging{background:var(--c-accent);}
@@ -366,7 +365,7 @@ body.light-mode body::before{opacity:.05;}
 .ts-chevron.open{transform:rotate(180deg);}
 #thinking-steps-body{display:none;border-top:1px solid var(--c-border);max-height:260px;overflow-y:auto;}
 #thinking-steps-body.open{display:block;}
-.ts-step{display:flex;gap:8px;padding:6px 12px;border-bottom:1px solid var(--c-border)/30;font-size:10px;color:var(--c-muted);align-items:flex-start;}
+.ts-step{display:flex;gap:8px;padding:6px 12px;border-bottom:1px solid rgba(31,35,51,.5);font-size:10px;color:var(--c-muted);align-items:flex-start;}
 .ts-step:last-child{border-bottom:none;}
 .ts-step-icon{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;margin-top:1px;}
 .ts-step-icon.thinking{background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);color:var(--c-accent2);}
@@ -397,7 +396,7 @@ body.light-mode body::before{opacity:.05;}
 #custom-api-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0;}
 #custom-api-toggle:hover .custom-api-label{color:var(--c-text);}
 .custom-api-label{font-size:12px;font-weight:600;color:var(--c-muted);transition:color .15s;}
-#custom-api-body{display:none;margin-top:10px;space-y:8px;}
+#custom-api-body{display:none;margin-top:10px;display:flex;flex-direction:column;gap:8px;}
 #custom-api-body.open{display:block;}
 /* ── Anon limit bar ── */
 #anon-limit-bar{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.2);border-radius:8px;padding:6px 10px;font-size:10px;color:#fbbf24;display:none;}
@@ -406,8 +405,6 @@ body.light-mode body::before{opacity:.05;}
 #oauth-loading{display:none;align-items:center;gap:6px;font-size:11px;color:var(--c-muted);}
 #oauth-loading.show{display:flex;}
 /* ── Prompt Enhancer ── */
-#enhancer-modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:70;display:none;align-items:center;justify-content:center;padding:1rem;}
-#enhancer-modal-wrap.open{display:flex;}
 #enhancer-modal{background:var(--c-surface);border:1px solid var(--c-border2);border-radius:18px;width:min(560px,96vw);max-height:88svh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6);}
 .enhancer-option{padding:8px 12px;border-radius:8px;border:1px solid var(--c-border);cursor:pointer;transition:all .12s;background:var(--c-surface);}
 .enhancer-option:hover{border-color:var(--c-accent);background:rgba(108,99,255,.05);}
@@ -600,8 +597,8 @@ body.thinking-on #temp-chat-banner #thinking-indicator{display:inline-flex;}
 .reaction-picker button{font-size:16px;padding:3px;border-radius:6px;background:transparent;border:none;cursor:pointer;line-height:1;}
 .reaction-picker button:hover{background:var(--c-surface2);}
 /* ── SMART REPLIES ── */
-#smart-replies-bar{display:none;padding:6px 12px 4px;overflow-x:auto;white-space:nowrap;border-top:1px solid rgba(31,35,51,.6);scrollbar-width:none;}
-#smart-replies-bar.visible{display:block;}
+#smart-replies-bar{display:none;padding:6px 12px 4px;overflow-x:auto;white-space:nowrap;border-top:1px solid rgba(31,35,51,.6);scrollbar-width:none;align-items:center;gap:4px;}
+#smart-replies-bar.visible{display:flex;}
 #smart-replies-bar::-webkit-scrollbar{display:none;}
 .smart-reply-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:99px;font-size:11px;color:var(--c-muted);cursor:pointer;transition:all .15s;white-space:nowrap;margin-right:6px;}
 .smart-reply-chip:hover{border-color:var(--c-accent);color:var(--c-accent2);background:rgba(108,99,255,.08);}
@@ -616,7 +613,7 @@ body.thinking-on #temp-chat-banner #thinking-indicator{display:inline-flex;}
 .stat-lbl{font-size:10px;color:var(--c-muted);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
 /* ── PILL SEND BAR ── */
 #pill-bar:focus-within{border-color:rgba(108,99,255,.55)!important;box-shadow:0 0 0 3px rgba(108,99,255,.07);}
-#user-input{field-sizing:content;max-height:160px;min-height:40px;padding-bottom:0!important;}
+#user-input{field-sizing:content;max-height:160px;min-height:40px;}
 .pill-tool-btn{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--c-muted);background:transparent;border:1px solid transparent;cursor:pointer;transition:all .15s;flex-shrink:0;}
 .pill-tool-btn:hover{background:var(--c-surface2);color:var(--c-text);border-color:var(--c-border);}
 .pill-tool-btn:active{transform:scale(.92);}
@@ -642,9 +639,9 @@ body.thinking-on #temp-chat-banner #thinking-indicator{display:inline-flex;}
 /* Applied UIC states */
 body.uic-compact-msgs #chat-inner .msg-row{margin-bottom:0!important;}
 body.uic-compact-msgs .msg-row{gap:6px!important;}
-body.uic-hide-times .msg-time{display:none!important;}
+body.uic-hide-times .msg-ts{display:none!important;}
 body.uic-hide-msg-actions .msg-actions{display:none!important;}
-body.uic-hide-welcome #welcome-screen{display:none!important;}
+body.uic-hide-welcome #welcome{display:none!important;}
 body.uic-hide-char-count #char-count{display:none!important;}
 body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
 /* ── CANVAS ACTION BUTTONS ── */
@@ -797,7 +794,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
     <button id="web-search-btn" title="Web Search Toggle (Ctrl+Shift+W)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#06b6d4] hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
     </button>
-    <button id="thinking-btn" title="Toggle Deep Thinking (Ctrl+Shift+T — reasoning models only)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors">
+    <button id="thinking-btn" title="Toggle Deep Thinking (Ctrl+Shift+I — reasoning models only)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
     </button>
     <button id="shortcuts-btn" title="Keyboard Shortcuts (Ctrl+Shift+K)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden sm:block">
@@ -821,7 +818,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
     <button id="notes-header-btn" title="Quick Notes (Ctrl+Shift+O)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-yellow-400 hover:bg-[#141720] rounded-lg transition-colors hidden sm:flex items-center">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
     </button>
-    <button id="focus-btn" title="Focus Timer" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-red-400 hover:bg-[#141720] rounded-lg transition-colors hidden sm:flex items-center">
+    <button id="focus-btn" title="Focus Timer (Ctrl+Shift+F)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-red-400 hover:bg-[#141720] rounded-lg transition-colors hidden sm:flex items-center">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
     </button>
     <button id="uic-open-btn" title="Customize UI (Ctrl+Shift+U)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden sm:flex items-center">
@@ -2505,7 +2502,14 @@ el.toggleKeyVisibility?.addEventListener('click', () => { if (el.apiKeyInput) el
 /* ── TTS ── */
 let ttsGlobalOn = false;
 el.ttsBtn?.addEventListener('click', () => { ttsGlobalOn = !ttsGlobalOn; el.ttsBtn.style.color = ttsGlobalOn ? 'var(--c-accent2)' : ''; if (!ttsGlobalOn && window.speechSynthesis) window.speechSynthesis.cancel(); toast(ttsGlobalOn ? 'TTS enabled' : 'TTS disabled', 'info'); });
-const speakText = txt => { if (!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(txt.replace(/```[\s\S]*?```/g,'[code]').replace(/[#*_`~]/g,'').slice(0,2000)); u.rate = 1.05; window.speechSynthesis.speak(u); };
+const speakText = txt => {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const cleaned = (txt||'').replace(/```[\s\S]*?```/g,' code block ').replace(/`[^`]+`/g,' code ').replace(/[#*_~>]/g,'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').slice(0,3000);
+  const speak = () => { const u = new SpeechSynthesisUtterance(cleaned); u.rate = 1.05; window.speechSynthesis.speak(u); };
+  // Small delay ensures cancel() has completed before new utterance
+  setTimeout(speak, 50);
+};
 
 /* ── TERMS ── */
 if (localStorage.getItem('nx_terms_v2')) {
@@ -2615,7 +2619,7 @@ el.customSysInput?.addEventListener('input', () => { state.customSys = el.custom
 /* ── EXPORTS ── */
 const exportMd = () => { if (!state.messages.length) { toast('No messages','error'); return; } let md=`# VortexAI Chat\n_Model: ${state.modelId}_\n_${new Date().toLocaleString()}_\n\n---\n\n`; state.messages.forEach(m => { md+=`**${m.role==='user'?(state.username||'You'):'VortexAI'}:**\n\n${m.content}\n\n---\n\n`; }); dlFile(md,`vortexai-${Date.now()}.md`,'text/markdown'); closeAllModals(); toast('Exported Markdown','success'); };
 const exportJson = () => { if (!state.messages.length) { toast('No messages','error'); return; } dlFile(JSON.stringify({model:state.modelId,date:new Date().toISOString(),messages:state.messages},null,2),`vortexai-${Date.now()}.json`,'application/json'); closeAllModals(); toast('Exported JSON','success'); };
-const exportHtml = () => { if (!state.messages.length) { toast('No messages','error'); return; } const rows=state.messages.map(m=>{const isU=m.role==='user';return`<div style="margin:16px 0;padding:12px 16px;border-radius:12px;background:${isU?'#1a1d2e':'#0e1018'};border:1px solid #1f2333"><div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:600;text-transform:uppercase">${isU?(state.username||'You'):'VortexAI'}</div><div>${isU?m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'):marked.parse(m.content||'')}</div></div>`;}).join(''); dlFile(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VortexAI Export</title><style>body{font-family:Inter,sans-serif;background:#07080d;color:#e2e4f0;padding:2rem;max-width:800px;margin:0 auto;line-height:1.6}pre{background:#0d1117;padding:1rem;border-radius:8px;overflow:auto}</style></head><body><h1>⚡ VortexAI</h1><p style="color:#6b7280">${state.modelId} · ${new Date().toLocaleString()}</p><hr style="border-color:#1f2333;margin:1.5rem 0">${rows}</body></html>`,`vortexai-${Date.now()}.html`,'text/html'); closeAllModals(); toast('Exported HTML','success'); };
+const exportHtml = () => { if (!state.messages.length) { toast('No messages','error'); return; } const rows=state.messages.map(m=>{const isU=m.role==='user';return`<div style="margin:16px 0;padding:12px 16px;border-radius:12px;background:${isU?'#1a1d2e':'#0e1018'};border:1px solid #1f2333"><div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:600;text-transform:uppercase">${isU?(state.username||'You'):'VortexAI'}</div><div>${isU?m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'):mdParse(m.content||'')}</div></div>`;}).join(''); dlFile(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VortexAI Export</title><style>body{font-family:Inter,sans-serif;background:#07080d;color:#e2e4f0;padding:2rem;max-width:800px;margin:0 auto;line-height:1.6}pre{background:#0d1117;padding:1rem;border-radius:8px;overflow:auto}</style></head><body><h1>⚡ VortexAI</h1><p style="color:#6b7280">${state.modelId} · ${new Date().toLocaleString()}</p><hr style="border-color:#1f2333;margin:1.5rem 0">${rows}</body></html>`,`vortexai-${Date.now()}.html`,'text/html'); closeAllModals(); toast('Exported HTML','success'); };
 const exportTxt = () => { if (!state.messages.length) { toast('No messages','error'); return; } let txt=`VortexAI Chat\nModel: ${state.modelId}\n${new Date().toLocaleString()}\n${'='.repeat(60)}\n\n`; state.messages.forEach(m => { txt+=`[${m.role==='user'?(state.username||'You'):'VortexAI'}]\n${m.content}\n\n${'-'.repeat(40)}\n\n`; }); dlFile(txt,`vortexai-${Date.now()}.txt`,'text/plain'); closeAllModals(); toast('Exported Text','success'); };
 el.exportMdBtn?.addEventListener('click', exportMd); el.exportJsonBtn?.addEventListener('click', exportJson); el.exportHtmlBtn?.addEventListener('click', exportHtml); el.exportTxtBtn?.addEventListener('click', exportTxt);
 
@@ -2802,20 +2806,20 @@ const fetchModels = async () => {
       if (!res.ok) throw new Error(res.status);
       const data = await s.parse(res);
       if (!Array.isArray(data?.data)) throw new Error('bad shape');
-      // Fetch only free models
-      const models = parseAllModels(data).filter(m => isFreeModel(m));
+      // Load all models (free and paid) so users with API keys can access paid models
+      const models = parseAllModels(data);
       if (!models.length) throw new Error('no models');
       state.models = models;
       if (!state.models.find(m=>m.id===state.modelId)) { const fb=FALLBACK_MODELS.find(m=>m.id===state.modelId); if(fb)state.models.unshift(fb); }
       updateModelDisplay(state.modelId);
-      if (!el.modalsModal?.classList.contains('hidden')) renderModelsList();
       if (!el.modelsModal?.classList.contains('hidden')) renderModelsList();
-      if (el.modelCountLabel) el.modelCountLabel.textContent=`${state.models.length} free models`;
-      toast(`${state.models.length} free models loaded`,'success');
+      const freeCount = models.filter(m=>isFreeModel(m)).length;
+      if (el.modelCountLabel) el.modelCountLabel.textContent=`${models.length} models (${freeCount} free)`;
+      toast(`${models.length} models loaded`,'success');
       success = true; break;
     } catch(e) { console.warn('[VortexAI] model fetch failed:', e.message); }
   }
-  if (!success) { if (!state.models.length) { state.models=[...FALLBACK_MODELS]; toast(`Offline — ${FALLBACK_MODELS.length} built-in free models`,'error'); } else toast('Refresh failed. Using cached.','error'); updateModelDisplay(state.modelId); if (!el.modelsModal?.classList.contains('hidden')) renderModelsList(); if (el.modelCountLabel) el.modelCountLabel.textContent=`${state.models.length} free models (offline)`; }
+  if (!success) { if (!state.models.length) { state.models=[...FALLBACK_MODELS]; toast(`Offline — ${FALLBACK_MODELS.length} built-in free models`,'error'); } else toast('Refresh failed. Using cached.','error'); updateModelDisplay(state.modelId); if (!el.modelsModal?.classList.contains('hidden')) renderModelsList(); if (el.modelCountLabel) el.modelCountLabel.textContent=`${state.models.length} models (offline)`; }
   if (el.modelLoadingIcon) el.modelLoadingIcon.classList.add('hidden');
   if (el.modelCpuIcon) el.modelCpuIcon.classList.remove('hidden');
   if (el.currentModelDisplay) el.currentModelDisplay.classList.remove('scanning');
@@ -3016,7 +3020,12 @@ const handleSubmit=async e=>{
   if(!state.chatId)state.chatId=genId();
   if(el.userInput){el.userInput.value='';el.userInput.style.height='auto';}
   if(el.charCount){el.charCount.textContent='0';el.charCount.className='';}
+  // Dismiss smart replies bar when user sends a message
+  document.getElementById('smart-replies-bar')?.classList.remove('visible');
+  // Clear attachments after including them in the next API call (they're already in buildSys)
+  const _hadAttachments = state.attachments.length > 0;
   appendMsg('user',prompt);state.messages.push({role:'user',content:prompt});
+  if(_hadAttachments){state.attachments=[];renderAttachBar();}
   trackStat('totalMessages');addXP(2);
   updateTokenBar();await sendToAPI();
 };
@@ -3039,7 +3048,16 @@ const sendToAPI=async()=>{
   try{
     // Models that reject the 'system' role — fold sys prompt into first user message instead
     const NO_SYSTEM_MODELS=['deepseek/deepseek-r1','qwen/qwen3','qwen3','o1-mini','o1-preview','o1','openai/o1'];
-    const sysContent=state.webSearch?buildWebSearchSys():buildSys();
+    // If web search is on, try to fetch results and inject them into the system prompt
+    let webResults=null;
+    if(state.webSearch&&state.messages.length){
+      const lastUser=state.messages.filter(m=>m.role==='user').pop();
+      if(lastUser)webResults=await processWebSearch(lastUser.content);
+    }
+    let sysContent=state.webSearch?buildWebSearchSys():buildSys();
+    if(webResults&&webResults.length){
+      sysContent+='\n\nWEB SEARCH RESULTS (use these to answer):\n'+webResults.map((r,i)=>`[${i+1}] ${r.title}\n${r.snippet}${r.url?'\nSource: '+r.url:''}`).join('\n\n');
+    }
     const noSys=NO_SYSTEM_MODELS.some(m=>effectiveModel.toLowerCase().includes(m.toLowerCase()));
     let apiMessages;
     if(noSys){
@@ -3150,7 +3168,8 @@ const sendToAPI=async()=>{
   }
 };
 el.chatForm?.addEventListener('submit', e => { e.preventDefault(); handleSubmit(); });
-document.getElementById('send-btn')?.addEventListener('click', handleSubmit);
+// send-btn is type=submit on #chat-form; if clicked while generating, abort
+el.sendBtn?.addEventListener('click', () => { if (state.isGenerating) { state.abortCtrl?.abort(); } });
 el.userInput?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSubmit();}});
 
 /* ── WELCOME ── */
@@ -3158,7 +3177,8 @@ const CHIPS=['Ask anything','Write HTML/CSS/JS','Explain code','Build a componen
 const renderWelcome=()=>{const d=document.createElement('div');d.id='welcome';d.className='welcome-card rounded-2xl p-4 sm:p-5 msg-enter';d.innerHTML=`<div class="flex items-center gap-2.5 mb-3"><div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#6c63ff] to-[#a78bfa] flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-[#6c63ff]/30 shrink-0">⚡</div><div><h3 class="font-black text-white text-base sm:text-lg" style="font-family:'Syne',sans-serif">VortexAI <span class="text-[#6c63ff] text-sm">v6.1</span></h3><p class="text-[10px] sm:text-xs text-[#6b7280]">OpenRouter · Free Models · Zelvior · Pakistan</p></div></div><p class="text-xs sm:text-sm text-[#9ca3af] leading-relaxed mb-3"><strong class="text-white">Ctrl+P</strong> = command palette · <strong class="text-white">✨ Enhance</strong> = upgrade prompt · <strong class="text-white">Settings</strong> = sign in via OpenRouter.</p><div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">${CHIPS.map(t=>`<button class="prompt-chip">${t}</button>`).join('')}</div>`;d.querySelectorAll('.prompt-chip').forEach(b=>b.addEventListener('click',()=>{if(el.userInput){el.userInput.value=b.textContent.trim();el.userInput.dispatchEvent(new Event('input'));el.userInput.focus();}}));el.chatInner.appendChild(d);};
 
 /* ── NEW CHAT ── */
-const newChat=()=>{if(state.isGenerating){toast('Stop generation first','error');return;}state.messages=[];state.chatId=genId();if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();renderWelcome();renderHistory();updateTokenBar();el.userInput?.focus();_autoTitleDone=false;if(!state.isTemp){trackStat('totalChats');addXP(5);}};
+const newChat=()=>{if(state.isGenerating){toast('Stop generation first','error');return;}state.messages=[];state.chatId=genId();if(el.chatInner)el.chatInner.innerHTML='';closeCanvas();renderWelcome();renderHistory();updateTokenBar();el.userInput?.focus();_autoTitleDone=false;// Clear smart replies bar and abort pending request
+  if(_smartReplyAbort){try{_smartReplyAbort.abort();}catch{}_smartReplyAbort=null;}document.getElementById('smart-replies-bar')?.classList.remove('visible');if(!state.isTemp){trackStat('totalChats');addXP(5);}};
 el.newChatBtn?.addEventListener('click',newChat);
 el.newChatSidebarBtn?.addEventListener('click',()=>{newChat();if(window.innerWidth<768)setSidebar(false);});
 
@@ -3169,7 +3189,7 @@ el.attachFileInput?.addEventListener('change',()=>{const files=[...el.attachFile
 
 /* ── VOICE ── */
 const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(SpeechRec&&el.voiceBtn){const rec=new SpeechRec();rec.continuous=false;rec.interimResults=true;rec.lang='en-US';let finalT='';rec.onresult=e=>{finalT='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)finalT+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}if(el.userInput){el.userInput.value=(finalT||interim).trim();el.userInput.dispatchEvent(new Event('input'));}};rec.onend=()=>{state.isListening=false;el.voiceBtn.classList.remove('listening');if(finalT.trim())toast('Voice captured','success');};rec.onerror=e=>{state.isListening=false;el.voiceBtn.classList.remove('listening');toast('Voice error: '+e.error,'error');};el.voiceBtn.addEventListener('click',()=>{if(state.isListening){rec.stop();return;}finalT='';state.isListening=true;el.voiceBtn.classList.add('listening');rec.start();trackStat('voiceUses');});}else if(el.voiceBtn){el.voiceBtn.title='Voice not supported';el.voiceBtn.style.opacity='.4';el.voiceBtn.addEventListener('click',()=>toast('Voice input not supported','error'));}
+if(SpeechRec&&el.voiceBtn){const rec=new SpeechRec();rec.continuous=false;rec.interimResults=true;rec.lang='en-US';let finalT='';rec.onresult=e=>{finalT='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)finalT+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}if(el.userInput){el.userInput.value=(finalT||interim).trim();el.userInput.dispatchEvent(new Event('input'));}};rec.onend=()=>{state.isListening=false;el.voiceBtn.classList.remove('listening');if(finalT.trim())toast('Voice captured','success');finalT='';};rec.onerror=e=>{state.isListening=false;el.voiceBtn.classList.remove('listening');finalT='';toast('Voice error: '+e.error,'error');};el.voiceBtn.addEventListener('click',()=>{if(state.isListening){rec.stop();return;}finalT='';state.isListening=true;el.voiceBtn.classList.add('listening');try{rec.start();trackStat('voiceUses');}catch(err){state.isListening=false;el.voiceBtn.classList.remove('listening');toast('Could not start voice: '+err.message,'error');}});}else if(el.voiceBtn){el.voiceBtn.title='Voice not supported';el.voiceBtn.style.opacity='.4';el.voiceBtn.addEventListener('click',()=>toast('Voice input not supported','error'));}
 
 /* ── PROMPT ENHANCER ── */
 const ENHANCE_STYLES={
@@ -3197,7 +3217,8 @@ const runEnhancer=async()=>{
     if(key)hdrs['Authorization']=`Bearer ${key}`;
     const r=await fetch(getApiUrl(),{method:'POST',headers:hdrs,body:JSON.stringify({model:modelToUse,messages:[{role:'user',content:`${sysInstr}\n\n---\nOriginal prompt:\n${prompt}\n---\n\nReturn ONLY the enhanced prompt text. No preamble, no explanation, no quotes.`}],stream:false,temperature:0.8,max_tokens:600})});
     if(!r.ok){const em=await parseAPIError(r);throw new Error(em);}
-    const data=await r.json();const enhanced=data.choices?.[0]?.message?.content?.trim()||'';
+    const data=await r.json();
+    const enhanced=(data.choices?.[0]?.message?.content||data.content?.[0]?.text||'').trim();
     if(!enhanced)throw new Error('Empty response');
     if(resArea)resArea.value=enhanced;if(res)res.classList.remove('hidden');if(useBtn)useBtn.classList.remove('hidden');
     toast('Prompt enhanced!','success');trackStat('enhancerUses');
@@ -3279,7 +3300,7 @@ const toggleWebSearch=()=>{
   const btn=document.getElementById('web-search-btn');
   if(btn)btn.classList.toggle('active',state.webSearch);
   document.body.classList.toggle('web-search-on',state.webSearch);
-  if(state.webSearch)trackStat('webSearches');
+  if(state.webSearch){trackStat('webSearches');}
   toast(state.webSearch?'🌐 Web search ON — AI will search when needed':'Web search OFF',state.webSearch?'success':'info');
 };
 document.getElementById('web-search-btn')?.addEventListener('click',toggleWebSearch);
@@ -3305,7 +3326,9 @@ const processWebSearch=async(prompt)=>{
   if(!needsSearch)return null;
   const query=prompt.slice(0,120).replace(/[^\w\s]/g,' ').trim();
   try{
-    const r=await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`,{signal:AbortSignal.timeout(3000)}).catch(()=>null);
+    const ddgUrl=`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+    // Use CORS proxy since DuckDuckGo blocks direct browser requests
+    const r=await fetch(`https://corsproxy.io/?${encodeURIComponent(ddgUrl)}`,{signal:AbortSignal.timeout(5000)}).catch(()=>null);
     if(!r||!r.ok)return null;
     const d=await r.json();
     const results=[];
@@ -3325,14 +3348,18 @@ const populateCompareSels=()=>{
   if(!a||!b)return;
   const chatModels=state.models.filter(m=>!/embed|rerank/.test((m.id+m.name).toLowerCase()));
   const freeModels=chatModels.filter(m=>isFreeModel(m));
+  const paidModels=chatModels.filter(m=>!isFreeModel(m));
   const buildOpts=()=>{
     let html='';
     if(freeModels.length){html+=`<optgroup label="🆓 Free Models">${freeModels.slice(0,80).map(m=>`<option value="${m.id}">${DOMPurify.sanitize(m.name.slice(0,40))}</option>`).join('')}</optgroup>`;}
+    if(paidModels.length){html+=`<optgroup label="💳 Paid Models">${paidModels.slice(0,40).map(m=>`<option value="${m.id}">${DOMPurify.sanitize(m.name.slice(0,40))}</option>`).join('')}</optgroup>`;}
     return html;
   };
   a.innerHTML=buildOpts();b.innerHTML=buildOpts();
-  if(freeModels[0])a.value=freeModels[0].id;
-  if(freeModels[1])b.value=freeModels[1].id;
+  const first=freeModels[0]||chatModels[0];
+  const second=freeModels[1]||chatModels[1];
+  if(first)a.value=first.id;
+  if(second)b.value=second.id;
 };
 const runCompare=async()=>{
   const prompt=document.getElementById('compare-prompt')?.value?.trim();
@@ -3380,7 +3407,7 @@ const ACHIEVEMENTS=[
   {id:'enhancer_user',icon:'✨',name:'Prompt Wizard',desc:'Enhance a prompt',xp:20,check:s=>s.enhancerUses>=1},
   {id:'monaco_user',icon:'📝',name:'Code Editor',desc:'Open Monaco editor',xp:15,check:s=>s.monacoOpens>=1},
   {id:'console_user',icon:'⌨️',name:'Developer',desc:'Use the console',xp:20,check:s=>s.consoleUses>=1},
-  {id:'night_owl',icon:'🦉',name:'Night Owl',desc:'Chat after midnight',xp:25,check:()=>new Date().getHours()<5},
+  {id:'night_owl',icon:'🦉',name:'Night Owl',desc:'Chat after midnight',xp:25,check:()=>{const h=new Date().getHours();return h>=0&&h<5;}},
 ];
 const openAchievements=()=>{
   const modal=$('achievements-modal');if(!modal)return;
@@ -3425,10 +3452,10 @@ const openMonaco=()=>{
   modal.classList.add('open');
   trackStat('monacoOpens');
   if(!monacoLoaded&&!document.getElementById('monaco-cdn')){
-    monacoLoaded=true;
     const script=document.createElement('script');script.id='monaco-cdn';
     script.src='https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js';
     script.onload=()=>{
+      monacoLoaded=true;
       window.require.config({paths:{vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs'}});
       window.require(['vs/editor/editor.main'],()=>{
         const container=$('monaco-editor-real');const textarea=$('monaco-textarea');
@@ -3646,18 +3673,20 @@ const isPowerToolActive = tool => {
   const itemMap = { autoscroll:'pt_autoscroll', codebeauty:'pt_codebeauty', wordcount:'pt_wordcount', autosave:'pt_autosave', spotlight:'pt_focushighlight', hideSidebar:'pt_sidebar_hide', relTimes:'pt_timestamps', clickCopy:'pt_copy_code' };
   return storeS.owned.includes(itemMap[tool] || '');
 };
+let _ptClickCopyAttached = false, _ptAutosaveInterval = null;
 const applyAllPowerTools = () => {
-  // Click-to-copy code blocks
-  if (isPowerToolActive('clickCopy')) {
+  // Click-to-copy code blocks — attach only once
+  if (isPowerToolActive('clickCopy') && !_ptClickCopyAttached) {
+    _ptClickCopyAttached = true;
     document.addEventListener('click', e => {
       const code = e.target.closest('pre code');
       if (!code) return;
       navigator.clipboard.writeText(code.textContent).then(() => toast('Code copied', 'success'));
     });
   }
-  // Draft autosave
-  if (isPowerToolActive('autosave')) {
-    setInterval(() => {
+  // Draft autosave — only one interval
+  if (isPowerToolActive('autosave') && !_ptAutosaveInterval) {
+    _ptAutosaveInterval = setInterval(() => {
       const val = el.userInput?.value?.trim();
       if (val) localStorage.setItem('vortex_draft', val);
     }, 30000);
@@ -3937,7 +3966,7 @@ const renderStoreTab = (tab) => {
       return `<button class="store-buy-btn owned-btn" disabled>✓ Owned</button>`;
     }
     const canAfford = xpS.xp >= item.cost;
-    const cls = canAfford ? 'buy' : 'buy';
+    const cls = canAfford ? 'buy' : 'cant-buy';
     return `<button class="store-buy-btn ${cls}" ${!canAfford?'style="opacity:.5"':''} onclick="initPurchase('${item.id}',${item.cost})">${canAfford?'Buy':'Can\'t Afford'}</button>`;
   };
 
@@ -4273,7 +4302,7 @@ const openReadingMode = (content, modelLabel='') => {
   body.innerHTML = DOMPurify.sanitize(mdParse(content));
   body.querySelectorAll('pre code').forEach(b => hljs.highlightElement(b));
   if (lbl) lbl.textContent = modelLabel || state.modelId.split('/').pop();
-  body.style.setProperty('--reading-fs', _readingFS + 'rem');
+  body.style.fontSize = _readingFS + 'rem';
   ov.classList.remove('hidden');
   ov.classList.add('flex');
 };
@@ -4332,7 +4361,8 @@ const buildReactionBar = (wrap, msgIdx) => {
   picker.querySelectorAll('button').forEach(b => {
     b.addEventListener('click', () => { picker.classList.remove('open'); toggleReaction(wrap, msgIdx, b.dataset.e); });
   });
-  document.addEventListener('click', () => picker.classList.remove('open'), { once: true });
+  // Delay registering the close-on-click-outside so it doesn't fire on the opening click
+  setTimeout(() => document.addEventListener('click', () => picker.classList.remove('open'), { once: true }), 50);
   rBar.appendChild(addBtn);
   return rBar;
 };
@@ -4357,9 +4387,7 @@ const toggleReaction = (wrap, msgIdx, emoji) => {
   else actionsDiv?.after(newBar);
 };
 
-/* Patch appendMsg to add react + read buttons */
-const _origAppendMsg = appendMsg;
-// We'll inject reaction and reading mode via the msg-actions patch below
+/* Patch appendMsg to add react + read buttons — handled via MutationObserver below */
 
 /* ══════════════════════════════════════════
    ── FEATURE: SMART REPLY SUGGESTIONS
@@ -4380,7 +4408,7 @@ const generateSmartReplies = async (lastAIContent) => {
   try {
     if (_smartReplyAbort) { try { _smartReplyAbort.abort(); } catch {} }
     _smartReplyAbort = new AbortController();
-    const timer = setTimeout(() => { try { _smartReplyAbort?.abort(); } catch {} }, 12000);
+    let _srTimer = setTimeout(() => { try { _smartReplyAbort?.abort(); } catch {} }, 12000);
     const r = await fetch(getApiUrl(), {
       method: 'POST', headers: hdrs, signal: _smartReplyAbort.signal,
       body: JSON.stringify({
@@ -4392,8 +4420,8 @@ const generateSmartReplies = async (lastAIContent) => {
         stream: false, max_tokens: 180, temperature: 0.7
       })
     });
-    clearTimeout(timer);
-    if (!r.ok) { bar.classList.remove('visible'); return; }
+    clearTimeout(_srTimer);
+    if (!r.ok || !bar.classList.contains('visible')) { bar.classList.remove('visible'); return; }
     const data = await r.json();
     const rawText = (data.content || data.choices?.[0]?.message?.content || [])
       .map?.(c => c?.text || c || '').join('') || String(data?.choices?.[0]?.message?.content || '');
@@ -4435,15 +4463,17 @@ let _searchHits = [], _searchIdx = 0;
 const openChatSearch = () => {
   const ov = document.getElementById('chat-search-overlay');
   if (!ov) return;
-  ov.classList.remove('hidden');
-  ov.classList.add('open');
   ov.style.display = 'block';
+  // Allow display to take effect before adding open class so CSS transition fires
+  requestAnimationFrame(() => ov.classList.add('open'));
   document.getElementById('chat-search-input')?.focus();
 };
 const closeChatSearch = () => {
   const ov = document.getElementById('chat-search-overlay');
-  ov?.classList.remove('open');
-  ov && (ov.style.display = 'none');
+  if (!ov) return;
+  ov.classList.remove('open');
+  // Hide after transition completes
+  setTimeout(() => { if (!ov.classList.contains('open')) ov.style.display = 'none'; }, 200);
   clearSearchHighlights();
 };
 const clearSearchHighlights = () => {
@@ -4464,16 +4494,26 @@ const runChatSearch = (q) => {
   });
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
+  const ql = q.toLowerCase();
   nodes.forEach(node => {
-    const idx = node.nodeValue.toLowerCase().indexOf(q.toLowerCase());
-    if (idx < 0) return;
-    const span = document.createElement('mark');
-    span.className = 'search-highlight';
-    span.textContent = node.nodeValue.slice(idx, idx + q.length);
-    const after = node.splitText(idx);
-    after.nodeValue = after.nodeValue.slice(q.length);
-    node.parentNode.insertBefore(span, after);
-    _searchHits.push(span);
+    const val = node.nodeValue;
+    const valL = val.toLowerCase();
+    let pos = 0, cursor = node;
+    while ((pos = valL.indexOf(ql, cursor === node ? 0 : 0)) >= 0) {
+      // Re-scan remaining text each iteration using updated cursor
+      const remaining = cursor.nodeValue;
+      const matchIdx = remaining.toLowerCase().indexOf(ql);
+      if (matchIdx < 0) break;
+      const span = document.createElement('mark');
+      span.className = 'search-highlight';
+      span.textContent = remaining.slice(matchIdx, matchIdx + q.length);
+      const after = cursor.splitText(matchIdx);
+      after.nodeValue = after.nodeValue.slice(q.length);
+      cursor.parentNode.insertBefore(span, after);
+      _searchHits.push(span);
+      cursor = after;
+      if (!cursor.nodeValue) break;
+    }
   });
   const cnt = document.getElementById('chat-search-count');
   if (!_searchHits.length) { if (cnt) cnt.textContent = 'No results'; return; }
@@ -4516,9 +4556,10 @@ const openChatStats = async () => {
   const topModel = Object.entries(modelTally).sort((a,b)=>b[1]-a[1])[0];
   // Cost estimate
   const model = state.models.find(m => m.id === state.modelId);
-  const ppt = parseFloat(model?.pricing?.prompt || '0');
+  const ppt = parseFloat(model?.pricing?.prompt || '0');   // per token (OpenRouter gives per-token)
   const ppc = parseFloat(model?.pricing?.completion || '0');
-  const estCost = ppt > 0 ? ((userWords * 1.3 * ppt + aiWords * 1.3 * ppc) * 1e6 / 1e6).toFixed(6) : null;
+  // OpenRouter pricing is already per token (not per million); estimate ~0.75 tokens per word
+  const estCost = ppt > 0 ? ((userWords / 0.75 * ppt) + (aiWords / 0.75 * ppc)).toFixed(6) : null;
 
   body.innerHTML = `
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -4611,11 +4652,12 @@ document.getElementById('personas-btn')?.addEventListener('click', () => {
 document.getElementById('persona-save-btn')?.addEventListener('click', () => {
   const name = document.getElementById('persona-name-input')?.value?.trim();
   const icon = document.getElementById('persona-icon-input')?.value?.trim() || '🤖';
-  const sys = document.getElementById('persona-sys-input')?.value?.trim();
+  const sys = document.getElementById('persona-sys-input')?.value?.trim() || '';
   if (!name) { toast('Enter a name', 'error'); return; }
   const customs = getCustomPersonas();
   const id = 'custom_' + Date.now();
-  customs.push({ id, icon, name, desc: sys.slice(0, 60) + '…', sys });
+  const desc = sys ? (sys.slice(0, 60) + (sys.length > 60 ? '…' : '')) : 'Custom persona';
+  customs.push({ id, icon, name, desc, sys });
   saveCustomPersonas(customs);
   document.getElementById('persona-name-input').value = '';
   document.getElementById('persona-icon-input').value = '';
@@ -4649,7 +4691,7 @@ const _patchAIMessageRow = (wrap, content, msgIdx) => {
 };
 
 // Hook into flushFinal to patch completed AI messages
-const _origFlushFinal = flushFinal;
+// Note: _postAIMessage is triggered via MutationObserver on chat-inner below
 
 /* ══════════════════════════════════════════
    ── KEYBOARD SHORTCUTS FOR NEW FEATURES
@@ -4835,14 +4877,14 @@ $('focus-btn')?.addEventListener('click',()=>{updateFocusRing();openModal($('foc
 ══════════════════════════════════════════ */
 let _autoTitleDone=false;
 const autoGenerateTitle=async()=>{
-  if(_autoTitleDone||state.messages.length<4||!isAuthenticated())return;
+  if(_autoTitleDone||state.messages.length<2||!isAuthenticated())return;
   const userMsgs=state.messages.filter(m=>m.role==='user').slice(0,2);
-  if(userMsgs.length<2)return;
+  if(userMsgs.length<1)return;
   _autoTitleDone=true;
   const freeModel=state.models.find(m=>isFreeModel(m)&&!/embed|rerank|image|tts/.test(m.id.toLowerCase()))||{id:state.modelId};
   const key=getActiveKey();const hdrs={'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME};if(key)hdrs['Authorization']=`Bearer ${key}`;
   try{
-    const r=await fetch(getApiUrl(),{method:'POST',headers:hdrs,body:JSON.stringify({model:freeModel.id,messages:[{role:'user',content:`Generate a concise chat title (max 6 words, no quotes, no punctuation at end) for:\nUser: ${userMsgs[0].content.slice(0,200)}\nUser: ${userMsgs[1]?.content?.slice(0,150)||''}`}],stream:false,max_tokens:20,temperature:0.6})});
+    const r=await fetch(getApiUrl(),{method:'POST',headers:hdrs,body:JSON.stringify({model:freeModel.id,messages:[{role:'user',content:`Generate a concise chat title (max 6 words, no quotes, no punctuation at end) for:\nUser: ${userMsgs[0].content.slice(0,200)}${userMsgs[1]?'\nUser: '+userMsgs[1].content.slice(0,150):''}`}],stream:false,max_tokens:20,temperature:0.6})});
     if(!r.ok)return;
     const data=await r.json();
     const raw=(data.content||data.choices?.[0]?.message?.content||[]).map?.(c=>c?.text||c||'').join('')||String(data?.choices?.[0]?.message?.content||'');
@@ -4940,8 +4982,7 @@ const translateMessage=async(wrap,text)=>{
 /* ══════════════════════════════════════════
    ── PATCH AI MESSAGE ROWS: ADD TRANSLATE BUTTON
 ══════════════════════════════════════════ */
-const _origPatchAI = _patchAIMessageRow;
-// Extend _patchAIMessageRow to also add translate
+// Extend AI message rows to also add translate button and trigger summarize bar
 (() => {
   const chatInner = document.getElementById('chat-inner');
   if (!chatInner) return;
@@ -4955,7 +4996,7 @@ const _origPatchAI = _patchAIMessageRow;
       const w2 = new MutationObserver(() => {
         if (contentEl.innerText.length > 15) {
           w2.disconnect();
-          // Add Translate button to msg-actions
+          // Add Translate button to msg-actions (if not already added)
           const actDiv = node.querySelector('.msg-actions');
           if (actDiv && !actDiv.querySelector('.tr-btn')) {
             const trBtn = document.createElement('button');
@@ -4964,12 +5005,11 @@ const _origPatchAI = _patchAIMessageRow;
             trBtn.addEventListener('click', () => translateMessage(node, contentEl.innerText || ''));
             actDiv.appendChild(trBtn);
           }
-          // Auto-title after 2 AI responses
-          if (idx === 1) setTimeout(autoGenerateTitle, 1200);
-          // Show summarize bar
+          // Auto-title after first AI response (idx 0)
+          if (idx === 0) setTimeout(autoGenerateTitle, 1200);
+          // Show summarize bar after enough messages
           setTimeout(showSummarizeBar, 200);
-          // Smart replies
-          if (state.messages.length > 1) setTimeout(() => generateSmartReplies(contentEl.innerText), 600);
+          // Note: generateSmartReplies is called by _postAIMessage (first observer) — no duplicate here
         }
       });
       w2.observe(contentEl, { childList: true, characterData: true, subtree: true });
@@ -4980,14 +5020,15 @@ const _origPatchAI = _patchAIMessageRow;
 
 /* Wire focus-modal close btn + add to allModals */
 $('focus-modal')?.querySelectorAll('.close-modal-btn').forEach(b => b.addEventListener('click', closeAllModals));
-allModals.push($('focus-modal'));
+const _focusModal = $('focus-modal');
+if (_focusModal) allModals.push(_focusModal);
 
 /* Wire mobile nav now that all functions are defined */
 _wireMobileNav();
 
-/* Extra keyboard shortcut: Ctrl+Shift+T = Focus Timer */
+/* Extra keyboard shortcuts */
 document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.shiftKey && e.key === 'T') { e.preventDefault(); updateFocusRing(); openModal($('focus-modal')); }
+  if (e.ctrlKey && e.shiftKey && e.key === 'F') { e.preventDefault(); updateFocusRing(); openModal($('focus-modal')); }
   if (e.ctrlKey && e.shiftKey && e.key === 'O') { e.preventDefault(); openNotesPanel(); }
   if (e.ctrlKey && e.shiftKey && e.key === 'U') { e.preventDefault(); openUIC(); }
 });
@@ -5007,7 +5048,7 @@ const UIC_DEFAULTS = {
   statsBtn:        { default: true,  apply: v => { const b=$('chat-stats-btn'); if(b) b.style.display=v?'':'none'; } },
   personasBtn:     { default: true,  apply: v => { const b=$('personas-btn'); if(b) b.style.display=v?'':'none'; } },
   ttsBtn:          { default: true,  apply: v => { const b=$('tts-btn'); if(b) b.style.display=v?'':'none'; } },
-  exportBtn:       { default: true,  apply: v => { const b=$('export-chat-btn'); if(b) b.style.display=v?'':'none'; } },
+  exportBtn:       { default: true,  apply: v => { const b=$('export-btn'); if(b) b.style.display=v?'':'none'; } },
   webSearchBtn:    { default: true,  apply: v => { const b=$('web-search-btn'); if(b) b.style.display=v?'':'none'; } },
   cmdBtn:          { default: true,  apply: v => { const b=$('cmd-palette-btn'); if(b) b.style.display=v?'':'none'; } },
   compactMsgs:     { default: false, apply: v => document.body.classList.toggle('uic-compact-msgs', v) },
@@ -5067,7 +5108,7 @@ document.querySelectorAll('.uic-toggle').forEach(cb => {
 $('uic-close')?.addEventListener('click', closeUIC);
 $('uic-backdrop')?.addEventListener('click', closeUIC);
 $('uic-open-btn')?.addEventListener('click', openUIC);
-document.getElementById('mob-uic-btn')?.addEventListener('click', openUIC);
+// mob-uic-btn is wired in _wireMobileNav()
 
 $('uic-reset')?.addEventListener('click', () => {
   localStorage.removeItem('vortex_uic');
@@ -5079,10 +5120,10 @@ $('uic-reset')?.addEventListener('click', () => {
 // Apply saved prefs on load
 applyUICPrefs();
 
-// Override showSummarizeBar to respect UIC
+// Override showSummarizeBar to respect UIC — use the patched version globally
 const _origShowSummarizeBar = showSummarizeBar;
 // patch: only show if not uic-disabled
-const _patchedShowSummarizeBar = () => {
+window.showSummarizeBar = () => {
   const bar = $('summarize-bar');
   if (bar?.dataset.uicDisabled === '1') return;
   _origShowSummarizeBar();
