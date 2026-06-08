@@ -3028,16 +3028,32 @@ const sendToAPI=async()=>{
   const hdrs={'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME};
   if(key)hdrs['Authorization']=`Bearer ${key}`;
   try{
+    // Models that reject the 'system' role — fold sys prompt into first user message instead
+    const NO_SYSTEM_MODELS=['deepseek/deepseek-r1','qwen/qwen3','qwen3','o1-mini','o1-preview','o1','openai/o1'];
+    const sysContent=state.webSearch?buildWebSearchSys():buildSys();
+    const noSys=NO_SYSTEM_MODELS.some(m=>effectiveModel.toLowerCase().includes(m.toLowerCase()));
+    let apiMessages;
+    if(noSys){
+      const userMsgs=getMsgsForAPI();
+      if(userMsgs.length&&userMsgs[0].role==='user'){
+        apiMessages=[{role:'user',content:sysContent+'\n\n'+userMsgs[0].content},...userMsgs.slice(1)];
+      }else{
+        apiMessages=userMsgs;
+      }
+    }else{
+      apiMessages=[{role:'system',content:sysContent},...getMsgsForAPI()];
+    }
     const body={
       model:effectiveModel,
-      messages:[{role:'system',content:state.webSearch?buildWebSearchSys():buildSys()},...getMsgsForAPI()],
+      messages:apiMessages,
       stream:true,
       temperature:state.temperature,
       max_tokens:state.maxTokens,
       // Ask OpenRouter to strip <think> blocks server-side for reasoning models
       transforms:['middle-out'],
-      // Route to providers that return standard OpenAI-compatible streaming
-      provider:{allow_fallbacks:true,data_collection:'deny'},
+      // allow_fallbacks:true lets OpenRouter pick any available provider endpoint;
+      // data_collection is intentionally omitted so free models (which require training consent) are not blocked
+      provider:{allow_fallbacks:true},
     };
     // For known thinking/reasoning models, tell the provider to suppress reasoning tokens
     if(isThinkingModel)body.include_reasoning=false;
