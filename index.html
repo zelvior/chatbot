@@ -46,12 +46,65 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,.3);}50%{box-shadow:0 0 14px 4px rgba(108,99,255,.12);}}
 @keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4);}70%{box-shadow:0 0 0 8px rgba(239,68,68,0);}}
 /* Sidebar */
-#sidebar{width:var(--sidebar-w);background:var(--c-surface);border-right:1px solid var(--c-border);display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.4,0,.2,1),margin .25s;overflow:hidden;flex-shrink:0;padding-top:var(--safe-top);}
-#sidebar.collapsed{transform:translateX(calc(-1 * var(--sidebar-w)));margin-right:calc(-1 * var(--sidebar-w));}
-@media(max-width:767px){
-  #sidebar{position:fixed;inset:0;right:auto;z-index:30;width:min(var(--sidebar-w),88vw);transform:translateX(-100%);}
-  #sidebar.mobile-open{transform:translateX(0)!important;margin-right:0!important;}
+#sidebar{
+  width:var(--sidebar-w);background:var(--c-surface);
+  border-right:1px solid var(--c-border);
+  display:flex;flex-direction:column;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),margin .28s,width .28s;
+  overflow:hidden;flex-shrink:0;padding-top:var(--safe-top);
+  will-change:transform;
 }
+#sidebar.collapsed{transform:translateX(calc(-1 * var(--sidebar-w)));margin-right:calc(-1 * var(--sidebar-w));}
+
+/* Tablet: narrower sidebar */
+@media(min-width:768px) and (max-width:1023px){
+  :root{--sidebar-w:220px;}
+  #sidebar.collapsed{transform:translateX(-220px);margin-right:-220px;}
+}
+
+/* Mobile: full-height drawer */
+@media(max-width:767px){
+  #sidebar{
+    position:fixed;top:0;left:0;bottom:0;right:auto;
+    z-index:50;
+    width:min(var(--sidebar-w),82vw);
+    transform:translateX(-110%);
+    box-shadow:none;
+    border-right:1px solid var(--c-border2);
+  }
+  #sidebar.mobile-open{
+    transform:translateX(0)!important;
+    margin-right:0!important;
+    box-shadow:4px 0 32px rgba(0,0,0,.6);
+  }
+}
+
+/* Sidebar overlay (backdrop) */
+#sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  z-index:49;
+  transition:opacity .25s;
+  opacity:0;
+}
+#sidebar-overlay.active{display:block;opacity:1;}
+
+/* Swipe edge hint on mobile */
+@media(max-width:767px){
+  #sidebar-edge-hint{
+    position:fixed;left:0;top:50%;transform:translateY(-50%);
+    width:5px;height:60px;
+    background:linear-gradient(90deg,var(--c-accent),transparent);
+    border-radius:0 4px 4px 0;
+    z-index:48;opacity:.35;
+    pointer-events:none;
+    transition:opacity .3s;
+  }
+  #sidebar.mobile-open ~ * #sidebar-edge-hint,
+  body.sidebar-open #sidebar-edge-hint{opacity:0;}
+}
+
 .history-item{border-radius:10px;padding:8px 10px;cursor:pointer;transition:background .12s;border:1px solid transparent;display:flex;align-items:flex-start;gap:8px;width:100%;text-align:left;}
 .history-item:hover{background:var(--c-surface2);border-color:var(--c-border);}
 .history-item.active{background:rgba(108,99,255,.1);border-color:rgba(108,99,255,.3);}
@@ -776,6 +829,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
 
 <!-- MAIN -->
 <main class="flex-1 flex overflow-hidden relative">
+<div id="sidebar-edge-hint"></div>
 
   <!-- SIDEBAR -->
   <div id="sidebar">
@@ -1154,6 +1208,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
     </button>
   </div>
   <div class="p-3 sm:p-5 space-y-4 overflow-y-auto flex-1">
+
     <!-- AUTH STATUS BAR -->
     <div id="auth-status-bar" class="unauthed">
       <div class="auth-dot yellow" id="auth-dot"></div>
@@ -1161,40 +1216,66 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
       <button id="auth-signout-btn" class="hidden text-[9px] px-2 py-0.5 rounded border border-current opacity-60 hover:opacity-100 transition-opacity">Sign out</button>
     </div>
 
-    <!-- OAUTH SIGN IN -->
+    <!-- AUTH METHODS -->
     <div>
-      <p class="section-label mb-2">Quick Connect <span class="optional-badge">recommended</span></p>
-      <button id="oauth-btn" title="Sign in with OpenRouter — no API key needed">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        Sign in with OpenRouter
-      </button>
-      <div id="oauth-loading">
-        <svg class="w-4 h-4 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-        Completing sign-in…
-      </div>
-      <div id="anon-limit-bar">⚠ Anonymous mode — limited to free models only. Sign in or add API key for full access.</div>
-      <p class="text-[9px] text-[#4b5563] mt-1.5">Opens OpenRouter in a popup. Your key is retrieved automatically and stored locally.</p>
-    </div>
+      <p class="section-label mb-2.5">Connect Your Account</p>
 
-    <!-- CUSTOM API SECTION (optional / collapsible) -->
-    <div id="custom-api-section">
-      <div id="custom-api-toggle">
-        <span class="custom-api-label">Manual API Key <span class="optional-badge">optional</span></span>
-        <svg id="custom-api-chevron" class="w-3.5 h-3.5 text-[#4b5563] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      <!-- Tab switcher -->
+      <div class="flex gap-1.5 mb-3 p-1 bg-[#07080d] rounded-xl border border-[#1f2333]">
+        <button id="auth-tab-oauth" onclick="switchAuthTab('oauth')" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#6c63ff] text-white" style="font-family:'Syne',sans-serif">
+          ⚡ Auto Sign-in
+        </button>
+        <button id="auth-tab-manual" onclick="switchAuthTab('manual')" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-[#6b7280]" style="font-family:'Syne',sans-serif">
+          🔑 Paste API Key
+        </button>
       </div>
-      <div id="custom-api-body">
-        <div class="mt-2">
-          <label class="flex justify-between items-center text-xs font-semibold text-[#9ca3af] mb-1">
+
+      <!-- OAUTH PANEL -->
+      <div id="auth-panel-oauth">
+        <button id="oauth-btn" title="Sign in with OpenRouter — no API key needed">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Sign in with OpenRouter
+        </button>
+        <div id="oauth-loading">
+          <svg class="w-4 h-4 spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Completing sign-in…
+        </div>
+        <p class="text-[9px] text-[#4b5563] mt-2">Opens OpenRouter in a popup. Your key is retrieved automatically and stored locally — no copy-pasting needed.</p>
+      </div>
+
+      <!-- MANUAL KEY PANEL -->
+      <div id="auth-panel-manual" class="hidden">
+        <div class="mb-2">
+          <label class="flex justify-between items-center text-xs font-semibold text-[#9ca3af] mb-1.5">
             <span>OpenRouter API Key</span>
-            <a href="https://openrouter.ai/keys" target="_blank" class="text-[10px] text-[#6c63ff] hover:underline">Get key →</a>
+            <a href="https://openrouter.ai/keys" target="_blank" class="text-[10px] text-[#6c63ff] hover:underline flex items-center gap-1">Get free key →</a>
           </label>
           <div class="relative">
-            <input type="password" id="api-key-input" placeholder="sk-or-v1-…" autocomplete="off" class="w-full bg-[#07080d] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl px-3 py-2.5 text-white text-xs outline-none transition-colors mono pr-10">
+            <input type="password" id="api-key-input" placeholder="sk-or-v1-…" autocomplete="off"
+              class="w-full bg-[#07080d] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl px-3 py-2.5 text-white text-xs outline-none transition-colors mono pr-10">
             <button id="toggle-key-visibility" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[#4b5563] hover:text-[#a78bfa] transition-colors">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </button>
           </div>
+          <p class="text-[9px] text-[#4b5563] mt-1.5">🔒 Stored locally only — never sent to any VortexAI server.</p>
         </div>
+        <!-- Quick paste button -->
+        <button id="paste-key-btn" class="w-full mt-1 py-2 rounded-xl border border-dashed border-[#2a2f45] hover:border-[#6c63ff]/50 text-[#6b7280] hover:text-[#a78bfa] text-xs transition-all flex items-center justify-center gap-2">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Paste from clipboard
+        </button>
+      </div>
+
+      <div id="anon-limit-bar">⚠ Anonymous mode — limited to free models only. Sign in or add API key for full access.</div>
+    </div>
+
+    <!-- ADVANCED / CUSTOM API (collapsible) -->
+    <div id="custom-api-section">
+      <div id="custom-api-toggle">
+        <span class="custom-api-label">Advanced <span class="optional-badge">custom endpoint</span></span>
+        <svg id="custom-api-chevron" class="w-3.5 h-3.5 text-[#4b5563] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div id="custom-api-body">
         <div class="mt-2">
           <label class="flex justify-between items-center text-xs font-semibold text-[#9ca3af] mb-1">
             <span>Custom Base URL <span class="optional-badge">optional</span></span>
@@ -1207,7 +1288,6 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
           <input type="text" id="custom-model-id" placeholder="e.g. llama3:8b or gpt-4o-mini" autocomplete="off" class="w-full bg-[#07080d] border border-[#1f2333] focus:border-[#6c63ff]/60 rounded-xl px-3 py-2 text-white text-xs outline-none transition-colors mono">
           <p class="text-[9px] text-[#374151] mt-1">Override the selected model. Useful for local endpoints.</p>
         </div>
-        <p class="text-[9px] text-[#374151] mt-2">Manual key stored in localStorage only. Never sent to VortexAI servers.</p>
       </div>
     </div>
     <div>
@@ -1646,10 +1726,35 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
 
 <!-- ══ MOBILE BOTTOM NAV ══ -->
 <nav id="mobile-bottom-nav" class="fixed bottom-0 left-0 right-0 z-[90] sm:hidden bg-[#0e1018]/95 backdrop-blur-xl border-t border-[#1f2333] flex items-center justify-around px-1 shadow-2xl" style="padding-bottom:env(safe-area-inset-bottom,0px)">
-  <button class="mob-nav-btn" id="mob-store-btn" title="Store">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-    <span>Store</span>
+  <button class="mob-nav-btn" id="mob-sidebar-btn" title="Chat History">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+    <span>Chats</span>
   </button>
+  <button class="mob-nav-btn" id="mob-personas-btn" title="Personas">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Personas</span>
+  </button>
+  <button class="mob-nav-btn" id="mob-notes-btn" title="Quick Notes">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+    <span>Notes</span>
+  </button>
+  <button class="mob-nav-btn" id="mob-find-btn" title="Find">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+    <span>Find</span>
+  </button>
+  <button class="mob-nav-btn" id="mob-stats-btn" title="Stats">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+    <span>Stats</span>
+  </button>
+  <button class="mob-nav-btn" id="mob-uic-btn" title="Customize">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+    <span>Layout</span>
+  </button>
+  <button class="mob-nav-btn" id="mob-settings-btn" title="Settings">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+    <span>Settings</span>
+  </button>
+</nav>
   <button class="mob-nav-btn" id="mob-personas-btn" title="Personas">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     <span>Personas</span>
@@ -1888,7 +1993,7 @@ const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
 const SCAN_INTERVAL = 6 * 60 * 1000;
 const KNOWN_DEAD = ['openrouter/quasar-alpha','liquid/lfm-40b:free','neversleep/llama-3-lumimaid-70b:free'];
 // Models that emit <think>…</think> reasoning tokens — these are handled by the stream parser's stripThinkBlocks()
-const THINKING_MODELS = ['google/gemini-2.5','deepseek/deepseek-r1','deepseek-r1','qwq','qwen/qwq'];
+const THINKING_MODELS = ['google/gemini-2.5','deepseek/deepseek-r1','deepseek-r1','qwq','qwen/qwq','qwen3','qwen/qwen3'];
 
 const FALLBACK_MODELS = [
   {id:'google/gemini-2.5-flash-lite-preview',name:'Gemini 2.5 Flash Lite',description:'Google fast',context_length:1000000,pricing:{prompt:'0',completion:'0'}},
@@ -1905,7 +2010,7 @@ const FALLBACK_MODELS = [
   {id:'qwen/qwen3-8b:free',name:'Qwen3 8B',description:'Alibaba latest',context_length:32768,pricing:{prompt:'0',completion:'0'}},
 ];
 
-const CORE_SYS = `You are VortexAI, a professional AI assistant by Zelvior (Pakistan). v6.1. Apache 2.0. Powered by OpenRouter. Be helpful, precise, use fenced code blocks with language tags. Never deny being VortexAI.`;
+const CORE_SYS = `You are VortexAI, a professional AI assistant by Zelvior (Pakistan). v6.1. Powered by OpenRouter.\nRules:\n- Always respond in the same language the user writes in (default: English)\n- Be helpful, clear, and concise\n- Use fenced code blocks with language tags for all code\n- Never output raw metadata, token markers, XML tags, or internal reasoning\n- Never deny being VortexAI`;
 
 /* ── STATE ── */
 const state = {
@@ -2102,12 +2207,14 @@ const updateAuthUI = () => {
     if (txt) txt.textContent = '✓ Signed in via OpenRouter OAuth';
     if (signout) signout.classList.remove('hidden');
     if (anonBar) anonBar.classList.remove('show');
+    switchAuthTab?.('oauth');
   } else if ((state.authMode === 'manual' || state.authMode === 'none') && state.apiKey) {
     bar.className = 'auth-status-bar authed';
     if (dot) { dot.className = 'auth-dot green'; }
     if (txt) txt.textContent = '✓ API key configured';
     if (signout) signout.classList.add('hidden');
     if (anonBar) anonBar.classList.remove('show');
+    switchAuthTab?.('manual');
   } else {
     bar.className = 'auth-status-bar anon';
     if (dot) { dot.className = 'auth-dot gray'; }
@@ -2260,6 +2367,55 @@ $('auth-signout-btn')?.addEventListener('click', () => {
 // OAuth button
 $('oauth-btn')?.addEventListener('click', startOAuth);
 
+/* ── AUTH TAB SWITCHER ── */
+const switchAuthTab = (tab) => {
+  const oauthPanel = $('auth-panel-oauth');
+  const manualPanel = $('auth-panel-manual');
+  const tabOAuth = $('auth-tab-oauth');
+  const tabManual = $('auth-tab-manual');
+  const activeClass = 'bg-[#6c63ff] text-white';
+  const inactiveClass = 'text-[#6b7280]';
+  if (tab === 'oauth') {
+    oauthPanel?.classList.remove('hidden');
+    manualPanel?.classList.add('hidden');
+    tabOAuth?.classList.add('bg-[#6c63ff]','text-white');
+    tabOAuth?.classList.remove('text-[#6b7280]');
+    tabManual?.classList.remove('bg-[#6c63ff]','text-white');
+    tabManual?.classList.add('text-[#6b7280]');
+  } else {
+    manualPanel?.classList.remove('hidden');
+    oauthPanel?.classList.add('hidden');
+    tabManual?.classList.add('bg-[#6c63ff]','text-white');
+    tabManual?.classList.remove('text-[#6b7280]');
+    tabOAuth?.classList.remove('bg-[#6c63ff]','text-white');
+    tabOAuth?.classList.add('text-[#6b7280]');
+    setTimeout(() => $('api-key-input')?.focus(), 50);
+  }
+};
+window.switchAuthTab = switchAuthTab;
+
+// Auto-switch to manual tab if user already has a manual key saved
+if (state.apiKey && state.authMode !== 'oauth') {
+  setTimeout(() => switchAuthTab('manual'), 0);
+}
+
+// Paste from clipboard button
+$('paste-key-btn')?.addEventListener('click', async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    const trimmed = text.trim();
+    if (trimmed && (trimmed.startsWith('sk-or') || trimmed.startsWith('sk-') || trimmed.length > 20)) {
+      const inp = $('api-key-input');
+      if (inp) { inp.value = trimmed; inp.type = 'text'; inp.dispatchEvent(new Event('input')); }
+      toast('API key pasted — click Save to apply', 'success');
+    } else {
+      toast('Clipboard doesn\'t look like an API key', 'error');
+    }
+  } catch {
+    toast('Clipboard access denied — paste manually into the field', 'error');
+  }
+});
+
 // Custom API toggle
 $('custom-api-toggle')?.addEventListener('click', () => {
   const body = $('custom-api-body'), chev = $('custom-api-chevron');
@@ -2387,9 +2543,15 @@ el.exportBtn?.addEventListener('click', () => openModal(el.exportModal));
 /* ── SAVE SETTINGS ── */
 el.saveSettingsBtn?.addEventListener('click', () => {
   const key = el.apiKeyInput?.value?.trim() || '';
+  const hadKey = !!state.apiKey;
   state.apiKey = key;
-  if (key) { localStorage.setItem('nx_api_key', key); if (state.authMode !== 'oauth') { state.authMode='manual'; localStorage.setItem('nx_auth_mode','manual'); } }
-  else { localStorage.removeItem('nx_api_key'); if (state.authMode==='manual') { state.authMode='none'; localStorage.setItem('nx_auth_mode','none'); } }
+  if (key) {
+    localStorage.setItem('nx_api_key', key);
+    if (state.authMode !== 'oauth') { state.authMode='manual'; localStorage.setItem('nx_auth_mode','manual'); }
+  } else {
+    localStorage.removeItem('nx_api_key');
+    if (state.authMode==='manual') { state.authMode='none'; localStorage.setItem('nx_auth_mode','none'); }
+  }
   const baseUrl = $('custom-base-url')?.value?.trim() || '';
   state.customBaseUrl = baseUrl; localStorage.setItem('nx_custom_base_url', baseUrl);
   const modelOverride = $('custom-model-id')?.value?.trim() || '';
@@ -2401,8 +2563,9 @@ el.saveSettingsBtn?.addEventListener('click', () => {
   localStorage.setItem('nx_theme', state.theme);
   updateAuthUI();
   closeAllModals();
-  toast('Settings saved', 'success');
-  // Refresh models if base URL changed
+  if (key && !hadKey) toast('🔑 API key saved! You now have full access.', 'success');
+  else if (key) toast('Settings saved', 'success');
+  else toast('Settings saved (no API key — using free models)', 'info');
   if (baseUrl) setTimeout(fetchModels, 300);
 });
 
@@ -2474,7 +2637,7 @@ const renderHistory = async (q='') => {
   });
   if (el.historyList) { el.historyList.innerHTML=''; el.historyList.appendChild(frag); }
 };
-const loadChat = async id => { const hist=await idbAll(); const chat=hist.find(c=>c.id===id); if (!chat) return; state.messages=[...chat.messages]; state.chatId=chat.id; if (chat.modelId) selectModel(chat.modelId,true); if (el.chatInner) el.chatInner.innerHTML=''; closeCanvas(); chat.messages.forEach(m=>appendMsg(m.role,m.content,true)); updateTokenBar(); renderHistory(); setTimeout(()=>{if(el.chatContainer)el.chatContainer.scrollTop=el.chatContainer.scrollHeight;},50); };
+const loadChat = async id => { const hist=await idbAll(); const chat=hist.find(c=>c.id===id); if (!chat) return; state.messages=[...chat.messages]; state.chatId=chat.id; if (chat.modelId) selectModel(chat.modelId,true); if (el.chatInner) el.chatInner.innerHTML=''; closeCanvas(); chat.messages.forEach(m=>appendMsg(m.role,m.content,true)); updateTokenBar(); renderHistory(); setTimeout(()=>{if(el.chatContainer)el.chatContainer.scrollTop=el.chatContainer.scrollHeight;},50); if(window.innerWidth<768)setSidebar(false); };
 el.historySearch?.addEventListener('input', () => renderHistory(el.historySearch.value));
 el.clearHistoryBtn?.addEventListener('click', async () => { if (!confirm('Clear all chat history?')) return; await idbClear(); renderHistory(); newChat(); toast('History cleared','success'); });
 el.exportHistoryBtn?.addEventListener('click', async () => { const hist=await idbAll(); if (!hist.length) { toast('No history','error'); return; } dlFile(JSON.stringify(hist,null,2),`vortexai-history-${Date.now()}.json`,'application/json'); toast(`Exported ${hist.length} chats`,'success'); });
@@ -2483,11 +2646,76 @@ el.importHistoryFile?.addEventListener('change', () => { const f=el.importHistor
 
 /* ── SIDEBAR ── */
 let sidebarOpen = window.innerWidth >= 1024;
-const setSidebar = open => { sidebarOpen=open; if(window.innerWidth<768){el.sidebar?.classList.toggle('mobile-open',open);el.sidebarOverlay?.classList.toggle('active',open);}else{el.sidebar?.classList.toggle('collapsed',!open);el.sidebarOverlay?.classList.remove('active');} };
+
+const setSidebar = open => {
+  sidebarOpen = open;
+  document.body.classList.toggle('sidebar-open', open);
+  // Highlight mobile nav Chats button
+  document.getElementById('mob-sidebar-btn')?.classList.toggle('active', open);
+  if (window.innerWidth < 768) {
+    // Mobile: slide drawer in/out
+    el.sidebar?.classList.toggle('mobile-open', open);
+    el.sidebarOverlay?.classList.toggle('active', open);
+    // Hide edge hint when open
+    const hint = document.getElementById('sidebar-edge-hint');
+    if (hint) hint.style.opacity = open ? '0' : '';
+  } else {
+    // Desktop/tablet: collapse inline
+    el.sidebar?.classList.toggle('collapsed', !open);
+    el.sidebar?.classList.remove('mobile-open');
+    el.sidebarOverlay?.classList.remove('active');
+  }
+};
+
 setSidebar(sidebarOpen);
+
 el.sidebarToggle?.addEventListener('click', () => setSidebar(!sidebarOpen));
 el.sidebarOverlay?.addEventListener('click', () => setSidebar(false));
-window.addEventListener('resize', () => { if (window.innerWidth>=768) { el.sidebarOverlay?.classList.remove('active'); el.sidebar?.classList.remove('mobile-open'); } });
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 768) {
+    el.sidebarOverlay?.classList.remove('active');
+    el.sidebar?.classList.remove('mobile-open');
+    // On resize to desktop, restore proper collapsed state
+    if (!sidebarOpen) el.sidebar?.classList.add('collapsed');
+    else el.sidebar?.classList.remove('collapsed');
+  } else {
+    el.sidebar?.classList.remove('collapsed');
+    if (!sidebarOpen) el.sidebar?.classList.remove('mobile-open');
+  }
+});
+
+/* ── SWIPE GESTURE (mobile) ── */
+(() => {
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+  const EDGE_ZONE = 28;   // px from left edge to trigger open
+  const MIN_SWIPE = 55;   // minimum horizontal swipe distance
+  const MAX_VERT  = 55;   // max vertical drift allowed
+  const MAX_MS    = 400;  // max gesture duration
+
+  document.addEventListener('touchstart', e => {
+    touchStartX    = e.touches[0].clientX;
+    touchStartY    = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    if (window.innerWidth >= 768) return; // desktop only uses button
+    const dx  = e.changedTouches[0].clientX - touchStartX;
+    const dy  = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    const dt  = Date.now() - touchStartTime;
+    if (dt > MAX_MS || dy > MAX_VERT) return;
+
+    // Swipe RIGHT from left edge → open
+    if (!sidebarOpen && dx > MIN_SWIPE && touchStartX < EDGE_ZONE) {
+      setSidebar(true);
+    }
+    // Swipe LEFT while sidebar is open → close
+    if (sidebarOpen && dx < -MIN_SWIPE) {
+      setSidebar(false);
+    }
+  }, { passive: true });
+})();
 
 /* ── MODEL TAGS ── */
 const getModelTags = m => {
@@ -2937,18 +3165,31 @@ const sendToAPI=async()=>{
   el.sendIcon?.classList.add('hidden');el.stopIcon?.classList.remove('hidden');
   el.sendBtn?.classList.add('generating');
   if(el.userInput)el.userInput.disabled=true;
-  // Canvas opens only when code is actually detected (in _extractAndStream/flushFinal)
-  // Insert AI message shimmer placeholder before thinking steps
   const _shimmerWrap = insertMsgShimmer();
   appendThinking();
   let resp='',cEl=null;_buf='';_chunkCount=0;
   const key=getActiveKey();
   const apiUrl=getApiUrl();
   const effectiveModel=getEffectiveModelId();
+  // Detect if this model emits thinking tokens so we can suppress them server-side
+  const isThinkingModel=THINKING_MODELS.some(t=>effectiveModel.toLowerCase().includes(t.toLowerCase()));
   const hdrs={'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':APP_NAME};
   if(key)hdrs['Authorization']=`Bearer ${key}`;
   try{
-    const res=await fetch(apiUrl,{method:'POST',headers:hdrs,body:JSON.stringify({model:effectiveModel,messages:[{role:'system',content:state.webSearch?buildWebSearchSys():buildSys()},...getMsgsForAPI()],stream:true,temperature:state.temperature,max_tokens:state.maxTokens}),signal:state.abortCtrl.signal});
+    const body={
+      model:effectiveModel,
+      messages:[{role:'system',content:state.webSearch?buildWebSearchSys():buildSys()},...getMsgsForAPI()],
+      stream:true,
+      temperature:state.temperature,
+      max_tokens:state.maxTokens,
+      // Ask OpenRouter to strip <think> blocks server-side for reasoning models
+      transforms:['middle-out'],
+      // Route to providers that return standard OpenAI-compatible streaming
+      provider:{allow_fallbacks:true,data_collection:'deny'},
+    };
+    // For known thinking/reasoning models, tell the provider to suppress reasoning tokens
+    if(isThinkingModel)body.include_reasoning=false;
+    const res=await fetch(apiUrl,{method:'POST',headers:hdrs,body:JSON.stringify(body),signal:state.abortCtrl.signal});
     if(!res.ok){const em=await parseAPIError(res);throw new Error(em);}
     removeThinking();document.getElementById('msg-shimmer')?.remove();cEl=appendMsg('assistant','');
     if(cEl)cEl.classList.add('typing-cursor');
@@ -4583,7 +4824,7 @@ document.querySelectorAll('#stats-modal .close-modal-btn, #personas-modal .close
 
 /* ── MOBILE BOTTOM NAV WIRING (deferred until functions are defined) ── */
 const _wireMobileNav = () => {
-  document.getElementById('mob-store-btn')?.addEventListener('click', () => openStore());
+  document.getElementById('mob-sidebar-btn')?.addEventListener('click', () => setSidebar(!sidebarOpen));
   document.getElementById('mob-personas-btn')?.addEventListener('click', () => { renderPersonasGrid(); openModal(document.getElementById('personas-modal')); });
   document.getElementById('mob-notes-btn')?.addEventListener('click', openNotesPanel);
   document.getElementById('mob-find-btn')?.addEventListener('click', openChatSearch);
