@@ -564,6 +564,11 @@ body.light-mode body::before{opacity:.05;}
 /* When web search is on, show indicator in temp banner */
 #temp-chat-banner #web-search-indicator{display:none;}
 body.web-search-on #temp-chat-banner #web-search-indicator{display:inline-flex;}
+/* Thinking toggle */
+#thinking-btn.active{color:#a78bfa!important;border-color:rgba(167,139,250,.4)!important;background:rgba(167,139,250,.08)!important;}
+#thinking-indicator{display:none;align-items:center;gap:4px;font-size:9px;font-family:'JetBrains Mono',monospace;color:#c4b5fd;padding:2px 7px;border-radius:5px;border:1px solid rgba(167,139,250,.25);background:rgba(167,139,250,.06);}
+#temp-chat-banner #thinking-indicator{display:none;}
+body.thinking-on #temp-chat-banner #thinking-indicator{display:inline-flex;}
 .web-result-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:8px;padding:8px 10px;margin:.3em 0;font-size:11px;}
 .web-result-card a{color:var(--c-accent2);text-decoration:underline;}
 .web-result-card .web-snippet{color:var(--c-muted);font-size:10px;margin-top:2px;}
@@ -792,6 +797,9 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
     <button id="web-search-btn" title="Web Search Toggle (Ctrl+Shift+W)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#06b6d4] hover:bg-[#141720] rounded-lg transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
     </button>
+    <button id="thinking-btn" title="Toggle Deep Thinking (Ctrl+Shift+T — reasoning models only)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+    </button>
     <button id="shortcuts-btn" title="Keyboard Shortcuts (Ctrl+Shift+K)" class="p-1.5 sm:p-2 text-[#6b7280] hover:text-[#a78bfa] hover:bg-[#141720] rounded-lg transition-colors hidden sm:block">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
     </button>
@@ -886,6 +894,7 @@ body.uic-hide-enhance-label #enhance-btn span{display:none!important;}
       <span class="temp-icon">⏱</span>
       <span class="flex-1 text-[10px]">Temporary chat — messages will NOT be saved</span>
       <span id="web-search-indicator">🌐 Web Search ON</span>
+      <span id="thinking-indicator">🧠 Thinking ON</span>
       <button id="temp-chat-exit" class="text-[9px] px-2 py-0.5 rounded border border-orange-500/30 text-orange-300 hover:bg-orange-500/10 transition-colors ml-1">Exit</button>
     </div>
     <div id="equipped-banner">
@@ -2078,6 +2087,7 @@ const state = {
   isListening: false, attachments: [], idb: null,
   /* new features */
   webSearch: localStorage.getItem('vx_websearch')==='1',
+  thinking: localStorage.getItem('vx_thinking')==='1',
   isTemp: false,
   activeFolderFilter: null,
 };
@@ -3055,8 +3065,13 @@ const sendToAPI=async()=>{
       // data_collection is intentionally omitted so free models (which require training consent) are not blocked
       provider:{allow_fallbacks:true},
     };
-    // For known thinking/reasoning models, tell the provider to suppress reasoning tokens
-    if(isThinkingModel)body.include_reasoning=false;
+    // For known thinking/reasoning models, respect the user's thinking toggle
+    // thinking ON  → let the model reason (include_reasoning:true, strip <think> blocks from display)
+    // thinking OFF → suppress reasoning tokens server-side (default, faster responses)
+    if(isThinkingModel){
+      body.include_reasoning=state.thinking;
+      if(!state.thinking)body.transforms=['middle-out'];
+    }
     const res=await fetch(apiUrl,{method:'POST',headers:hdrs,body:JSON.stringify(body),signal:state.abortCtrl.signal});
     if(!res.ok){const em=await parseAPIError(res);throw new Error(em);}
     removeThinking();document.getElementById('msg-shimmer')?.remove();cEl=appendMsg('assistant','');
@@ -3225,6 +3240,7 @@ const CMD_ACTIONS=[
   {icon:'📝',label:'Monaco Editor',kbd:'Ctrl+M',action:()=>{closePalette();openMonaco();}},
   {icon:'⌨',label:'Toggle Console',kbd:'Ctrl+`',action:()=>{closePalette();toggleConsole();}},
   {icon:'🌐',label:'Toggle Web Search',kbd:'Ctrl+Shift+W',action:()=>{closePalette();toggleWebSearch();}},
+  {icon:'🧠',label:'Toggle Deep Thinking',kbd:'Ctrl+Shift+I',action:()=>{closePalette();toggleThinking();}},
   {icon:'📁',label:'New Folder',kbd:'',action:()=>{closePalette();createFolder();}},
   {icon:'⏱',label:'Temporary Chat',kbd:'',action:()=>{closePalette();startTempChat();}},
 ];
@@ -3268,6 +3284,16 @@ const toggleWebSearch=()=>{
   toast(state.webSearch?'🌐 Web search ON — AI will search when needed':'Web search OFF',state.webSearch?'success':'info');
 };
 document.getElementById('web-search-btn')?.addEventListener('click',toggleWebSearch);
+
+const toggleThinking=()=>{
+  state.thinking=!state.thinking;
+  localStorage.setItem('vx_thinking',state.thinking?'1':'0');
+  const btn=document.getElementById('thinking-btn');
+  if(btn)btn.classList.toggle('active',state.thinking);
+  document.body.classList.toggle('thinking-on',state.thinking);
+  toast(state.thinking?'🧠 Deep thinking ON — reasoning models will think before responding':'🧠 Thinking OFF',state.thinking?'success':'info');
+};
+document.getElementById('thinking-btn')?.addEventListener('click',toggleThinking);
 
 const buildWebSearchSys=()=>{
   if(!state.webSearch)return buildSys();
@@ -3442,6 +3468,7 @@ document.addEventListener('keydown',e=>{
   if(ctrl&&e.key==='m'){e.preventDefault();openMonaco();}
   if(ctrl&&e.key==='`'){e.preventDefault();toggleConsole();}
   if(ctrl&&e.shiftKey&&e.key==='W'){e.preventDefault();toggleWebSearch();}
+  if(ctrl&&e.shiftKey&&e.key==='I'){e.preventDefault();toggleThinking();}
   if(ctrl&&e.shiftKey&&e.key==='C'){e.preventDefault();openCompare();}
   if(ctrl&&e.shiftKey&&e.key==='K'){e.preventDefault();openShortcuts();}
   if(ctrl&&e.shiftKey&&e.key==='A'){e.preventDefault();openAchievements();}
@@ -4236,6 +4263,7 @@ if (!isAuthenticated() && localStorage.getItem('nx_terms_v2')) setTimeout(() => 
 openIDB().then(() => { renderHistory(); renderFolderBar(); });
 // Init web search btn state
 if(state.webSearch){document.getElementById('web-search-btn')?.classList.add('active');document.body.classList.add('web-search-on');}
+if(state.thinking){document.getElementById('thinking-btn')?.classList.add('active');document.body.classList.add('thinking-on');}
 
 /* ══════════════════════════════════════════
    ── FEATURE: READING MODE
