@@ -3041,7 +3041,10 @@ const handleSubmit=async e=>{
   appendMsg('user',prompt);state.messages.push({role:'user',content:prompt});
   if(_hadAttachments){state.attachments=[];renderAttachBar();}
   trackStat('totalMessages');addXP(2);
-  updateTokenBar();await sendToAPI();
+  updateTokenBar();
+  // Request notification permission lazily on first send
+  _requestNotifPermission();
+  await sendToAPI();
 };
 
 const sendToAPI=async()=>{
@@ -3108,53 +3111,69 @@ const sendToAPI=async()=>{
     removeThinking();document.getElementById('msg-shimmer')?.remove();cEl=appendMsg('assistant','');
     if(cEl)cEl.classList.add('typing-cursor');
     const sk=$('canvas-skeleton');if(sk)sk.style.display='none';
-    const reader=res.body.getReader(),dec=new TextDecoder('utf-8');let leftover='';
-    // Track whether we're inside a <think> block to strip reasoning tokens
-    let _inThink=false;
-    while(true){
-      const{done,value}=await reader.read();if(done)break;
-      leftover+=dec.decode(value,{stream:true});
-      const lines=leftover.split('\n');leftover=lines.pop();
-      for(const line of lines){
-        if(!line.startsWith('data: ')||line.trim()==='data: [DONE]')continue;
-        try{
+    const reader=res.body.getReader();
+    const dec=new TextDecoder('utf-8');
+
+    const worker=_getSSEWorker();
+    if(worker){
+      // ── WORKER PATH: off-main-thread SSE parsing ──
+      worker.postMessage({type:'reset'});
+      _showWorkerBadge(true);
+      await new Promise((resolve,reject)=>{
+        worker.onmessage=(ev)=>{
+          const msg=ev.data;
+          if(msg.type==='delta'){
+            resp=msg.buf;_buf=resp;if(cEl)schedFlush(cEl);
+          }else if(msg.type==='error'){
+            reject(new Error(msg.message));
+          }else if(msg.type==='done'){
+            resolve();
+          }
+        };
+        (async()=>{
+          try{
+            while(true){
+              const{done,value}=await reader.read();
+              if(done){worker.postMessage({type:'flush'});break;}
+              worker.postMessage({type:'chunk',payload:dec.decode(value,{stream:true})});
+            }
+          }catch(readErr){reject(readErr);}
+        })();
+      });
+      _showWorkerBadge(false);
+    }else{
+      // ── FALLBACK PATH: main-thread SSE parsing ──
+      let leftover='';
+      let _inThink=false;
+      while(true){
+        const{done,value}=await reader.read();if(done)break;
+        leftover+=dec.decode(value,{stream:true});
+        const lines=leftover.split('\n');leftover=lines.pop();
+        for(const line of lines){
+          if(!line.startsWith('data: ')||line.trim()==='data: [DONE]')continue;
+          try{
             const d=JSON.parse(line.slice(6));
             if(d.error){const em=d.error?.message||d.error?.code||'Stream error';throw new Error(em);}
-            // OpenRouter may send role-only chunks, finish_reason chunks, or usage chunks — all have no content
-            const choice=d.choices?.[0];
-            if(!choice)continue;
-            // Handle both streaming (delta) and non-streaming (message) response shapes
+            const choice=d.choices?.[0];if(!choice)continue;
             const delta=choice.delta?.content??choice.message?.content??choice.text??null;
-            if(delta===null||delta===undefined||typeof delta!=='string'||delta==='')continue;
-            // Strip <think>...</think> reasoning blocks (DeepSeek R1, Gemini 2.5, etc.)
-            // These models emit thinking tokens that appear as garbled/nonsensical text
+            if(delta===null||typeof delta!=='string'||delta==='')continue;
             let clean='';
             for(let i=0;i<delta.length;){
-              if(!_inThink){
-                const ts=delta.indexOf('<think>',i);
-                if(ts===-1){clean+=delta.slice(i);break;}
-                clean+=delta.slice(i,ts);_inThink=true;i=ts+7;
-              }else{
-                const te=delta.indexOf('</think>',i);
-                if(te===-1){i=delta.length;break;}// still inside think block
-                _inThink=false;i=te+8;
-              }
+              if(!_inThink){const ts=delta.indexOf('<think>',i);if(ts===-1){clean+=delta.slice(i);break;}clean+=delta.slice(i,ts);_inThink=true;i=ts+7;}
+              else{const te=delta.indexOf('</think>',i);if(te===-1){i=delta.length;break;}_inThink=false;i=te+8;}
             }
-            // Also strip leftover reasoning markers some models emit
             clean=clean.replace(/^[\s\S]*?<\/think>/,'').replace(/<think>[\s\S]*/,'');
             if(!clean)continue;
             resp+=clean;_buf=resp;if(cEl)schedFlush(cEl);
-          }catch(pe){
-            // Only re-throw non-JSON-parse errors (actual API/stream errors)
-            // JSON SyntaxErrors from malformed SSE chunks are silently skipped
-            if(pe instanceof SyntaxError)continue;
-            throw pe;
-          }
+          }catch(pe){if(pe instanceof SyntaxError)continue;throw pe;}
+        }
       }
     }
     if(cEl)flushFinal(cEl);
     state.messages.push({role:'assistant',content:resp});
     if((state.autoTTS||ttsGlobalOn)&&resp)speakText(resp);
+    // Fire notification if tab is hidden / window blurred
+    _sendResponseNotification(resp);
     updateTokenBar();saveChat();
   }catch(err){
     const sk=$('canvas-skeleton');if(sk)sk.style.display='none';showCanvasLiveBar(false);
@@ -3173,6 +3192,7 @@ const sendToAPI=async()=>{
     }
   }finally{
     if(cEl)cEl.classList.remove('typing-cursor');
+    _showWorkerBadge(false);
     state.isGenerating=false;state.abortCtrl=null;
     el.sendIcon?.classList.remove('hidden');el.stopIcon?.classList.add('hidden');
     el.sendBtn?.classList.remove('generating');
@@ -5154,6 +5174,145 @@ if (_srBar) {
   _srObs.observe(_srBar, { attributes: true, attributeFilter: ['class'] });
 }
 
+
+
+
+/* ══════════════════════════════════════════
+   BACKGROUND WEB WORKER — SSE STREAM PARSER
+   Offloads SSE chunk parsing off the main
+   thread. Worker receives decoded text chunks,
+   parses data: lines, strips <think> blocks,
+   posts clean text deltas back to main thread.
+══════════════════════════════════════════ */
+const _WORKER_SRC = `
+let _wLeftover = '';
+let _wInThink = false;
+let _wBuf = '';
+
+self.onmessage = function(ev) {
+  const { type, payload } = ev.data;
+  if (type === 'reset') { _wLeftover=''; _wInThink=false; _wBuf=''; return; }
+
+  if (type === 'chunk') {
+    _wLeftover += payload;
+    const lines = _wLeftover.split('\\n');
+    _wLeftover = lines.pop();
+    for (const line of lines) {
+      const t = line.trim();
+      if (!t || !t.startsWith('data: ') || t === 'data: [DONE]') continue;
+      let parsed;
+      try { parsed = JSON.parse(t.slice(6)); } catch { continue; }
+      if (parsed.error) { self.postMessage({ type:'error', message: parsed.error?.message || parsed.error?.code || 'Stream error' }); return; }
+      const choice = parsed.choices?.[0]; if (!choice) continue;
+      const delta = choice.delta?.content ?? choice.message?.content ?? choice.text ?? null;
+      if (delta === null || typeof delta !== 'string' || delta === '') continue;
+      let clean = '';
+      for (let i = 0; i < delta.length;) {
+        if (!_wInThink) {
+          const ts = delta.indexOf('<think>', i);
+          if (ts === -1) { clean += delta.slice(i); break; }
+          clean += delta.slice(i, ts); _wInThink = true; i = ts + 7;
+        } else {
+          const te = delta.indexOf('</think>', i);
+          if (te === -1) { i = delta.length; break; }
+          _wInThink = false; i = te + 8;
+        }
+      }
+      clean = clean.replace(/^[\\s\\S]*?<\\/think>/, '').replace(/<think>[\\s\\S]*/, '');
+      if (!clean) continue;
+      _wBuf += clean;
+      self.postMessage({ type:'delta', text:clean, buf:_wBuf });
+    }
+    return;
+  }
+
+  if (type === 'flush') {
+    const line = _wLeftover.trim();
+    if (line && line.startsWith('data: ') && line !== 'data: [DONE]') {
+      try {
+        const parsed = JSON.parse(line.slice(6));
+        const choice = parsed.choices?.[0];
+        const delta = choice?.delta?.content ?? choice?.message?.content ?? null;
+        if (delta) { _wBuf += delta; self.postMessage({ type:'delta', text:delta, buf:_wBuf }); }
+      } catch {}
+    }
+    self.postMessage({ type:'done', buf:_wBuf });
+    _wLeftover=''; _wInThink=false; _wBuf='';
+    return;
+  }
+};
+`;
+
+let _sseWorker = null;
+const _getSSEWorker = () => {
+  if (_sseWorker) return _sseWorker;
+  try {
+    const blob = new Blob([_WORKER_SRC], { type: 'application/javascript' });
+    const url = URL.createObjectURL(blob);
+    _sseWorker = new Worker(url);
+    setTimeout(() => URL.revokeObjectURL(url), 8000);
+    _sseWorker.onerror = (e) => { console.warn('[VortexAI Worker] Error:', e.message); _sseWorker = null; };
+  } catch (err) {
+    console.warn('[VortexAI] Web Worker unavailable, falling back to main-thread parser:', err.message);
+    _sseWorker = null;
+  }
+  return _sseWorker;
+};
+window.addEventListener('beforeunload', () => { try { _sseWorker?.terminate(); } catch {} });
+
+/* ══════════════════════════════════════════
+   BACKGROUND NOTIFICATIONS
+   Fires a browser notification when the AI
+   response finishes and the tab is hidden or
+   the window is not focused.
+   Permission is requested on the first send.
+══════════════════════════════════════════ */
+let _notifPermission = (typeof Notification !== 'undefined') ? Notification.permission : 'denied';
+
+const _requestNotifPermission = async () => {
+  if (typeof Notification === 'undefined') return;
+  if (_notifPermission === 'granted' || _notifPermission === 'denied') return;
+  try { _notifPermission = await Notification.requestPermission(); } catch {}
+};
+
+const _NOTIF_ICON = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#6c63ff"/><path d="M10 24l6-12 6 12-6-2z" fill="white"/></svg>');
+
+const _sendResponseNotification = (preview) => {
+  if (typeof Notification === 'undefined' || _notifPermission !== 'granted') return;
+  if (!document.hidden && document.hasFocus()) return;
+  try {
+    const body = preview ? (preview.trim().slice(0, 120) + (preview.length > 120 ? '\u2026' : '')) : 'Your response is ready.';
+    const n = new Notification('VortexAI \u26a1', {
+      body,
+      icon: _NOTIF_ICON,
+      tag: 'vortexai-response',
+      silent: false,
+    });
+    n.onclick = () => { try { window.focus(); } catch {} n.close(); };
+    setTimeout(() => { try { n.close(); } catch {} }, 7000);
+  } catch {}
+};
+
+/* Small status badge that shows when background worker is active */
+const _showWorkerBadge = (on) => {
+  let badge = document.getElementById('worker-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'worker-badge';
+    badge.title = 'Background worker active';
+    badge.style.cssText = 'position:fixed;bottom:72px;right:12px;z-index:9999;font-size:9px;font-weight:700;letter-spacing:.04em;padding:3px 7px;border-radius:99px;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);color:#a78bfa;pointer-events:none;transition:opacity .3s;font-family:monospace;display:flex;align-items:center;gap:4px;';
+    badge.innerHTML = '<span style="width:5px;height:5px;border-radius:50%;background:#a78bfa;display:inline-block;animation:workerPulse .9s ease-in-out infinite"></span> WORKER';
+    document.body.appendChild(badge);
+    // Add keyframe once
+    if (!document.getElementById('worker-badge-style')) {
+      const s = document.createElement('style');
+      s.id = 'worker-badge-style';
+      s.textContent = '@keyframes workerPulse{0%,100%{opacity:.4}50%{opacity:1}}';
+      document.head.appendChild(s);
+    }
+  }
+  badge.style.opacity = on ? '1' : '0';
+};
 
 
 </script>
